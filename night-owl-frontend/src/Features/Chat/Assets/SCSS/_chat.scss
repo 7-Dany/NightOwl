@@ -1,0 +1,34 @@
+@import "team-channels-container", "private-channels-container", "chat-room-header", "chat-room", "team-channel";
+@import "message", "private-channel";
+
+.chats-container {
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
+}
+
+.chats {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+  overflow-y: scroll;
+  max-height: 91vh;
+
+  h2 {
+    color: #FFFFFF;
+    align-self: flex-start;
+    justify-self: center;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.chat-room-container {
+  width: 100%;
+  padding: 0 1.8rem;
+}

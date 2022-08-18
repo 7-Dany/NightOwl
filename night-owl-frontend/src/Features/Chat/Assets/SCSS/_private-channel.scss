@@ -1,0 +1,57 @@
+.private-channel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__name-and-image {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 0.4rem;
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      grid-column: 1/2;
+      grid-row: 1/-1;
+    }
+  }
+
+  &__title {
+    color: $White;
+    grid-column: 2/-1;
+    grid-row: 1/2;
+  }
+
+  &__last-msg {
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+    color: $Secondary-Gray;
+  }
+
+  &__unseen-msg {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+
+  &__counts {
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background-color: $Red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem;
+    color: $White;
+  }
+
+  &__last-msg-date {
+    color: $Secondary-Gray;
+  }
+}

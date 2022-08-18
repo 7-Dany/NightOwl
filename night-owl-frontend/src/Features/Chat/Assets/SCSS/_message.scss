@@ -1,0 +1,78 @@
+.others-msg {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 0.8rem;
+
+  img {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    width: 32px;
+    height: 32px;
+  }
+
+  p {
+    grid-row: 1/2;
+    grid-column: 2/-1;
+    color: $White;
+  }
+
+  .message {
+    align-self: flex-start;
+    justify-self: left;
+    max-width: 50%;
+    grid-column: 2/-1;
+    grid-row: 2/-1;
+    background-color: $Others-Message-Color;
+    padding: 1rem;
+    border-radius: 2px 25px 25px;
+    line-height: 1.2;
+
+    p {
+      color: $White;
+    }
+  }
+
+}
+
+.user-msg {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  grid-template-columns: 1fr 30px;
+  align-items: center;
+  gap: 0.8rem;
+
+  img {
+    grid-column: -1/-2;
+    grid-row: 1/2;
+    width: 32px;
+    height: 32px;
+  }
+
+  .person-msg-info {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+    text-align: right;
+    grid-column: -2/1;
+    grid-row: 1/2;
+    color: $White;
+  }
+
+  .message {
+    align-self: flex-start;
+    justify-self: right;
+    max-width: 50%;
+    grid-column: -2/ 1;
+    grid-row: 2/-1;
+    background-color: $Others-Message-Color;
+    padding: 1rem;
+    border-radius: 25px 2px 25px 25px;
+    line-height: 1.2;
+
+    p {
+      color: $White;
+    }
+  }
+}

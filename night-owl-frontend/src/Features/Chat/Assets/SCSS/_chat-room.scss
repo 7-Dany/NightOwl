@@ -1,0 +1,110 @@
+.chat-room {
+  width: 100%;
+  background-color: $Gray;
+  border-radius: 24px 8px 24px 24px;
+}
+
+.chat-room-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 73vh;
+  row-gap: 1rem;
+  padding: 1.5rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 24px;
+    background: $Gray;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $Gray;
+    border-radius: 20px;
+    border: 1px solid $Whitish-Gray;
+  }
+}
+
+.chat-room-footer {
+  position: relative;
+
+  &__mic-icon-container {
+    position: absolute;
+    top: 17px;
+    left: 1rem;
+    cursor: pointer;
+  }
+
+  &__mic-icon {
+    fill: $Whitish-Gray;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__image-icon-container {
+    position: absolute;
+    top: 17px;
+    right: 116px;
+    cursor: pointer;
+  }
+
+  &__image-icon {
+    fill: $Whitish-Gray;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__attachment-icon-container {
+    position: absolute;
+    top: 17px;
+    right: 76px;
+    cursor: pointer;
+  }
+
+  &__attachment-icon {
+    fill: $Whitish-Gray;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__send-msg-btn-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    background-color: $White-Blue;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    transition: 300ms all ease-in-out;
+
+    &:hover {
+      background-color: $Very-White-Blue;
+    }
+  }
+
+  &__send-msg-btn {
+    fill: $White;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__send-msg {
+    width: 100%;
+    height: 60px;
+    border-radius: 0 0 24px 24px;
+    border: none;
+    outline: none;
+    background: $Others-Message-Color;
+    padding: 1rem 10rem 1rem 3rem;
+    color: $White;
+  }
+}

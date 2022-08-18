@@ -1,0 +1,90 @@
+.header {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid $Whitish-Gray;
+}
+
+.search-area {
+  &__container {
+    position: relative;
+  }
+
+  &__icon {
+    fill: $Dark-Gray;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__input {
+    width: 280px;
+    height: 44px;
+    border-radius: 30px;
+    outline: none;
+    background-color: $Gray;
+    border: none;
+    color: $White;
+    padding: 0.5rem 3rem;
+
+    &::placeholder {
+      color: $Dark-Gray;
+    }
+
+    &:-webkit-autofill {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    &:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+  }
+}
+
+.personal-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  &__create-new {
+    background-color: $White-Blue;
+    width: 120px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    color: $White;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
+    padding: 0.5rem;
+
+    &:hover {
+      background-color: $Very-White-Blue;
+    }
+
+    &__icon {
+      fill: $White;
+    }
+  }
+
+  &__notification-icon {
+    fill: $Grayish-White;
+    cursor: pointer;
+  }
+
+  &__person-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+

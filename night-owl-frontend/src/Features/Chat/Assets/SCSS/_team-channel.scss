@@ -1,0 +1,37 @@
+.team-channel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__name-and-image {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  &__title {
+    color: $White;
+  }
+
+
+  &__unseen-msg {
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background-color: $Red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem;
+  }
+
+  &__counts {
+    color: $White;
+  }
+}

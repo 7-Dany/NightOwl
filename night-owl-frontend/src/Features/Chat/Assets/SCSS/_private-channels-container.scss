@@ -1,0 +1,43 @@
+.private-channels-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.private-channels {
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0.25rem;
+
+  &__text {
+    color: $Secondary-Gray;
+  }
+
+  &__icon-container {
+    transform: rotate(180deg);
+    transition: 300ms all ease-in-out;
+    cursor: pointer;
+
+    &.active {
+      transform: rotate(0deg);
+    }
+  }
+
+  &__icon {
+    fill: $Secondary-Gray;
+    transition: 300ms all ease-in-out;
+
+    &:hover {
+      fill: $White;
+    }
+  }
+}
+
+.all-private-channels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
