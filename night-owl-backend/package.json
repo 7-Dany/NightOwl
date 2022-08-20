@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "run": "npm run build && node dist/index",
+    "start": "npm run build && node dist/index",
     "jasmine": "jasmine",
     "test": "set ENV=test&& tsc && db-migrate up --env test && tsc && jasmine &&  db-migrate reset --env test",
     "format": "prettier --write src/**/*.{ts,tsx,js,jsx}",
@@ -28,7 +28,9 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.7.8",
     "pg": "^8.7.3",
-    "supertest": "^6.2.4"
+    "socket.io": "^4.5.1",
+    "supertest": "^6.2.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -37,7 +39,7 @@
     "@types/jasmine": "^4.0.3",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^18.7.6",
+    "@types/node": "^18.7.8",
     "@types/pg": "^8.6.5",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.33.1",

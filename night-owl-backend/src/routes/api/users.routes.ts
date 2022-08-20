@@ -9,29 +9,33 @@ import {
   getUser,
   updateUser
 } from '../../controllers/users.controller'
-import validateAuthToken from '../../middlewares/auth.token.middleware'
-import validateResetPasswordToken from '../../middlewares/resetPassword.token.middleware'
+import {
+  authTokenMiddleware,
+  validateSignUpMiddleware,
+  validateLoginMiddleware,
+  resetPasswordTokenMiddleware
+} from '../../middlewares'
+
 
 const usersRoutes = Router()
 
-usersRoutes
-  .route('/users')
-  .get(validateAuthToken, getAllUsers)
-  .post(createUser)
-  .patch(validateAuthToken, changePassword)
-  .delete(validateAuthToken, deleteUser)
+usersRoutes.route('/')
+  .get(authTokenMiddleware, getAllUsers)
+  .post(validateSignUpMiddleware, createUser)
+  .patch(authTokenMiddleware, changePassword)
+  .delete(authTokenMiddleware, deleteUser)
 
-usersRoutes.route('/users/:id')
-  .get(validateAuthToken, getUser)
-  .put(validateAuthToken, updateUser)
+usersRoutes.route('/:id')
+  .get(authTokenMiddleware, getUser)
+  .put(authTokenMiddleware, updateUser)
 
-usersRoutes.route('/users/check-email')
+usersRoutes.route('/check')
   .post(checkEmailExistence)
 
-usersRoutes.route('/users/forgot-password')
-  .patch(validateResetPasswordToken, forgotPassword)
+usersRoutes.route('/reset')
+  .patch(resetPasswordTokenMiddleware, forgotPassword)
 
-usersRoutes.route('/users/authenticate')
-  .post(authenticateUser)
+usersRoutes.route('/auth')
+  .post(validateLoginMiddleware, authenticateUser)
 
 export default usersRoutes

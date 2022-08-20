@@ -176,17 +176,13 @@ export class UsersModel {
                    WHERE email = $1`
       const result = await connect.query(sql, [user.email])
       connect.release()
-      if (result.rows.length) {
-        const { password } = result.rows[0]
-        const isPasswordValid = compareSync(user.password + config.pepper, password)
-        if (isPasswordValid) {
-          const { id, username, email, image, is_verified } = result.rows[0]
-          return { id, username, email, image, is_verified } as User
-        } else {
-          return null
-        }
+      const { password } = result.rows[0]
+      const isPasswordValid = compareSync(user.password + config.pepper, password)
+      if (isPasswordValid) {
+        const { id, username, email, image, is_verified } = result.rows[0]
+        return { id, username, email, image, is_verified } as User
       } else {
-        throw new Error(`Email is not exist, sign up instead`)
+        return null
       }
     } catch (error) {
       throw new Error(`Unable to login, ${(error as Error).message}`)

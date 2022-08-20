@@ -51,7 +51,7 @@ export const createUser = async (
       username: request.body.username,
       email: request.body.email,
       image: request.body.image,
-      is_verified: request.body.is_verified,
+      is_verified: false,
       password: request.body.password
     } as User
     const checkEmail = await usersModel.showByEmail(newUser.email)
@@ -231,22 +231,25 @@ export const authenticateUser = async (
       email: request.body.email,
       password: request.body.password
     } as User
-    const authenticatedUser = await usersModel.authenticate(userToAuthenticate)
-    const token = jwt.sign({ user: authenticatedUser }, config.token as unknown as string)
-    if (!authenticatedUser) {
-      response.status(401).json({ status: 'Unauthorized user', message: 'Password is wrong' })
-      return
+    const checkEmail = await usersModel.showByEmail(userToAuthenticate.email)
+    if (checkEmail) {
+      const authenticatedUser = await usersModel.authenticate(userToAuthenticate)
+      const token = jwt.sign({ user: authenticatedUser }, config.token as unknown as string)
+      if (!authenticatedUser) {
+        response.status(401).json({ status: 'Unauthorized user', message: 'wrong email or password' })
+        return
+      } else {
+        response.status(200).json({
+          status: 'success',
+          data: { ...authenticatedUser, token },
+          message: 'User got authenticated successfully'
+        })
+      }
     } else {
-      response.status(200).json({
-        status: 'success',
-        data: {
-          ...authenticatedUser,
-          token
-        },
-        message: 'User got authenticated successfully'
-      })
+      response.status(422).json({ status: 'Failed', message: 'User is not exist' })
     }
-  } catch (error) {
+  } catch
+    (error) {
     next(error)
   }
 }

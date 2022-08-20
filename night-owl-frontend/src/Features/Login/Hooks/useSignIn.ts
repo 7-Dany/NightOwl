@@ -16,7 +16,7 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
     initialValues: { email: '', password: '' },
     validationSchema: Yup.object({
       email: Yup.string().required('Email required').email(),
-      password: Yup.string().required('Password required').min(8)
+      password: Yup.string().required('Password required').min(8, 'Password is too short')
     }),
     onSubmit: (values, actions) => {
       alert(JSON.stringify(values, null, 2))
