@@ -1,6 +1,10 @@
+import Sidebar from '../Layout/Sidebar'
+
 function HomePage() {
   return (
-    <div></div>
+    <div className='App'>
+      <Sidebar />
+    </div>
   )
 }
 

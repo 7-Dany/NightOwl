@@ -7,10 +7,8 @@ const loginSchema = Yup.object({
 })
 
 const validateLoginForm = (request: Request, response: Response, next: NextFunction) => {
-  const user = {
-    email: request.body.email,
-    password: request.body.password
-  }
+  const { email, password } = request.body.content
+  const user = { email, password }
   loginSchema.validate(user)
     .then(valid => {
       if (valid) {

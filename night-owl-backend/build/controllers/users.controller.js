@@ -10,29 +10,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -87,12 +64,7 @@ var users_model_1 = require("../models/users.model");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var config_1 = __importDefault(require("../config"));
 var bcrypt_1 = require("bcrypt");
-var Yup = __importStar(require("yup"));
 var usersModel = new users_model_1.UsersModel();
-var loginSchema = Yup.object({
-    email: Yup.string().required('Email required').email(),
-    password: Yup.string().required('Password required').min(8, 'Password is too short')
-});
 var getAllUsers = function (request, response, next) { return __awaiter(void 0, void 0, void 0, function () {
     var users, error_1;
     return __generator(this, function (_a) {
@@ -366,25 +338,25 @@ var deleteUser = function (request, response, next) { return __awaiter(void 0, v
 }); };
 exports.deleteUser = deleteUser;
 var authenticateUser = function (request, response, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userToAuthenticate, valid, authenticatedUser, token, error_9;
+    var userToAuthenticate, checkEmail, authenticatedUser, token, error_9;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 5, , 6]);
                 userToAuthenticate = {
                     email: request.body.email,
                     password: request.body.password
                 };
-                return [4 /*yield*/, loginSchema.validate(userToAuthenticate)];
+                return [4 /*yield*/, usersModel.showByEmail(userToAuthenticate.email)];
             case 1:
-                valid = _a.sent();
-                console.log(valid);
+                checkEmail = _a.sent();
+                if (!checkEmail) return [3 /*break*/, 3];
                 return [4 /*yield*/, usersModel.authenticate(userToAuthenticate)];
             case 2:
                 authenticatedUser = _a.sent();
                 token = jsonwebtoken_1.default.sign({ user: authenticatedUser }, config_1.default.token);
                 if (!authenticatedUser) {
-                    response.status(401).json({ status: 'Unauthorized user', message: 'Password is wrong' });
+                    response.status(401).json({ status: 'Unauthorized user', message: 'wrong email or password' });
                     return [2 /*return*/];
                 }
                 else {
@@ -396,10 +368,14 @@ var authenticateUser = function (request, response, next) { return __awaiter(voi
                 }
                 return [3 /*break*/, 4];
             case 3:
+                response.status(422).json({ status: 'Failed', message: 'User is not exist' });
+                _a.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
                 error_9 = _a.sent();
                 next(error_9);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

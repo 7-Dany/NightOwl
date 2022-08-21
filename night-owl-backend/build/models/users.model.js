@@ -298,19 +298,14 @@ var UsersModel = /** @class */ (function () {
                     case 2:
                         result = _b.sent();
                         connect.release();
-                        if (result.rows.length) {
-                            password = result.rows[0].password;
-                            isPasswordValid = (0, bcrypt_1.compareSync)(user.password + config_1.default.pepper, password);
-                            if (isPasswordValid) {
-                                _a = result.rows[0], id = _a.id, username = _a.username, email = _a.email, image = _a.image, is_verified = _a.is_verified;
-                                return [2 /*return*/, { id: id, username: username, email: email, image: image, is_verified: is_verified }];
-                            }
-                            else {
-                                return [2 /*return*/, null];
-                            }
+                        password = result.rows[0].password;
+                        isPasswordValid = (0, bcrypt_1.compareSync)(user.password + config_1.default.pepper, password);
+                        if (isPasswordValid) {
+                            _a = result.rows[0], id = _a.id, username = _a.username, email = _a.email, image = _a.image, is_verified = _a.is_verified;
+                            return [2 /*return*/, { id: id, username: username, email: email, image: image, is_verified: is_verified }];
                         }
                         else {
-                            throw new Error("Email is not exist, sign up instead");
+                            return [2 /*return*/, null];
                         }
                         return [3 /*break*/, 4];
                     case 3:

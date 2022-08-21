@@ -37,20 +37,25 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-left: 3px solid transparent;
+}
+.main-icons__icon-container.active {
+  border-left: 3px solid #1364EF;
+}
+.main-icons__icon-container.active .main-icons__icon {
+  fill: #1364EF;
+}
+.main-icons__icon-container:hover {
+  border-left: 3px solid #5896FF;
+}
+.main-icons__icon-container:hover .main-icons__icon {
+  fill: #5896FF;
 }
 .main-icons__icon {
   width: 100%;
   fill: #2B2A32;
   border-left: 3px solid transparent;
   transition: 300ms ease-in-out all;
-}
-.main-icons__icon:hover {
-  fill: #5896FF;
-  border-left: 3px solid #5896FF;
-}
-.main-icons__icon.active {
-  fill: #1364EF;
-  border-left: 3px solid #1364EF;
 }
 
 .footer-icons {
@@ -662,6 +667,7 @@ body {
 .App {
   width: 100%;
   height: 100vh;
+  color: #FFF;
   display: grid;
   grid-template-columns: 80px repeat(2, 4fr);
   grid-template-rows: 80px 1fr;

@@ -1,14 +1,21 @@
 import React from 'react'
 import './Assets/SCSS/home.css'
 import { Routes, Route } from 'react-router-dom'
-import { ChatPage, LoginPage } from './Pages'
+import { ChatPage, HomePage, LoginPage } from './Pages'
+import AuthContextProvider from './Context/auth.context'
+import PrivateRoutes from './Hooks/PrivateRouters'
 
 function App() {
   return (
-    <Routes>
-      <Route path='/chat' element={<ChatPage />} />
-      <Route path='/login' element={<LoginPage />} />
-    </Routes>
+    <AuthContextProvider>
+      <Routes>
+        <Route path='/login' element={<LoginPage />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path='/chat' element={<ChatPage />} />
+          <Route path='/home' element={<HomePage />} />
+        </Route>
+      </Routes>
+    </AuthContextProvider>
   )
 }
 

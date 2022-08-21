@@ -1,11 +1,14 @@
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
-import React from 'react'
-import axios from 'axios'
+import React, { useContext, useState } from 'react'
+import { createUser } from '../Api/users.api'
+import { AuthContext } from '../../../Context/auth.context'
+import { useNavigate } from 'react-router-dom'
 
 type UseSignUpReturn = {
   formik: FormikProps<{ username: string, email: string, password: string, confirmPassword: string }>
   login: (event: React.MouseEvent<HTMLButtonElement>) => void
+  error: string
 }
 
 type UseSignUpArgs = {
@@ -13,6 +16,9 @@ type UseSignUpArgs = {
 }
 
 function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
+  const { setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
   const formik = useFormik({
     initialValues: { username: '', email: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
@@ -21,16 +27,20 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
       password: Yup.string().required('Password Required').min(8, 'Password is too short'),
       confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
     }), onSubmit: (values, actions) => {
-      const val = { ...values }
-      const config = { headers: { 'Content-Type': 'application/json' } }
+      const controller = new AbortController()
+      const { username, email, password } = values
+      const user = { username, email, image: 'not exist', password }
       actions.resetForm()
-      axios.post('http://localhost:4000/users', { content: val }, config)
+      setError('')
+      createUser({ controller, user })
         .then(data => {
-          console.log(data)
+          setUser(data)
+          navigate('/home')
         })
-        .catch(err => {
-          console.log(err)
+        .catch(error => {
+          setError(error.response.data.message)
         })
+      controller.abort()
     }
   })
 
@@ -40,7 +50,8 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
 
   return {
     formik,
-    login
+    login,
+    error
   }
 }
 

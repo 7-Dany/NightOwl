@@ -6,11 +6,12 @@ type SignInProps = {
 }
 
 function SignIn({ setLogin }: SignInProps) {
-  const { formik, register } = useSignIn({ setLogin })
+  const { formik, register, error } = useSignIn({ setLogin })
   const { touched, handleSubmit, handleBlur, handleChange, errors, values } = formik
   return (
     <div className='login-form-container'>
       <h2>Login</h2>
+      <p className='login-form__error-msg'>{error}</p>
       <form onSubmit={handleSubmit} className='login-form'>
         <fieldset>
           <label htmlFor='email' className='login-form__label'>Email</label>
