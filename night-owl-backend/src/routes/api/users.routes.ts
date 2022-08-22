@@ -7,13 +7,14 @@ import {
   forgotPassword,
   getAllUsers,
   getUser,
-  updateUser
+  updateUser, userSession
 } from '../../controllers/users.controller'
 import {
   authTokenMiddleware,
   validateSignUpMiddleware,
   validateLoginMiddleware,
-  resetPasswordTokenMiddleware
+  resetPasswordTokenMiddleware,
+  rateLimiterMiddleware
 } from '../../middlewares'
 
 
@@ -21,7 +22,7 @@ const usersRoutes = Router()
 
 usersRoutes.route('/')
   .get(authTokenMiddleware, getAllUsers)
-  .post(validateSignUpMiddleware, createUser)
+  .post(rateLimiterMiddleware, validateSignUpMiddleware, createUser)
   .patch(authTokenMiddleware, changePassword)
   .delete(authTokenMiddleware, deleteUser)
 
@@ -36,6 +37,8 @@ usersRoutes.route('/reset')
   .patch(resetPasswordTokenMiddleware, forgotPassword)
 
 usersRoutes.route('/auth')
-  .post(validateLoginMiddleware, authenticateUser)
+  .post(rateLimiterMiddleware, validateLoginMiddleware, authenticateUser)
+
+usersRoutes.route('/auth/session').get(userSession)
 
 export default usersRoutes

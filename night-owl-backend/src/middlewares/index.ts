@@ -4,6 +4,7 @@ import pageNotFoundMiddleware from './pageNotFound.middleware'
 import resetPasswordTokenMiddleware from './resetPassword.token.middleware'
 import validateSignUpMiddleware from './validateSignUp.middleware'
 import validateLoginMiddleware from './validateLogin.middleware'
+import rateLimiterMiddleware from './rateLimiter.middleware'
 
 export {
   authTokenMiddleware,
@@ -11,5 +12,6 @@ export {
   pageNotFoundMiddleware,
   resetPasswordTokenMiddleware,
   validateSignUpMiddleware,
-  validateLoginMiddleware
+  validateLoginMiddleware,
+  rateLimiterMiddleware
 }

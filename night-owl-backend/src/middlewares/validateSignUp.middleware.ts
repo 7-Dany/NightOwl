@@ -7,8 +7,8 @@ const signUpSchema = Yup.object({
   password: Yup.string().required('Password Required').min(8, 'Password is too short')
 })
 
-const validateSignUp = (request: Request, response: Response, next: NextFunction) => {
-  const { username, email, password } = request.body.content
+const validateSignUp = (request: Request, response: Response, next: NextFunction): void => {
+  const { username, email, password } = request.body
   const user = { username, email, password }
   signUpSchema.validate(user)
     .then(valid => {

@@ -22,19 +22,17 @@ type NewUserArgs = {
 }
 
 export async function authUser({ controller, user }: AuthUserArgs): Promise<AuthUser> {
-  const config = { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
-  const response = await axios.post(`${url}/users/auth`, {
-    cancelToken: controller.signal,
-    content: user
-  }, config)
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+    signal: controller.signal
+  }
+  const response = await axios.post(`${url}/users/auth`, { ...user }, config)
   return response.data.data
 }
 
 export async function createUser({ controller, user }: NewUserArgs): Promise<AuthUser> {
-  const config = { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
-  const response = await axios.post(`${url}/users`, {
-    cancelToken: controller.signal,
-    content: user
-  }, config)
+  const config = { headers: { 'Content-Type': 'application/json' }, withCredentials: true, signal: controller.signal }
+  const response = await axios.post(`${url}/users`, { ...user }, config)
   return response.data.data
 }

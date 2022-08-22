@@ -5,6 +5,8 @@ import helmet from 'helmet'
 import cors from 'cors'
 import http from 'http'
 import session, { Session } from 'express-session'
+import Redis from 'ioredis'
+import connectRedis from 'connect-redis'
 import { Server, Socket } from 'socket.io'
 import routes from './routes'
 import errorMiddleware from './middlewares/error.middleware'
@@ -14,11 +16,13 @@ import pageNotFoundMiddleware from './middlewares/pageNotFound.middleware'
 const PORT = config.port || 4000
 // create an instance server
 const app: Application = express()
+// extends session to store user object
 declare module 'express-session' {
   interface Session {
     user?: any
   }
 }
+
 // create a socket io instance
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -38,12 +42,16 @@ app.use(cors({
 }))
 // Parse any json data
 app.use(express.json())
+
 // Adding cookie to save user credentials
+export const redisClient = new Redis()
+const RedisStore = connectRedis(session)
 app.use(session({
   secret: config.cookieSecret as string,
   name: 'sid',
   resave: false,
   saveUninitialized: false,
+  store: new RedisStore({ client: redisClient }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,
     secure: config.env === 'production ' ? true : 'auto',
@@ -51,6 +59,7 @@ app.use(session({
     sameSite: config.env === 'production' ? 'none' : 'lax'
   }
 }))
+
 // Using all api routes
 app.use('/api', routes)
 

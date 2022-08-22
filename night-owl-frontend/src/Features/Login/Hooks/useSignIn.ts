@@ -37,7 +37,6 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
           setError(error.response.data.message)
         })
       actions.resetForm()
-      controller.abort()
     }
   })
 

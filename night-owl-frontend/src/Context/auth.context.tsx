@@ -1,4 +1,6 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
+import { getUser } from '../Api/users.api'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export type AuthUser = {
   id: string
@@ -19,7 +21,28 @@ export const AuthContext = createContext<UserContextType>({} as UserContextType)
 
 
 function AuthContextProvider({ children }: AuthContextProviderProps) {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [user, setUser] = useState<AuthUser>({} as AuthUser)
+  useEffect(() => {
+    const controller = new AbortController()
+    getUser({ controller })
+      .then(data => {
+        if (data.token) {
+          setUser(data)
+          navigate(location.pathname)
+        } else {
+          setUser({} as AuthUser)
+          navigate('/')
+        }
+      })
+      .catch(error => {
+        setUser({} as AuthUser)
+      })
+    return () => {
+      controller.abort()
+    }
+  }, [])
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

@@ -19,16 +19,16 @@ function ChatRoom() {
                  messageContent={'Hello How are You?'} />
       </div>
       <div className='chat-room-footer'>
-        <div className='chat-room-footer__mic-icon-container' role='button'>
+        <div className='chat-room-footer__mic-icon-container' role='button' title='send voice'>
           <MicIcon className={'chat-room-footer__mic-icon'} />
         </div>
-        <div className='chat-room-footer__image-icon-container' role='button'>
+        <div className='chat-room-footer__image-icon-container' role='button' title='send image'>
           <SendImageIcon className={'chat-room-footer__image-icon'} />
         </div>
-        <div className='chat-room-footer__attachment-icon-container' role='button'>
+        <div className='chat-room-footer__attachment-icon-container' role='button' title='send attachment'>
           <AttachmentIcon className={'chat-room-footer__attachment-icon'} />
         </div>
-        <div className='chat-room-footer__send-msg-btn-container' role='button'>
+        <div className='chat-room-footer__send-msg-btn-container' role='button' title='send message'>
           <SendMsgIcon className={'chat-room-footer__send-msg-btn'} />
         </div>
         <label htmlFor='msg-field'>

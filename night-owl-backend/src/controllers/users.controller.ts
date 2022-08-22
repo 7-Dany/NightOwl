@@ -47,7 +47,7 @@ export const createUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { username, email, image, password } = request.body.content
+    const { username, email, image, password } = request.body
     const newUser = { username, email, image, is_verified: false, password } as User
     const checkEmail = await usersModel.showByEmail(newUser.email)
     if (checkEmail) {
@@ -56,10 +56,7 @@ export const createUser = async (
     }
     const user = await usersModel.create(newUser)
     const token = jwt.sign({ user: user }, config.token as unknown as string)
-    request.session.user = {
-      id: user.id,
-      email: user.email
-    }
+    request.session.user = { ...user, token }
     response.status(201).json({
       statue: 'Success',
       data: {
@@ -79,7 +76,7 @@ export const updateUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { username, email, image } = request.body.content
+    const { username, email, image } = request.body
     const user = { username, email, image } as User
     const id = request.params.id
     if (user.email) {
@@ -116,7 +113,7 @@ export const changePassword = async (
     const authorizationHeader = request.headers.authorization as string
     const oldToken = authorizationHeader?.split(' ')[1]
     const decode = jwt.decode(oldToken)
-    const password = request.body.content.password
+    const password = request.body.password
     if (decode) {
       // @ts-ignore
       const email = decode['user'].email
@@ -147,7 +144,7 @@ export const checkEmailExistence = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const email = request.body.content.email
+    const email = request.body.email
     const user = await usersModel.showByEmail(email)
     if (user) {
       const token = jwt.sign({ user }, config.resetToken as unknown as string)
@@ -176,7 +173,7 @@ export const forgotPassword = async (
     const authorizationHeader = request.headers.authorization as string
     const oldToken = authorizationHeader?.split(' ')[1]
     const decode = jwt.decode(oldToken)
-    const password = request.body.content.password
+    const password = request.body.password
     // @ts-ignore
     const email = decode['user'].email
     const updatedUser = await usersModel.updatePassword(email, password)
@@ -200,7 +197,7 @@ export const deleteUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const email = request.body.content.email
+    const email = request.body.email
     const checkEmail = await usersModel.showByEmail(email)
     if (checkEmail) {
       const deleteUser = await usersModel.delete(email)
@@ -216,14 +213,28 @@ export const deleteUser = async (
     next(error)
   }
 }
-
+export const userSession = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { user } = request.session
+    if (user.token) {
+      response.status(200).json({ status: 'Success', data: { ...user } })
+    } else {
+      response.status(200).json({})
+    }
+  } catch (error) {
+  }
+}
 export const authenticateUser = async (
   request: Request,
   response: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { email, password } = request.body.content
+    const { email, password } = request.body
     const userToAuthenticate = { email, password } as User
     const checkEmail = await usersModel.showByEmail(userToAuthenticate.email)
     if (checkEmail) {
@@ -233,10 +244,7 @@ export const authenticateUser = async (
         response.status(401).json({ status: 'Unauthorized user', message: 'wrong email or password' })
         return
       } else {
-        request.session.user = {
-          id: authenticatedUser.id,
-          email: authenticatedUser.email
-        }
+        request.session.user = { ...authenticatedUser, token }
         response.status(200).json({
           status: 'success',
           data: { ...authenticatedUser, token },

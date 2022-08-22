@@ -6,8 +6,8 @@ const loginSchema = Yup.object({
   password: Yup.string().required('Password required').min(8, 'Password is too short')
 })
 
-const validateLoginForm = (request: Request, response: Response, next: NextFunction) => {
-  const { email, password } = request.body.content
+const validateLoginForm = (request: Request, response: Response, next: NextFunction): void => {
+  const { email, password } = request.body
   const user = { email, password }
   loginSchema.validate(user)
     .then(valid => {

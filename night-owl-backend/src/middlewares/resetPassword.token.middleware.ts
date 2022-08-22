@@ -8,7 +8,7 @@ const resetPasswordError = (next: NextFunction) => {
   error.status = 401
   next(error)
 }
-const validateResetPasswordToken = (request: Request, response: Response, next: NextFunction) => {
+const validateResetPasswordToken = (request: Request, response: Response, next: NextFunction): void => {
   try {
     const authorizationHeader = request.headers.authorization as string
     const token = authorizationHeader?.split(' ')[1]
