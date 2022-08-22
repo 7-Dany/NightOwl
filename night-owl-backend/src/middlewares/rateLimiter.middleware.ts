@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { redisClient } from '../index'
+import { redisClient } from './server.middleware'
 
 const rateLimiter = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
   const ip = request.ip

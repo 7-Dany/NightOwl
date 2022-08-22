@@ -4,13 +4,11 @@ import config from './config'
 import helmet from 'helmet'
 import cors from 'cors'
 import http from 'http'
-import session, { Session } from 'express-session'
-import Redis from 'ioredis'
-import connectRedis from 'connect-redis'
 import { Server, Socket } from 'socket.io'
 import routes from './routes'
-import errorMiddleware from './middlewares/error.middleware'
-import pageNotFoundMiddleware from './middlewares/pageNotFound.middleware'
+import { sessionMiddleware, errorMiddleware, pageNotFoundMiddleware, wrapSession, corsConfig } from './middlewares'
+import { SessionData } from 'express-session'
+import { IncomingMessage } from 'http'
 
 // Listening to default port
 const PORT = config.port || 4000
@@ -23,55 +21,38 @@ declare module 'express-session' {
   }
 }
 
+interface SessionIncomingMessage extends IncomingMessage {
+  session: SessionData
+}
+
+interface SessionSocket extends Socket {
+  request: SessionIncomingMessage
+}
+
 // create a socket io instance
 const server = http.createServer(app)
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-    credentials: true
-  }
-})
+const io = new Server(server, { cors: corsConfig })
 // HTTP request logger middleware
 app.use(morgan('short'))
 // Adding secure headers to express app
 app.use(helmet())
 // open cors for frontend site
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}))
+app.use(cors(corsConfig))
 // Parse any json data
 app.use(express.json())
-
 // Adding cookie to save user credentials
-export const redisClient = new Redis()
-const RedisStore = connectRedis(session)
-app.use(session({
-  secret: config.cookieSecret as string,
-  name: 'sid',
-  resave: false,
-  saveUninitialized: false,
-  store: new RedisStore({ client: redisClient }),
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    secure: config.env === 'production ' ? true : 'auto',
-    httpOnly: true,
-    sameSite: config.env === 'production' ? 'none' : 'lax'
-  }
-}))
-
+app.use(sessionMiddleware)
 // Using all api routes
 app.use('/api', routes)
-
 // add routing for / path
 app.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'Hello World 🌍'
   })
 })
+io.use(wrapSession(sessionMiddleware))
 io.on('connect', (socket: Socket) => {
 })
-
 // Using error middleware to send status and message in json data
 app.use(errorMiddleware)
 // Using page not found middleware to send 404 if in case the route not exist
