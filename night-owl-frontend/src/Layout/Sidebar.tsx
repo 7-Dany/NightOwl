@@ -10,9 +10,19 @@ import {
   ChatIcon,
   Logout
 } from '../Assets'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { AuthContext, AuthUser } from '../Context/auth.context'
 
 function Sidebar() {
+  const { setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  function logout(event: React.MouseEvent<HTMLDivElement>) {
+    setUser({} as AuthUser)
+    navigate('/')
+  }
+
   return (
     <div className='sidebar'>
       <div className='four-circles'>
@@ -45,9 +55,9 @@ function Sidebar() {
         <NavLink to='/settings' className='footer-icons__icon-container' title='Settings'>
           <SettingsIcon className={'footer-icons__icon'} />
         </NavLink>
-        <NavLink to='/logout' className='footer-icons__icon-container' title='Logout'>
+        <div className='footer-icons__icon-container' title='Logout' onClick={logout}>
           <Logout className={'footer-icons__icon'} />
-        </NavLink>
+        </div>
       </div>
     </div>
   )

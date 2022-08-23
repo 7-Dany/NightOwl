@@ -5,7 +5,7 @@ import resetPasswordTokenMiddleware from './resetPassword.token.middleware'
 import validateSignUpMiddleware from './validateSignUp.middleware'
 import validateLoginMiddleware from './validateLogin.middleware'
 import rateLimiterMiddleware from './rateLimiter.middleware'
-import { sessionMiddleware, wrapSession, corsConfig } from './server.middleware'
+import { sessionMiddleware, wrap, corsConfig, authorizeUser } from './server.middleware'
 
 export {
   authTokenMiddleware,
@@ -16,6 +16,7 @@ export {
   validateLoginMiddleware,
   rateLimiterMiddleware,
   sessionMiddleware,
-  wrapSession,
-  corsConfig
+  wrap,
+  corsConfig,
+  authorizeUser
 }

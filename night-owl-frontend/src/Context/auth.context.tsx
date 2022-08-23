@@ -10,6 +10,7 @@ export type AuthUser = {
   is_verified: boolean
   token: string
 }
+
 type AuthContextProviderProps = {
   children: React.ReactNode
 }

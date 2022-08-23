@@ -4,8 +4,10 @@ import { Routes, Route } from 'react-router-dom'
 import { ChatPage, HomePage, LoginPage } from './Pages'
 import AuthContextProvider from './Context/auth.context'
 import PrivateRoutes from './Hooks/PrivateRouters'
+import { socket } from './socket'
 
 function App() {
+  socket.connect()
   return (
     <AuthContextProvider>
       <Routes>
