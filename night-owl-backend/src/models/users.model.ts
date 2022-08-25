@@ -97,6 +97,7 @@ export class UsersModel {
          WHERE id = $1`,
         [id]
       )
+      // if username, email or image not change the old one will remain the same
       const updatedUser = {
         username: user.username ? user.username : getUser.rows[0].username,
         email: user.email ? user.email : getUser.rows[0].email,

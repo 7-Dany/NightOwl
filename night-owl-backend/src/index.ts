@@ -6,6 +6,7 @@ import cors from 'cors'
 import http from 'http'
 import { Server, Socket } from 'socket.io'
 import routes from './routes'
+import { SessionSocket } from './types'
 import {
   sessionMiddleware,
   errorMiddleware,
@@ -14,28 +15,11 @@ import {
   corsConfig,
   authorizeUser
 } from './middlewares'
-import { SessionData } from 'express-session'
-import { IncomingMessage } from 'http'
 
 // Listening to default port
 const PORT = config.port || 4000
 // create an instance server
 const app: Application = express()
-// extends session to store user object
-declare module 'express-session' {
-  interface SessionData {
-    user?: any
-  }
-}
-
-interface SessionIncomingMessage extends IncomingMessage {
-  session: SessionData
-}
-
-export interface SessionSocket extends Socket {
-  request: SessionIncomingMessage
-}
-
 // create a socket io instance
 const server = http.createServer(app)
 const io = new Server(server, { cors: corsConfig })
@@ -58,11 +42,12 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
+// Adding session middleware for socket
 io.use(wrap(sessionMiddleware))
+// authorize user middleware to prevent connection
 io.use(authorizeUser)
 io.on('connect', (defaultSocket: Socket) => {
   const socket = <SessionSocket>defaultSocket
-  console.log(socket.request.session.user)
 })
 // Using error middleware to send status and message in json data
 app.use(errorMiddleware)

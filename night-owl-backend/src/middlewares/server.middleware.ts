@@ -3,7 +3,7 @@ import config from '../config'
 import Redis from 'ioredis'
 import connectRedis from 'connect-redis'
 import { Socket } from 'socket.io'
-import { SessionSocket } from '../index'
+import { SessionSocket } from '../types'
 import { unauthorizedError } from './auth.token.middleware'
 
 export const redisClient = new Redis()
@@ -14,7 +14,7 @@ export const sessionMiddleware = session({
   name: 'sid',
   resave: false,
   saveUninitialized: false,
-  // store: new RedisStore({ client: redisClient }),
+  store: new RedisStore({ client: redisClient }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,
     secure: config.env === 'production ' ? true : 'auto',

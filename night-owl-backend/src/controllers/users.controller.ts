@@ -221,9 +221,13 @@ export const userSession = async (
   try {
     const { user } = request.session
     if (user.token) {
-      response.status(200).json({ status: 'Success', data: { ...user } })
+      response.status(200).json({
+        status: 'Success',
+        data: { ...user },
+        message: 'User session got retrieved successfully'
+      })
     } else {
-      response.status(200).json({})
+      response.status(204).json({ status: 'failed', message: 'User session is not exist' })
     }
   } catch (error) {
   }
@@ -246,7 +250,7 @@ export const authenticateUser = async (
       } else {
         request.session.user = { ...authenticatedUser, token }
         response.status(200).json({
-          status: 'success',
+          status: 'Success',
           data: { ...authenticatedUser, token },
           message: 'User got authenticated successfully'
         })
