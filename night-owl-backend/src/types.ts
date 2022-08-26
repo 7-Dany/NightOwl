@@ -14,4 +14,5 @@ interface SessionIncomingMessage extends IncomingMessage {
 
 export interface SessionSocket extends Socket {
   request: SessionIncomingMessage
+  user?: any
 }

@@ -31,6 +31,7 @@ export const authorizeUser = (defaultSocket: Socket, next: any) => {
   if (!socket.request.session || !socket.request.session.user) {
     unauthorizedError(next)
   } else {
+    socket.user = { ...socket.request.session.user }
     next()
   }
 }

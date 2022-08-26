@@ -48,6 +48,7 @@ io.use(wrap(sessionMiddleware))
 io.use(authorizeUser)
 io.on('connect', (defaultSocket: Socket) => {
   const socket = <SessionSocket>defaultSocket
+  console.log(socket.user)
 })
 // Using error middleware to send status and message in json data
 app.use(errorMiddleware)
