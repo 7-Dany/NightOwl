@@ -1,5 +1,6 @@
 CREATE TABLE workspaces
 (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR NOT NULL,
+    creator uuid REFERENCES users (id)
 );

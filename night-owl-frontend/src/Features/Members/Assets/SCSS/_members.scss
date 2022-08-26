@@ -1,0 +1,130 @@
+.members-container {
+  grid-column: 2 / -1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.members-title {
+  align-self: flex-start;
+  margin-left: 2rem;
+
+  h2 {
+    margin: 1rem 0;
+  }
+}
+
+.members-header {
+  width: 80%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid $Whitish-Gray;
+  padding-right: 1.4rem;
+
+  &__image {
+    flex: 1 1 10%;
+  }
+
+  &__name {
+    flex: 1 1 10%;
+  }
+
+  &__email {
+    flex: 2 1 20%;
+  }
+
+  &__projects {
+    flex: 1 1 10%;
+  }
+
+  &__role {
+    flex: 1 1 10%;
+  }
+
+  &__timezone {
+    flex: 1 1 10%;
+  }
+
+  &__chat {
+    flex: 1 1 10%;
+  }
+}
+
+.members {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 24px;
+    background: $Gray;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $Gray;
+    border-radius: 20px;
+    border: 1px solid $Whitish-Gray;
+  }
+}
+
+.member {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  border: 1px solid $Whitish-Gray;
+  border-radius: 12px;
+
+  &__image {
+    flex-grow: 1;
+    flex-basis: 10%;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__name {
+    flex: 1 1 10%;
+  }
+
+  &__email {
+    flex: 2 1 20%;
+  }
+
+  &__projects {
+    flex: 1 1 10%;
+  }
+
+  &__role {
+    flex: 1 1 10%;
+  }
+
+  &__timezone {
+    flex: 1 1 10%;
+  }
+
+  &__chat {
+    flex: 1 1 10%;
+    fill: $Grayish-White;
+    cursor: pointer;
+  }
+
+  &__active {
+    flex: 1 1 10%;
+    color: $Very-White-Blue;
+  }
+}

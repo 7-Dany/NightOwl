@@ -49,7 +49,7 @@ function Sidebar() {
         </NavLink>
       </div>
       <div className='footer-icons'>
-        <NavLink to='members' className='footer-icons__icon-container' title='Team members'>
+        <NavLink to='/members' className='footer-icons__icon-container' title='Team members'>
           <MembersIcon className={'footer-icons__icon'} />
         </NavLink>
         <NavLink to='/settings' className='footer-icons__icon-container' title='Settings'>

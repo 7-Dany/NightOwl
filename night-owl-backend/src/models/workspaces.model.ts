@@ -3,6 +3,10 @@ import database from '../database'
 export type Workspace = {
   id?: string
   name: string
+  creator: string
+  username?: string
+  email?: string
+  image?: string
 }
 
 export class WorkspacesModel {
@@ -22,9 +26,10 @@ export class WorkspacesModel {
   async show(id: string): Promise<Workspace> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
-                   FROM workspaces
-                   WHERE id = $1`
+      const sql = `SELECT name, username, email, image
+                   FROM workspaces w
+                            INNER JOIN users u on u.id = w.creator
+                   WHERE w.id = $1`
       const results = await connect.query(sql, [id])
       connect.release()
       return results.rows[0]
@@ -36,10 +41,10 @@ export class WorkspacesModel {
   async create(workspace: Workspace): Promise<Workspace> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO workspaces (name)
-                   VALUES ($1)
+      const sql = `INSERT INTO workspaces (name, creator)
+                   VALUES ($1, $2)
                    RETURNING *`
-      const results = await connect.query(sql, [workspace.name])
+      const results = await connect.query(sql, [workspace.name, workspace.creator])
       connect.release()
       return results.rows[0]
     } catch (error) {
