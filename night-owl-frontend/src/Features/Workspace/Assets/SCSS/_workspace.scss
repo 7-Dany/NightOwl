@@ -1,4 +1,10 @@
+@import "join-workspace", "create-workspace";
+
 .workspace-container {
+  position: relative;
+}
+
+.main-workspace {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -6,15 +12,30 @@
   align-items: center;
   flex-direction: column;
   gap: 2rem;
+
+  &__title {
+    color: $White;
+  }
+
+  &__error-msg {
+    color: $Red;
+  }
+
+  &__submit-btn {
+    width: 545px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: $White-Blue;
+    cursor: pointer;
+    color: $White;
+    transition: 300ms all ease-in-out;
+
+    &:hover {
+      background-color: $Very-White-Blue;
+    }
+  }
 }
 
-.workspace-title {
-  color: $White;
-}
-
-.workspace-error-msg {
-  color: $Red;
-}
 
 .workspace {
   display: flex;
@@ -58,19 +79,5 @@
     border-radius: 50%;
     border: 1px solid $Grayish-White;
     transition: 300ms all ease-in-out;
-  }
-}
-
-.workspace-submit-btn {
-  width: 545px;
-  height: 50px;
-  border-radius: 12px;
-  background-color: $White-Blue;
-  cursor: pointer;
-  color: $White;
-  transition: 300ms all ease-in-out;
-
-  &:hover {
-    background-color: $Very-White-Blue;
   }
 }
