@@ -20,7 +20,13 @@ export const createWorkspace = async (request: Request, response: Response, next
     next(error)
   }
 }
-
+export const getWorkspace = async (request: Request, response: Response, next: NextFunction) => {
+  try {
+    
+  } catch (error) {
+   next(error)
+  }
+}
 export const getWorkspaceMembers = async (request: Request, response: Response, next: NextFunction) => {
   try {
     const workspaceId = request.params.id

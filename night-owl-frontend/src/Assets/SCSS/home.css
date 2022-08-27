@@ -166,6 +166,76 @@
   cursor: pointer;
 }
 
+.workspace-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.workspace-title {
+  color: #FFF;
+}
+
+.workspace-error-msg {
+  color: #e36565;
+}
+
+.workspace {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.workspace__choice {
+  width: 250px;
+  height: 250px;
+  border-radius: 12px;
+  border: 1px solid #37363C;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: 300ms all ease-in-out;
+}
+.workspace__choice h2 {
+  color: #FFF;
+  font-size: 1.2rem;
+}
+.workspace__choice.active {
+  border-color: #5896FF;
+}
+.workspace__choice.active .workspace__active-circle {
+  background-color: #5896FF;
+}
+.workspace__active-circle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #2B2A32;
+  transition: 300ms all ease-in-out;
+}
+
+.workspace-submit-btn {
+  width: 545px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #1364EF;
+  cursor: pointer;
+  color: #FFF;
+  transition: 300ms all ease-in-out;
+}
+.workspace-submit-btn:hover {
+  background-color: #5896FF;
+}
+
 .team-channels-container {
   width: 100%;
   display: flex;

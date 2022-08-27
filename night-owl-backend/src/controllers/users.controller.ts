@@ -1,4 +1,4 @@
-import { UsersModel, User } from '../models/users.model'
+import { UsersModel, User } from '../models'
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../config'
@@ -213,6 +213,7 @@ export const deleteUser = async (
     next(error)
   }
 }
+
 export const userSession = async (
   request: Request,
   response: Response,
@@ -232,6 +233,7 @@ export const userSession = async (
   } catch (error) {
   }
 }
+
 export const authenticateUser = async (
   request: Request,
   response: Response,
@@ -261,5 +263,6 @@ export const authenticateUser = async (
   } catch
     (error) {
     next(error)
+
   }
 }

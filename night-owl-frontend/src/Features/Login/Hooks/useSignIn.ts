@@ -2,7 +2,7 @@ import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { authUser } from '../Api/users.api'
-import { AuthContext } from '../../../Context/auth.context'
+import { AuthContext, AuthUser } from '../../../Context/auth.context'
 import { useNavigate } from 'react-router-dom'
 
 type UseSignInReturn = {
@@ -30,8 +30,13 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
       const controller = new AbortController()
       authUser({ controller, user: values })
         .then(data => {
-          setUser(data)
-          navigate('/home')
+          if (data.token) {
+            setUser(data)
+            navigate('/home')
+          } else {
+            setUser({} as AuthUser)
+            navigate('/login')
+          }
         })
         .catch(error => {
           setError(error.response.data.message)
