@@ -14,11 +14,13 @@ export type AuthUser = {
 type AuthContextProviderProps = {
   children: React.ReactNode
 }
-type UserContextType = {
+
+type AuthContextType = {
   user: AuthUser
   setUser: React.Dispatch<React.SetStateAction<AuthUser>>
 }
-export const AuthContext = createContext<UserContextType>({} as UserContextType)
+
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
 
 function AuthContextProvider({ children }: AuthContextProviderProps) {
