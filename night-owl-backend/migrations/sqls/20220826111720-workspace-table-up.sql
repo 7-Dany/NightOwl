@@ -1,6 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE workspaces
 (
-    id      SERIAL PRIMARY KEY,
-    name    VARCHAR NOT NULL,
-    creator uuid REFERENCES users (id)
+    id   uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name VARCHAR NOT NULL
 );
