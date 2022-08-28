@@ -1,10 +1,20 @@
 import { Router } from 'express'
-import { createWorkspace, getWorkspaceMembers } from '../../controllers/workspaces.controller'
+import {
+  createWorkspace,
+  getAllWorkspaces,
+  getWorkspace,
+  deleteWorkspace
+} from '../../controllers/workspaces.controller'
 import { authTokenMiddleware } from '../../middlewares'
 
 const workspacesRoutes = Router()
 
-workspacesRoutes.route('/').post(authTokenMiddleware, createWorkspace)
-workspacesRoutes.route('/members/:id').get(authTokenMiddleware, getWorkspaceMembers)
+workspacesRoutes.route('/')
+  .post(authTokenMiddleware, createWorkspace)
+  .get(authTokenMiddleware, getAllWorkspaces)
+workspacesRoutes.route('/:id')
+  .get(authTokenMiddleware, getWorkspace)
+  .delete(authTokenMiddleware, deleteWorkspace)
+
 
 export default workspacesRoutes
