@@ -1,7 +1,5 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { useContext } from 'react'
-import { AuthContext } from '../../../Context/auth.context'
 
 const { url } = config
 
@@ -9,7 +7,7 @@ type CreateWorkspaceArgs = {
   controller: AbortController
   values: {
     name: string
-    creator: string
+    user_id: string
     token: string
   }
 }
