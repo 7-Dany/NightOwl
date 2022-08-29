@@ -5,6 +5,7 @@ import { Message, MessagesModel } from './messages.model'
 import { UsersModel, User } from './users.model'
 import { Workspace, WorkspacesModel } from './workspaces.model'
 import { WorkspaceMember, WorkspaceMembersModel } from './workspace_members.model'
+import { WorkspaceRequest, WorkspaceRequestsModel } from './workspace_requests.model'
 
 export {
   ConversationsModel,
@@ -14,11 +15,13 @@ export {
   UsersModel,
   MessagesModel,
   ConversationMessagesModel,
+  WorkspaceRequestsModel,
   Message,
   Conversation,
   ConversationMessage,
   ConversationMember,
   Workspace,
   WorkspaceMember,
-  User
+  User,
+  WorkspaceRequest
 }
