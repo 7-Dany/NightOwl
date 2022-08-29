@@ -41,7 +41,7 @@ export const createWorkspace = async (request: Request, response: Response, next
       role: 'Admin'
     }
     const workspaceAdmin = await workspaceMembersModel.create(workspaceMember)
-    response.status(200).json({
+    response.status(201).json({
       status: 'Success',
       data: { ...newWorkspace, creator_id: workspaceAdmin.user_id, role: workspaceAdmin.role },
       message: 'Workspace got created successfully'
