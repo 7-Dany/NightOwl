@@ -16,6 +16,7 @@ import SearchIcon from './images/SearchIcon'
 import NotificationIcon from './images/NotificationIcon'
 import PersonImage from './images/person.svg'
 import logo from './images/Logo.jpg'
+import Xicon from './images/Xicon'
 
 
 export {
@@ -35,6 +36,7 @@ export {
   Logout,
   SearchIcon,
   NotificationIcon,
+  Xicon,
   PersonImage,
   logo
 }
