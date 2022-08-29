@@ -5,6 +5,7 @@ import { AuthContext } from '../../../Context/auth.context'
 import { createWorkspace } from '../Api/workspaces.api'
 import { WorkspaceContext } from '../../../Context/workspace.context'
 import { useNavigate } from 'react-router-dom'
+import { Xicon } from '../../../Assets'
 
 type CreateWorkspaceProps = {
   setShow: React.Dispatch<React.SetStateAction<string>>
@@ -34,9 +35,18 @@ function CreateWorkspace({ setShow }: CreateWorkspaceProps) {
       actions.resetForm()
     }
   })
+
+  function closeCreateWorkspace(event: React.MouseEvent<HTMLDivElement>) {
+    setShow('')
+    setErrorMsg('')
+  }
+
   return (
     <div className='create-workspace-container'>
       <div className='create-workspace'>
+        <div className={'create-workspace__close'} onClick={closeCreateWorkspace}>
+          <Xicon className={'create-workspace__x-icon'} />
+        </div>
         <h2 className='create-workspace__title'>Create Workspace</h2>
         <p className='create-workspace__error-msg'>{errorMsg}</p>
         <form className='create-workspace__form' onSubmit={formik.handleSubmit}>
