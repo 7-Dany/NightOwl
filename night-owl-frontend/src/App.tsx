@@ -1,25 +1,34 @@
 import React from 'react'
 import './Assets/SCSS/home.css'
 import { Routes, Route } from 'react-router-dom'
-import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage } from './Pages'
+import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage } from './Pages'
 import AuthContextProvider from './Context/auth.context'
-import PrivateRoutes from './Hooks/PrivateRouters'
-import WorkspaceContextProvider from './Context/workspace.context'
+import {
+  PrivateAppRoutes,
+  PrivateAuthRoutes,
+  PrivateWorkspaceRequestRoute,
+  PrivateWorkspaceRoute
+} from './Hooks/PrivateRouters'
 
 function App() {
   return (
     <AuthContextProvider>
-      <WorkspaceContextProvider>
-        <Routes>
-          <Route path='/login' element={<LoginPage />} />
-          <Route element={<PrivateRoutes />}>
+      <Routes>
+        <Route path='/login' element={<LoginPage />} />
+        <Route element={<PrivateAuthRoutes />}>
+          <Route element={<PrivateWorkspaceRoute />}>
+            <Route path='/workspace' element={<WorkspacePage />} />
+          </Route>
+          <Route element={<PrivateWorkspaceRequestRoute />}>
+            <Route path='/workspace/request' element={<WorkspaceRequestPage />} />
+          </Route>
+          <Route element={<PrivateAppRoutes />}>
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/members' element={<MembersPage />} />
-            <Route path='/workspace' element={<WorkspacePage />} />
           </Route>
-        </Routes>
-      </WorkspaceContextProvider>
+        </Route>
+      </Routes>
     </AuthContextProvider>
   )
 }
