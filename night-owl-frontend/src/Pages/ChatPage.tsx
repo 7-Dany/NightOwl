@@ -1,5 +1,5 @@
 import WorkSpaceHeader from '../Layout/WorkSpaceHeader'
-import Sidebar from '../Layout/Sidebar'
+import WorkspaceSidebar from '../Layout/WorkspaceSidebar'
 import Chat from '../Features/Chat'
 import React from 'react'
 
@@ -7,7 +7,7 @@ function ChatPage() {
   return (
     <div className='App'>
       <WorkSpaceHeader />
-      <Sidebar />
+      <WorkspaceSidebar />
       <Chat />
     </div>
   )
