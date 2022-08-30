@@ -2,7 +2,8 @@ import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { createUser } from '../Api/users.api'
-import { AuthContext, AuthUser } from '../../../Context/auth.context'
+import { AuthContext } from '../../../Context/auth.context'
+import { AuthUser } from '../../../Types'
 import { useNavigate } from 'react-router-dom'
 
 type UseSignUpReturn = {
