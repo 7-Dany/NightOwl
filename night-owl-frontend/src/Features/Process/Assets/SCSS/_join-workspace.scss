@@ -1,0 +1,47 @@
+.join-workspace-container {
+  @extend .create-workspace-container;
+}
+
+.join-workspace {
+  @extend .create-workspace;
+
+  &__close {
+    @extend .create-workspace__close;
+  }
+
+  &__x-icon {
+    @extend .create-workspace__x-icon;
+  }
+
+  &__title {
+    @extend .create-workspace__title;
+  }
+
+  &__error-msg {
+    @extend .create-workspace__error-msg;
+  }
+
+  &__form {
+    @extend .create-workspace__form;
+  }
+
+  &__fieldset {
+    @extend .create-workspace__fieldset;
+  }
+
+  &__label {
+    @extend .create-workspace__label;
+  }
+
+  &__input {
+    @extend .create-workspace__input;
+  }
+
+  &__field-error {
+    @extend .create-workspace__field-error;
+  }
+
+  &__submit-btn {
+    @extend .create-workspace__submit-btn;
+  }
+}
