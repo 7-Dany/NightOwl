@@ -72,20 +72,25 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border: 3px solid transparent;
+}
+.footer-icons__icon-container.active {
+  border-left: 3px solid #1364EF;
+}
+.footer-icons__icon-container.active .footer-icons__icon {
+  fill: #1364EF;
+}
+.footer-icons__icon-container:hover {
+  border-left: 3px solid #5896FF;
+}
+.footer-icons__icon-container:hover .footer-icons__icon {
+  fill: #5896FF;
 }
 .footer-icons__icon {
   width: 100%;
   fill: #2B2A32;
   border-left: 3px solid transparent;
   transition: 300ms all ease-in-out;
-}
-.footer-icons__icon:hover {
-  fill: #5896FF;
-  border-left: 3px solid #5896FF;
-}
-.footer-icons__icon.active {
-  fill: #1364EF;
-  border-left: 3px solid #1364EF;
 }
 
 .header {
@@ -166,6 +171,89 @@
   cursor: pointer;
 }
 
+.login-form-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  gap: 1.5rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.login-form fieldset {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  gap: 0.6rem;
+}
+.login-form__label {
+  margin-left: 0.2rem;
+}
+.login-form__input {
+  width: 480px;
+  height: 44px;
+  border-radius: 12px;
+  outline: none;
+  background-color: #0B0B0D;
+  color: #FFF;
+  padding: 1rem;
+  border: 1px solid transparent;
+}
+.login-form__input::placeholder {
+  color: #27252f;
+}
+.login-form__input.error {
+  border: 1px solid #e36565;
+}
+.login-form__input:-webkit-autofill, .login-form__input:-webkit-autofill:hover, .login-form__input:-webkit-autofill:focus, .login-form__input:-webkit-autofill:active {
+  border: 1px solid #1364EF;
+  -webkit-text-fill-color: #ffffff;
+  -webkit-box-shadow: 0 0 0 50px #0B0B0D inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+.login-form__error-msg {
+  margin-left: 0.2rem;
+  color: #e36565;
+}
+.login-form__submit {
+  height: 44px;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #1364EF;
+  color: #FFF;
+  transition: 300ms all ease-in-out;
+}
+.login-form__submit:hover {
+  background-color: #5896FF;
+}
+.login-form__register {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin-inline: 0.2rem;
+}
+.login-form__register button {
+  color: #FFF;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.return-to-login {
+  font-size: 1.2rem;
+  color: #FFF;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
 .create-workspace-container, .join-workspace-container {
   height: 100%;
   position: absolute;
@@ -207,7 +295,7 @@
 .create-workspace__close:hover, .join-workspace__close:hover {
   transform: rotate(360deg);
 }
-.create-workspace__close:hover .create-workspace__x-icon, .join-workspace__close:hover .create-workspace__x-icon, .create-workspace__close:hover .join-workspace__x-icon, .join-workspace__close:hover .join-workspace__x-icon {
+.create-workspace__close:hover .create-workspace__x-icon, .create-workspace__close:hover .join-workspace__x-icon, .join-workspace__close:hover .create-workspace__x-icon, .join-workspace__close:hover .join-workspace__x-icon {
   fill: #1364EF;
 }
 .create-workspace__x-icon, .join-workspace__x-icon {
@@ -279,6 +367,61 @@
   background-color: #5896FF;
 }
 
+.join-workspace__message {
+  align-self: flex-start;
+}
+.join-workspace__cancel-request {
+  align-self: flex-end;
+  width: 150px;
+  height: 35px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  margin-top: 1rem;
+  color: #FFF;
+  background-color: #1364EF;
+  transition: 300ms all ease-in-out;
+}
+.join-workspace__cancel-request:hover {
+  color: #1364EF;
+  background-color: transparent;
+  border: 1px solid #1364EF;
+}
+.join-workspace__confirm-container {
+  display: flex;
+  gap: 1rem;
+}
+.join-workspace__cancel-confirm {
+  width: 100px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+  background-color: #1364EF;
+  color: #FFF;
+  border: 1px solid transparent;
+}
+.join-workspace__cancel-confirm:hover {
+  color: #1364EF;
+  background-color: transparent;
+  border: 1px solid #1364EF;
+}
+.join-workspace__approve-confirm {
+  width: 100px;
+  height: 35px;
+  border-radius: 8px;
+  background-color: #e36565;
+  color: #FFF;
+  border: 1px solid transparent;
+  transition: 300ms all ease-in-out;
+  cursor: pointer;
+}
+.join-workspace__approve-confirm:hover {
+  color: #e36565;
+  background-color: transparent;
+  border: 1px solid #e36565;
+}
+
 .workspace-container {
   position: relative;
 }
@@ -348,6 +491,118 @@
   border-radius: 50%;
   border: 1px solid #2B2A32;
   transition: 300ms all ease-in-out;
+}
+
+.members-container {
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.members-title {
+  align-self: flex-start;
+  margin-left: 2rem;
+}
+.members-title h2 {
+  margin: 1rem 0;
+}
+
+.members-header {
+  width: 80%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #414144;
+  padding-right: 1.4rem;
+}
+.members-header__image {
+  flex: 1 1 10%;
+}
+.members-header__name {
+  flex: 1 1 10%;
+}
+.members-header__email {
+  flex: 2 1 20%;
+}
+.members-header__projects {
+  flex: 1 1 10%;
+}
+.members-header__role {
+  flex: 1 1 10%;
+}
+.members-header__timezone {
+  flex: 1 1 10%;
+}
+.members-header__chat {
+  flex: 1 1 10%;
+}
+
+.members {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+.members::-webkit-scrollbar {
+  width: 8px;
+}
+.members::-webkit-scrollbar-track {
+  border-radius: 24px;
+  background: #0B0B0D;
+}
+.members::-webkit-scrollbar-thumb {
+  background-color: #0B0B0D;
+  border-radius: 20px;
+  border: 1px solid #414144;
+}
+
+.member {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  border: 1px solid #414144;
+  border-radius: 12px;
+}
+.member__image {
+  flex-grow: 1;
+  flex-basis: 10%;
+  width: 32px;
+  height: 32px;
+}
+.member__name {
+  flex: 1 1 10%;
+}
+.member__email {
+  flex: 2 1 20%;
+}
+.member__projects {
+  flex: 1 1 10%;
+}
+.member__role {
+  flex: 1 1 10%;
+}
+.member__timezone {
+  flex: 1 1 10%;
+}
+.member__chat {
+  flex: 1 1 10%;
+  fill: #2B2A32;
+  cursor: pointer;
+}
+.member__active {
+  flex: 1 1 10%;
+  color: #5896FF;
 }
 
 .team-channels-container {
@@ -753,201 +1008,6 @@
 .chat-room-container {
   width: 100%;
   padding: 0 1.8rem;
-}
-
-.login-form-container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #FFF;
-  gap: 1.5rem;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-.login-form fieldset {
-  display: flex;
-  flex-direction: column;
-  border: none;
-  gap: 0.6rem;
-}
-.login-form__label {
-  margin-left: 0.2rem;
-}
-.login-form__input {
-  width: 480px;
-  height: 44px;
-  border-radius: 12px;
-  outline: none;
-  background-color: #0B0B0D;
-  color: #FFF;
-  padding: 1rem;
-  border: 1px solid transparent;
-}
-.login-form__input::placeholder {
-  color: #27252f;
-}
-.login-form__input.error {
-  border: 1px solid #e36565;
-}
-.login-form__input:-webkit-autofill, .login-form__input:-webkit-autofill:hover, .login-form__input:-webkit-autofill:focus, .login-form__input:-webkit-autofill:active {
-  border: 1px solid #1364EF;
-  -webkit-text-fill-color: #ffffff;
-  -webkit-box-shadow: 0 0 0 50px #0B0B0D inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-.login-form__error-msg {
-  margin-left: 0.2rem;
-  color: #e36565;
-}
-.login-form__submit {
-  height: 44px;
-  border-radius: 12px;
-  cursor: pointer;
-  background-color: #1364EF;
-  color: #FFF;
-  transition: 300ms all ease-in-out;
-}
-.login-form__submit:hover {
-  background-color: #5896FF;
-}
-.login-form__register {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  margin-inline: 0.2rem;
-}
-.login-form__register button {
-  color: #FFF;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.return-to-login {
-  font-size: 1.2rem;
-  color: #FFF;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.members-container {
-  grid-column: 2/-1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-.members-title {
-  align-self: flex-start;
-  margin-left: 2rem;
-}
-.members-title h2 {
-  margin: 1rem 0;
-}
-
-.members-header {
-  width: 80%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  border-bottom: 1px solid #414144;
-  padding-right: 1.4rem;
-}
-.members-header__image {
-  flex: 1 1 10%;
-}
-.members-header__name {
-  flex: 1 1 10%;
-}
-.members-header__email {
-  flex: 2 1 20%;
-}
-.members-header__projects {
-  flex: 1 1 10%;
-}
-.members-header__role {
-  flex: 1 1 10%;
-}
-.members-header__timezone {
-  flex: 1 1 10%;
-}
-.members-header__chat {
-  flex: 1 1 10%;
-}
-
-.members {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-height: 62vh;
-  overflow-y: auto;
-  padding-right: 1rem;
-}
-.members::-webkit-scrollbar {
-  width: 8px;
-}
-.members::-webkit-scrollbar-track {
-  border-radius: 24px;
-  background: #0B0B0D;
-}
-.members::-webkit-scrollbar-thumb {
-  background-color: #0B0B0D;
-  border-radius: 20px;
-  border: 1px solid #414144;
-}
-
-.member {
-  width: 100%;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  border: 1px solid #414144;
-  border-radius: 12px;
-}
-.member__image {
-  flex-grow: 1;
-  flex-basis: 10%;
-  width: 32px;
-  height: 32px;
-}
-.member__name {
-  flex: 1 1 10%;
-}
-.member__email {
-  flex: 2 1 20%;
-}
-.member__projects {
-  flex: 1 1 10%;
-}
-.member__role {
-  flex: 1 1 10%;
-}
-.member__timezone {
-  flex: 1 1 10%;
-}
-.member__chat {
-  flex: 1 1 10%;
-  fill: #2B2A32;
-  cursor: pointer;
-}
-.member__active {
-  flex: 1 1 10%;
-  color: #5896FF;
 }
 
 * {
