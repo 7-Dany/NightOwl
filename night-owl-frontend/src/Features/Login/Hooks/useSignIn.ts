@@ -2,8 +2,9 @@ import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { authUser } from '../Api/users.api'
-import { AuthContext, AuthUser } from '../../../Context/auth.context'
+import { AuthContext } from '../../../Context/auth.context'
 import { useNavigate } from 'react-router-dom'
+import { AuthUser } from '../../../Types'
 
 type UseSignInReturn = {
   formik: FormikProps<{ email: string, password: string }>
@@ -16,7 +17,7 @@ type UseSignInArgs = {
 }
 
 function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
-  const { setUser } = useContext(AuthContext)
+  const { setUser, setWorkspace, setWorkspaceRequest } = useContext(AuthContext)
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const formik = useFormik({
@@ -30,9 +31,17 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
       const controller = new AbortController()
       authUser({ controller, user: values })
         .then(data => {
-          if (data.token) {
-            setUser(data)
-            navigate('/home')
+          if (data.user.token) {
+            setUser(data.user)
+            if (data.workspace) {
+              setWorkspace(data.workspace)
+              navigate('/home')
+            } else if (data.workspaceRequest) {
+              setWorkspaceRequest(data.workspaceRequest)
+              navigate('/workspace/request')
+            } else {
+              navigate('/workspace')
+            }
           } else {
             setUser({} as AuthUser)
             navigate('/login')
