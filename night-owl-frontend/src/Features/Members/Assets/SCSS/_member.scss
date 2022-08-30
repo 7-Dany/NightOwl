@@ -1,0 +1,48 @@
+.member {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  border: 1px solid $Whitish-Gray;
+  border-radius: 12px;
+
+  &__image {
+    flex-grow: 1;
+    flex-basis: 10%;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__name {
+    flex: 1 1 10%;
+  }
+
+  &__email {
+    flex: 2 1 20%;
+  }
+
+  &__projects {
+    flex: 1 1 10%;
+  }
+
+  &__role {
+    flex: 1 1 10%;
+  }
+
+  &__timezone {
+    flex: 1 1 10%;
+  }
+
+  &__chat {
+    flex: 1 1 10%;
+    fill: $Grayish-White;
+    cursor: pointer;
+  }
+
+  &__active {
+    flex: 1 1 10%;
+    color: $Very-White-Blue;
+  }
+}
