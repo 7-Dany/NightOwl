@@ -79,6 +79,23 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    border: 3px solid transparent;
+
+    &.active {
+      border-left: 3px solid $White-Blue;
+
+      .footer-icons__icon {
+        fill: $White-Blue;
+      }
+    }
+
+    &:hover {
+      border-left: 3px solid $Very-White-Blue;
+
+      .footer-icons__icon {
+        fill: $Very-White-Blue;
+      }
+    }
   }
 
   &__icon {
@@ -86,15 +103,5 @@
     fill: $Grayish-White;
     border-left: 3px solid transparent;
     transition: 300ms all ease-in-out;
-
-    &:hover {
-      fill: $Very-White-Blue;
-      border-left: 3px solid $Very-White-Blue;
-    }
-
-    &.active {
-      fill: $White-Blue;
-      border-left: 3px solid $White-Blue;
-    }
   }
 }
