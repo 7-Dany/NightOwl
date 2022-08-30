@@ -1,14 +1,8 @@
 import axios from 'axios'
 import config from '../Config'
-import { AuthUser, Workspace, WorkspaceRequest } from '../Types'
+import { UserWithWorkspace } from '../Types'
 
 const { url } = config
-
-export type UserWithWorkspace = {
-  user: AuthUser
-  workspace?: Workspace
-  workspaceRequest: WorkspaceRequest
-}
 
 type GetUserArgs = {
   controller: AbortController
