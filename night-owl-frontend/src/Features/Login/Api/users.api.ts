@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { AuthUser } from '../../../Context/auth.context'
+import { AuthUser, UserWithWorkspace } from '../../../Types'
 
 const { url } = config
 
@@ -11,6 +11,7 @@ type AuthUserArgs = {
     password: string
   }
 }
+
 type NewUserArgs = {
   controller: AbortController
   user: {
@@ -21,7 +22,7 @@ type NewUserArgs = {
   }
 }
 
-export async function authUser({ controller, user }: AuthUserArgs): Promise<AuthUser> {
+export async function authUser({ controller, user }: AuthUserArgs): Promise<UserWithWorkspace> {
   const config = {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
