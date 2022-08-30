@@ -1,6 +1,7 @@
 import { socket } from '../../../socket'
 import { useContext, useEffect } from 'react'
-import { AuthContext, AuthUser } from '../../../Context/auth.context'
+import { AuthContext } from '../../../Context/auth.context'
+import { AuthUser } from '../../../Types'
 
 function useSocket() {
   const { setUser } = useContext(AuthContext)
