@@ -1,7 +1,9 @@
-import { WorkspaceRequestsModel } from '../models'
+import { WorkspaceRequestsModel, WorkspacesModel } from '../models'
 import { Request, Response, NextFunction } from 'express'
+import { StatusError } from '../middlewares/error.middleware'
 
 const workspaceRequestsModel = new WorkspaceRequestsModel()
+const workspacesModel = new WorkspacesModel()
 
 export const getAllWorkspaceRequests = async (request: Request, response: Response, next: NextFunction) => {
   try {
@@ -36,14 +38,23 @@ export const createWorkspaceRequest = async (request: Request, response: Respons
       workspace_id: request.body.workspace_id,
       state: 'hold'
     }
-    const newWorkspaceRequest = await workspaceRequestsModel.create(workspaceRequest)
-    response.status(201).json({
-      status: 'Success',
-      data: { ...newWorkspaceRequest },
-      message: 'New workspace got created successfully'
-    })
+    const checkWorkspace = await workspacesModel.show(workspaceRequest.workspace_id)
+    if (checkWorkspace) {
+      const newWorkspaceRequest = await workspaceRequestsModel.create(workspaceRequest)
+      response.status(201).json({
+        status: 'Success',
+        data: { name: checkWorkspace.name, ...newWorkspaceRequest },
+        message: 'New workspace request got created successfully'
+      })
+    } else {
+      response.status(422).json({
+        status: 'Failed', message: 'Workspace is not exist make sure to write a correct id'
+      })
+    }
   } catch (error) {
-    next(error)
+    const newError: StatusError = new Error('Workspace is not exist make sure to write a correct id')
+    newError.status = 422
+    next(newError)
   }
 }
 
@@ -51,6 +62,7 @@ export const deleteWorkspaceRequest = async (request: Request, response: Respons
   try {
     const id = request.params.id
     const deletedWorkspaceRequest = await workspaceRequestsModel.delete(id)
+    request.session.workspaceRequest = null
     response.status(202).json({
       status: 'Success',
       data: { ...deletedWorkspaceRequest },
