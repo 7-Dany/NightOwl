@@ -29,7 +29,7 @@ export class WorkspacesModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get all workspaces, ${(error as Error).message}`)
+      throw new Error(`Unable to get workspace, ${(error as Error).message}`)
     }
   }
 
@@ -58,7 +58,7 @@ export class WorkspacesModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get all workspaces, ${(error as Error).message}`)
+      throw new Error(`Unable delete workspace, ${(error as Error).message}`)
     }
   }
 }
