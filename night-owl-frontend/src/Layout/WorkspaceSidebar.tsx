@@ -11,17 +11,41 @@ import {
   Logout
 } from '../Assets'
 import { NavLink, useNavigate } from 'react-router-dom'
-import React, { useContext } from 'react'
-import { AuthContext, AuthUser } from '../Context/auth.context'
+import React, { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../Context/auth.context'
+import { deleteUserSession } from '../Api/users.api'
+import { AuthUser, Workspace } from '../Types'
 
-function Sidebar() {
-  const { setUser } = useContext(AuthContext)
+function WorkspaceSidebar() {
+  const [logout, setLogout] = useState(false)
+  const { user, setUser, setWorkspace } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  function logout(event: React.MouseEvent<HTMLDivElement>) {
-    setUser({} as AuthUser)
-    navigate('/')
+  function logoutUser(event: React.MouseEvent<HTMLDivElement>) {
+    setLogout(true)
   }
+
+  useEffect(() => {
+    const controller = new AbortController()
+    if (logout) {
+      deleteUserSession({ controller, token: user.token })
+        .then(data => {
+          setUser({} as AuthUser)
+          setWorkspace({} as Workspace)
+          setLogout(false)
+          navigate('/')
+        })
+        .catch(error => {
+          setUser({} as AuthUser)
+          setWorkspace({} as Workspace)
+          setLogout(false)
+          navigate('/')
+        })
+    }
+    return () => {
+      controller.abort()
+    }
+  }, [logout])
 
   return (
     <div className='sidebar'>
@@ -55,7 +79,7 @@ function Sidebar() {
         <NavLink to='/settings' className='footer-icons__icon-container' title='Settings'>
           <SettingsIcon className={'footer-icons__icon'} />
         </NavLink>
-        <div className='footer-icons__icon-container' title='Logout' onClick={logout}>
+        <div className='footer-icons__icon-container' title='Logout' onClick={logoutUser}>
           <Logout className={'footer-icons__icon'} />
         </div>
       </div>
@@ -63,4 +87,4 @@ function Sidebar() {
   )
 }
 
-export default Sidebar
+export default WorkspaceSidebar
