@@ -2,7 +2,7 @@ import SignIn from './Components/SignIn'
 import SignUp from './Components/SignUp'
 import { useState } from 'react'
 
-function Login() {
+function LoginMain() {
   const [login, setLogin] = useState(false)
   return (
     <div>
@@ -11,4 +11,4 @@ function Login() {
   )
 }
 
-export default Login
+export default LoginMain

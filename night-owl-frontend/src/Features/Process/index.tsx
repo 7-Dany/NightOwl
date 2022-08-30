@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CreateWorkspace from './Components/CreateWorkspace'
 import JoinWorkspace from './Components/JoinWorkspace'
 
-function WorkspaceProcess() {
+function WorkspaceProcessMain() {
   const [choice, setChoice] = useState<string | null>(null)
   const [errorMsg, setErrorMsg] = useState('')
   const [show, setShow] = useState('')
@@ -47,4 +47,4 @@ function WorkspaceProcess() {
   )
 }
 
-export default WorkspaceProcess
+export default WorkspaceProcessMain

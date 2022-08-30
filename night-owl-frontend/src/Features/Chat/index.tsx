@@ -1,7 +1,7 @@
 import { TeamChannelsContainer, PrivateChannelsContainer, ChatRoomHeader, ChatRoom } from './Components'
 import useSocket from './Hooks/useSocket'
 
-function Chat() {
+function WorkspaceChatMain() {
   useSocket()
   return (
     <div className='chats-container'>
@@ -18,4 +18,4 @@ function Chat() {
   )
 }
 
-export default Chat
+export default WorkspaceChatMain
