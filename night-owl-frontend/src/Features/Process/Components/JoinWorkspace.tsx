@@ -1,35 +1,24 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import { Xicon } from '../../../Assets'
-import { AuthContext } from '../../../Context/auth.context'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import useJoinWorkspace from '../Hooks/useJoinWorkspace'
 
 type JoinWorkspaceProps = {
   setShow: React.Dispatch<React.SetStateAction<string>>
 }
 
 function JoinWorkspace({ setShow }: JoinWorkspaceProps) {
-  const { user } = useContext(AuthContext)
-  const [errorMsg, setErrorMsg] = useState('')
-  const formik = useFormik({
-    initialValues: { workspaceId: '' },
-    validationSchema: Yup.object({
-      workspaceId: Yup.string().required('Workspace id is required')
-    }),
-    onSubmit: (values, actions) => {
-      alert(JSON.stringify(values, null, 2))
-      actions.resetForm()
-    }
+  const {
+    workspaceRequest,
+    closeJoinWorkspace,
+    formik,
+    errorMsg
+  } = useJoinWorkspace({
+    setShow
   })
-
-  function closeJoinWorkspace(event: React.MouseEvent<HTMLDivElement>) {
-    setShow('')
-    setErrorMsg('')
-  }
 
   return (
     <div className='join-workspace-container'>
-      <div className='join-workspace'>
+      {!workspaceRequest.state && <div className='join-workspace'>
         <div className={'join-workspace__close'} onClick={closeJoinWorkspace}>
           <Xicon className={'join-workspace__x-icon'} />
         </div>
@@ -45,7 +34,7 @@ function JoinWorkspace({ setShow }: JoinWorkspaceProps) {
           </fieldset>
           <button type='submit' className='join-workspace__submit-btn'>Join Workspace</button>
         </form>
-      </div>
+      </div>}
     </div>
   )
 }
