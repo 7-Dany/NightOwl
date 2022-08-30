@@ -7,9 +7,46 @@ function useAuth() {
   return user.token
 }
 
-function PrivateRoutes() {
+function useWorkspace() {
+  const { workspace } = useContext(AuthContext)
+  return workspace.name
+}
+
+function useWorkspaceRequest() {
+  const { workspaceRequest } = useContext(AuthContext)
+  return workspaceRequest.name
+}
+
+export function PrivateAuthRoutes() {
   const isAuth = useAuth()
   return isAuth ? <Outlet /> : <Navigate to='/' />
 }
 
-export default PrivateRoutes
+export function PrivateWorkspaceRoute() {
+  const hasWorkspace = useWorkspace()
+  const hasWorkspaceRequest = useWorkspaceRequest()
+  if (hasWorkspace) {
+    return <Navigate to='/home' />
+  } else if (hasWorkspaceRequest) {
+    return <Navigate to='/workspace/request' />
+  } else {
+    return <Outlet />
+  }
+}
+
+export function PrivateAppRoutes() {
+  const hasWorkspace = useWorkspace()
+  return hasWorkspace ? <Outlet /> : <Navigate to='/' />
+}
+
+export function PrivateWorkspaceRequestRoute() {
+  const hasWorkspaceRequest = useWorkspaceRequest()
+  const hasWorkspace = useWorkspace()
+  if (hasWorkspaceRequest) {
+    return <Outlet />
+  } else if (hasWorkspace) {
+    return <Navigate to='/home' />
+  } else {
+    return <Navigate to='/workspace' />
+  }
+}
