@@ -2,7 +2,7 @@ import { Router } from 'express'
 import {
   authenticateUser,
   changePassword,
-  checkEmailExistence, createUser,
+  checkEmailExistence, createUser, deleteSession,
   deleteUser,
   forgotPassword,
   getAllUsers,
@@ -39,6 +39,10 @@ usersRoutes.route('/reset')
 usersRoutes.route('/auth')
   .post(rateLimiterMiddleware, validateLoginMiddleware, authenticateUser)
 
-usersRoutes.route('/auth/session').get(userSession)
+usersRoutes.route('/auth/session')
+  .get(userSession)
+
+usersRoutes.route('/auth/logout')
+  .get(authTokenMiddleware, deleteSession)
 
 export default usersRoutes
