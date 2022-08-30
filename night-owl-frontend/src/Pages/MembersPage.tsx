@@ -1,13 +1,13 @@
 import WorkSpaceHeader from '../Layout/WorkSpaceHeader'
-import Sidebar from '../Layout/Sidebar'
-import Members from '../Features/Members'
+import WorkspaceSidebar from '../Layout/WorkspaceSidebar'
+import WorkspaceMembersMain from '../Features/Members'
 
 function MembersPage() {
   return (
     <div className='App'>
       <WorkSpaceHeader />
-      <Sidebar />
-      <Members />
+      <WorkspaceSidebar />
+      <WorkspaceMembersMain />
     </div>
   )
 }

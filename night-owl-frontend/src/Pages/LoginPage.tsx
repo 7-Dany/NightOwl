@@ -1,8 +1,8 @@
-import Login from '../Features/Login'
+import LoginMain from '../Features/Login'
 
 function LoginPage() {
   return (
-    <Login />
+    <LoginMain />
   )
 }
 

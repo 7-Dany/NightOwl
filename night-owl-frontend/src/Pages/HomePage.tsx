@@ -1,9 +1,9 @@
-import Sidebar from '../Layout/Sidebar'
+import WorkspaceSidebar from '../Layout/WorkspaceSidebar'
 
 function HomePage() {
   return (
     <div className='App'>
-      <Sidebar />
+      <WorkspaceSidebar />
     </div>
   )
 }
