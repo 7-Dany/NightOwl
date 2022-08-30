@@ -1,4 +1,4 @@
-import { ChatIcon, DotsIcons, PersonImage } from '../../../Assets'
+import { ChatIcon, DotsIcons } from '../../../Assets'
 import { useContext } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
 
@@ -21,7 +21,10 @@ function Member({ image, name, projects, timezone, email, role }: MemberProps) {
       <p className='member__projects'>{projects}</p>
       <p className='member__role'>{role}</p>
       <p className='member__timezone'>{timezone}</p>
-      {user.email !== email ? <ChatIcon className={'member__chat'} /> : <p className='member__active'>You</p>}
+      {user.email !== email ?
+        <ChatIcon className={'member__chat'} /> :
+        <p className='member__active'>You</p>
+      }
     </div>
   )
 }
