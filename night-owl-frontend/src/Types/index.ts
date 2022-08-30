@@ -18,3 +18,9 @@ export type WorkspaceRequest = {
   workspace_id: string
   state: string
 }
+
+export type UserWithWorkspace = {
+  user: AuthUser
+  workspace?: Workspace
+  workspaceRequest: WorkspaceRequest
+}
