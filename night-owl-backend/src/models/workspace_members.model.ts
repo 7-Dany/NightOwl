@@ -36,6 +36,21 @@ export class WorkspaceMembersModel {
     }
   }
 
+  async showByUser(userId: string): Promise<WorkspaceMember> {
+    try {
+      const connect = await database.connect()
+      const sql = `SELECT workspace_id, name, role
+                   FROM workspace_members
+                            INNER JOIN workspaces w on w.id = workspace_members.workspace_id
+                   WHERE user_id = $1`
+      const results = await connect.query(sql, [userId])
+      connect.release()
+      return results.rows[0]
+    } catch (error) {
+      throw new Error(`Unable to get workspace member by user id, ${(error as Error).message}`)
+    }
+  }
+
   async create(workspaceMember: WorkspaceMember): Promise<WorkspaceMember> {
     try {
       const connect = await database.connect()
