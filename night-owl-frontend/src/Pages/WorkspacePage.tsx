@@ -1,8 +1,8 @@
-import WorkspaceProcess from '../Features/WorkspaceProcess'
+import WorkspaceProcessMain from '../Features/Process'
 
 function WorkspacePage() {
   return (
-    <WorkspaceProcess />
+    <WorkspaceProcessMain />
   )
 }
 
