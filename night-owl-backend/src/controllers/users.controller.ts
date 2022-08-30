@@ -1,10 +1,12 @@
-import { UsersModel, User } from '../models'
+import { UsersModel, User, WorkspaceMembersModel, WorkspaceRequestsModel } from '../models'
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../config'
 import { compareSync } from 'bcrypt'
 
 const usersModel = new UsersModel()
+const workspaceMemberModel = new WorkspaceMembersModel()
+const workspaceRequestsModel = new WorkspaceRequestsModel()
 
 export const getAllUsers = async (
   request: Request,
@@ -57,6 +59,8 @@ export const createUser = async (
     const user = await usersModel.create(newUser)
     const token = jwt.sign({ user: user }, config.token as unknown as string)
     request.session.user = { ...user, token }
+    request.session.workspaceRequest = null
+    request.session.workspace = null
     response.status(201).json({
       statue: 'Success',
       data: {
@@ -220,17 +224,30 @@ export const userSession = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { user } = request.session
+    const { user, workspace, workspaceRequest } = request.session
     if (user.token) {
       response.status(200).json({
         status: 'Success',
-        data: { ...user },
+        data: { user: { ...user }, workspace: { ...workspace }, workspaceRequest: { ...workspaceRequest } },
         message: 'User session got retrieved successfully'
       })
     } else {
       response.status(204).json({ status: 'failed', message: 'User session is not exist' })
     }
   } catch (error) {
+  }
+}
+
+export const deleteSession = async (request: Request, response: Response, next: NextFunction) => {
+  try {
+    request.session.user = null
+    request.session.workspace = null
+    response.status(202).json({
+      status: 'Success',
+      message: 'User session got deleted successfully'
+    })
+  } catch (error) {
+    next(error)
   }
 }
 
@@ -251,9 +268,33 @@ export const authenticateUser = async (
         return
       } else {
         request.session.user = { ...authenticatedUser, token }
+        const workspaceMember = await workspaceMemberModel.showByUser(authenticatedUser.id as string)
+        if (workspaceMember) {
+          request.session.workspace = { ...workspaceMember }
+          request.session.workspaceRequest = null
+          response.status(200).json({
+            status: 'Success',
+            data: { user: { ...authenticatedUser, token }, workspace: { ...workspaceMember } },
+            message: 'User got authenticated successfully'
+          })
+          return
+        }
+        const workspaceMemberRequest = await workspaceRequestsModel.showByUser(authenticatedUser.id as string)
+        if (workspaceMemberRequest) {
+          request.session.workspaceRequest = { ...workspaceMemberRequest }
+          request.session.workspace = null
+          response.status(200).json({
+            status: 'Success',
+            data: { user: { ...authenticatedUser, token }, workspaceRequest: { ...workspaceMemberRequest } },
+            message: 'User got authenticated successfully'
+          })
+          return
+        }
+        request.session.workspace = null
+        request.session.workspaceRequest = null
         response.status(200).json({
           status: 'Success',
-          data: { ...authenticatedUser, token },
+          data: { user: { ...authenticatedUser, token } },
           message: 'User got authenticated successfully'
         })
       }
@@ -263,6 +304,5 @@ export const authenticateUser = async (
   } catch
     (error) {
     next(error)
-
   }
 }
