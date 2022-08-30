@@ -1,45 +1,13 @@
-import React, { useContext, useState } from 'react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { AuthContext } from '../../../Context/auth.context'
-import { createWorkspace } from '../Api/workspaces.api'
-import { WorkspaceContext } from '../../../Context/workspace.context'
-import { useNavigate } from 'react-router-dom'
 import { Xicon } from '../../../Assets'
+import useCreateWorkspace from '../Hooks/useCreateWorkspace'
+import React from 'react'
 
 type CreateWorkspaceProps = {
   setShow: React.Dispatch<React.SetStateAction<string>>
 }
 
 function CreateWorkspace({ setShow }: CreateWorkspaceProps) {
-  const { user } = useContext(AuthContext)
-  const { setWorkspace } = useContext(WorkspaceContext)
-  const navigate = useNavigate()
-  const [errorMsg, setErrorMsg] = useState('')
-  const formik = useFormik({
-    initialValues: { name: '' },
-    validationSchema: Yup.object({
-      name: Yup.string().required('Workspace name is required')
-    }),
-    onSubmit: (values, actions) => {
-      const controller = new AbortController()
-      createWorkspace({ controller, values: { user_id: user.id, name: values.name, token: user.token } })
-        .then(data => {
-          setWorkspace(data)
-          setErrorMsg('')
-          navigate('/home')
-        })
-        .catch(error => {
-          setErrorMsg(error.response.data.message)
-        })
-      actions.resetForm()
-    }
-  })
-
-  function closeCreateWorkspace(event: React.MouseEvent<HTMLDivElement>) {
-    setShow('')
-    setErrorMsg('')
-  }
+  const { formik, closeCreateWorkspace, errorMsg } = useCreateWorkspace({ setShow })
 
   return (
     <div className='create-workspace-container'>
