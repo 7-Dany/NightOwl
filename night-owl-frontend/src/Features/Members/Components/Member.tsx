@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
 
 type MemberProps = {
+  id: string
   image: string
   name: string
   email: string
@@ -11,7 +12,7 @@ type MemberProps = {
   timezone: string
 }
 
-function Member({ image, name, projects, timezone, email, role }: MemberProps) {
+function Member({ id, image, name, projects, timezone, email, role }: MemberProps) {
   const { user } = useContext(AuthContext)
   return (
     <div className='member'>
