@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
 import { useNavigate } from 'react-router-dom'
-import { deleteWorkspaceRequest } from '../Api/workspaces.api'
+import { deleteWorkspaceRequest } from '../Api/workspace_requests.api'
 import { AuthUser, WorkspaceRequest } from '../../../Types'
 
 function useWorkspaceRequest() {
