@@ -21,15 +21,16 @@ export class WorkspaceRequestsModel {
     }
   }
 
-  async show(id: string): Promise<WorkspaceRequest> {
+  async show(workspaceId: string): Promise<WorkspaceRequest[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
+      const sql = `SELECT u.id, u.username, u.email, u.image, state
                    FROM workspace_requests
-                   WHERE id = $1`
-      const results = await connect.query(sql, [id])
+                            INNER JOIN users u on u.id = workspace_requests.user_id
+                   WHERE workspace_id = $1`
+      const results = await connect.query(sql, [workspaceId])
       connect.release()
-      return results.rows[0]
+      return results.rows
     } catch (error) {
       throw new Error(`Unable to get workspace request, ${(error as Error).message}`)
     }
