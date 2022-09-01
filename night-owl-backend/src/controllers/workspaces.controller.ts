@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
-import { WorkspaceMembersModel, WorkspacesModel } from '../models'
+import { WorkspaceMembersModel, WorkspacesModel, WorkspaceRequestsModel } from '../models'
 
 const workspacesModel = new WorkspacesModel()
 const workspaceMembersModel = new WorkspaceMembersModel()
+const workspaceRequestsModel = new WorkspaceRequestsModel()
 
 export const getAllWorkspaces = async (request: Request, response: Response, next: NextFunction) => {
   try {
@@ -31,6 +32,29 @@ export const getWorkspace = async (request: Request, response: Response, next: N
   }
 }
 
+export const getWorkspaceMembersAndRequests = async (request: Request, response: Response, next: NextFunction) => {
+  try {
+    const workspaceId = request.params.id
+    const checkWorkspace = await workspacesModel.show(workspaceId)
+    if (checkWorkspace) {
+      const workspaceMembers = await workspaceMembersModel.show(workspaceId)
+      const workspaceRequests = await workspaceRequestsModel.show(workspaceId)
+      response.status(200).json({
+        status: 'Success',
+        data: { requests: [...workspaceRequests], members: [...workspaceMembers] },
+        message: 'Workspace members and requests got retrieved successfully'
+      })
+    } else {
+      response.status(422).json({
+        status: 'Failed',
+        message: 'Workspace is not exist'
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const createWorkspace = async (request: Request, response: Response, next: NextFunction) => {
   try {
     const workspaceName = request.body.name
@@ -43,7 +67,7 @@ export const createWorkspace = async (request: Request, response: Response, next
     const workspaceAdmin = await workspaceMembersModel.create(workspaceMember)
     response.status(201).json({
       status: 'Success',
-      data: { ...newWorkspace, creator_id: workspaceAdmin.user_id, role: workspaceAdmin.role },
+      data: { workspace_id: newWorkspace.id, name: newWorkspace.name, role: workspaceAdmin.role },
       message: 'Workspace got created successfully'
     })
   } catch (error) {
