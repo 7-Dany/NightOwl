@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CreateWorkspace from './Components/CreateWorkspace'
 import JoinWorkspace from './Components/JoinWorkspace'
+import { createImage, joinImage } from './Assets'
 
 function WorkspaceProcessMain() {
   const [choice, setChoice] = useState<string | null>(null)
@@ -30,11 +31,13 @@ function WorkspaceProcessMain() {
         <div className='workspace'>
           <div className={choice === 'create' ? 'workspace__choice active' : 'workspace__choice'}
                onClick={(event) => choose(event, 'create')}>
+            <img src={createImage} alt='2 persons hold puzzle' />
             <h2>Create New Workspace</h2>
             <div className='workspace__active-circle'></div>
           </div>
           <div className={choice === 'join' ? 'workspace__choice active' : 'workspace__choice'}
                onClick={(event) => choose(event, 'join')}>
+            <img src={joinImage} alt='3 persons hold puzzle' />
             <h2>Join Workspace</h2>
             <div className='workspace__active-circle'></div>
           </div>
