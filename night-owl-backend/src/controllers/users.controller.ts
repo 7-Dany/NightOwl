@@ -224,11 +224,11 @@ export const userSession = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { user, workspace, workspaceRequest } = request.session
+    const { user, workspace } = request.session
     if (user.token) {
       response.status(200).json({
         status: 'Success',
-        data: { user: { ...user }, workspace: { ...workspace }, workspaceRequest: { ...workspaceRequest } },
+        data: { user: { ...user }, workspace: { ...workspace } },
         message: 'User session got retrieved successfully'
       })
     } else {
