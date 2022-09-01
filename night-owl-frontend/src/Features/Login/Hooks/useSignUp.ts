@@ -31,7 +31,7 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
     onSubmit: (values, actions) => {
       const controller = new AbortController()
       const { username, email, password } = values
-      const user = { username, email, image: 'not exist', password }
+      const user = { username, email, image: './images/person.svg', password }
       actions.resetForm()
       setError('')
       createUser({ controller, user })
