@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { WorkspaceRequest } from '../../../Types'
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { createWorkspaceRequest } from '../Api/workspaces.api'
+import { createWorkspaceRequest } from '../Api/workspace_requests.api'
 import { AuthContext } from '../../../Context/auth.context'
 import { useNavigate } from 'react-router-dom'
 
