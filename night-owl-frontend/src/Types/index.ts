@@ -8,8 +8,9 @@ export type AuthUser = {
 }
 
 export type Workspace = {
-  id: string
+  workspace_id: string
   name: string
+  role: string
 }
 
 export type WorkspaceRequest = {
