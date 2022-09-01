@@ -1,6 +1,25 @@
 import Member from './Member'
+import { WorkspaceMember } from '../Types'
 
-function WorkspaceMembers() {
+type WorkspaceMembersProps = {
+  members: WorkspaceMember[]
+}
+
+function WorkspaceMembers({ members }: WorkspaceMembersProps) {
+  const workspaceMembers = members.map(member => {
+    return (
+      <Member
+        key={member.id}
+        id={member.id}
+        image={member.image}
+        name={member.username}
+        email={member.email}
+        projects={2}
+        role={member.role}
+        timezone={'GMT+3'}
+      />
+    )
+  })
   return (
     <div className='members-container'>
       <div className='members-title'>
@@ -17,10 +36,7 @@ function WorkspaceMembers() {
         <span className='members-header__chat'>Chat</span>
       </div>
       <div className='members'>
-        <Member email={'ali@gmail.com'} name={'Ali'} image={'./images/person.svg'} role={'Admin'}
-                projects={2} timezone={'GMT+3'} />
-        <Member email={'speedleopard2018@gmail.com'} name={'Ali'} image={'./images/person.svg'} role={'Admin'}
-                projects={2} timezone={'GMT+3'} />
+        {workspaceMembers}
       </div>
     </div>
   )
