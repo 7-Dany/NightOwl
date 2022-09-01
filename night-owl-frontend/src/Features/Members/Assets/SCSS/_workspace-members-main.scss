@@ -1,0 +1,123 @@
+@import "workspace-members", "member", "workspace-requests", "request";
+
+.workspace-members-container {
+  grid-row: 2 /-1;
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  position: relative;
+}
+
+.workspace-members {
+  width: 300px;
+  height: 300px;
+  border: 1px solid $Whitish-Gray;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  transition: 300ms all ease-in-out;
+  position: relative;
+
+  &__img {
+    width: 95%;
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__counts {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $White-Blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 300ms all ease-in-out;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+
+  &:hover {
+    border-color: $Very-White-Blue;
+
+    .workspace-members__counts {
+      background-color: $Very-White-Blue;
+    }
+  }
+}
+
+.workspace-id {
+  position: absolute;
+  top: 2rem;
+  right: 1rem;
+  border: 1px solid $White-Blue;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: 300ms all ease-in-out;
+  cursor: pointer;
+  display: flex;
+  gap: 3rem;
+
+  &:hover {
+    border-color: $Very-White-Blue;
+
+    .workspace-id__icon {
+      fill: $Very-White-Blue;
+    }
+  }
+
+  &__title {
+
+  }
+
+  &__icon {
+    fill: $White-Blue;
+    transition: 300ms all ease-in-out;
+  }
+
+  &__active-msg {
+    position: absolute;
+    top: 1rem;
+    left: -6rem;
+    background-color: $Whitish-Gray;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: auto;
+    animation: fadeIn 500ms linear;
+
+    .arrow {
+      margin: 0;
+      display: block;
+      width: 0;
+      height: 0;
+      border: 9px solid transparent;
+      border-left-color: $Whitish-Gray;
+      position: absolute;
+      top: 0.95rem;
+      right: -1rem;
+    }
+  }
+
+  &__hidden-msg {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

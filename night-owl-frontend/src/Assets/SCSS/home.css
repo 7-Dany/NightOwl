@@ -466,15 +466,21 @@
   border-radius: 12px;
   border: 1px solid #37363C;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   position: relative;
   transition: 300ms all ease-in-out;
+  gap: 1rem;
 }
 .workspace__choice h2 {
   color: #FFF;
   font-size: 1.2rem;
+}
+.workspace__choice img {
+  width: 70%;
+  height: 70%;
 }
 .workspace__choice.active {
   border-color: #5896FF;
@@ -605,6 +611,112 @@
   color: #5896FF;
 }
 
+.workspace-members-container {
+  grid-row: 2/-1;
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  position: relative;
+}
+
+.workspace-members {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #414144;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  transition: 300ms all ease-in-out;
+  position: relative;
+}
+.workspace-members__img {
+  width: 95%;
+}
+.workspace-members__title {
+  margin-bottom: 1rem;
+}
+.workspace-members__counts {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #1364EF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 300ms all ease-in-out;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+.workspace-members:hover {
+  border-color: #5896FF;
+}
+.workspace-members:hover .workspace-members__counts {
+  background-color: #5896FF;
+}
+
+.workspace-id {
+  position: absolute;
+  top: 2rem;
+  right: 1rem;
+  border: 1px solid #1364EF;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: 300ms all ease-in-out;
+  cursor: pointer;
+  display: flex;
+  gap: 3rem;
+}
+.workspace-id:hover {
+  border-color: #5896FF;
+}
+.workspace-id:hover .workspace-id__icon {
+  fill: #5896FF;
+}
+.workspace-id__icon {
+  fill: #1364EF;
+  transition: 300ms all ease-in-out;
+}
+.workspace-id__active-msg {
+  position: absolute;
+  top: 1rem;
+  left: -6rem;
+  background-color: #414144;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: auto;
+  animation: fadeIn 500ms linear;
+}
+.workspace-id__active-msg .arrow {
+  margin: 0;
+  display: block;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-left-color: #414144;
+  position: absolute;
+  top: 0.95rem;
+  right: -1rem;
+}
+.workspace-id__hidden-msg {
+  display: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .team-channels-container {
   width: 100%;
   display: flex;
