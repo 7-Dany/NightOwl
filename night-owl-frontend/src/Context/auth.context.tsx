@@ -36,7 +36,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
             setWorkspace(data.workspace)
             setWorkspaceRequest({} as WorkspaceRequest)
             navigate(location.pathname)
-          } else if (data.workspaceRequest.id) {
+          } else if (data.workspaceRequest?.id) {
             setWorkspaceRequest(data.workspaceRequest)
             setWorkspace({} as Workspace)
             navigate(location.pathname)
@@ -47,7 +47,6 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
           setUser({} as AuthUser)
           setWorkspace({} as Workspace)
           setWorkspaceRequest({} as WorkspaceRequest)
-          navigate('/')
         }
       })
       .catch(error => {
