@@ -1,27 +1,18 @@
-import React, { useState } from 'react'
 import CreateWorkspace from './Components/CreateWorkspace'
 import JoinWorkspace from './Components/JoinWorkspace'
 import { createImage, joinImage } from './Assets'
+import WorkspaceRequest from './Components/WorkspaceRequest'
+import useWorkspaceProcessMain from './Hooks/useWorkspaceProcessMain'
 
 function WorkspaceProcessMain() {
-  const [choice, setChoice] = useState<string | null>(null)
-  const [errorMsg, setErrorMsg] = useState('')
-  const [show, setShow] = useState('')
-
-  function choose(event: React.MouseEvent<HTMLDivElement>, choice: string) {
-    setChoice(choice)
-    setErrorMsg('')
-  }
-
-  function submitChoice() {
-    if (choice === 'create') {
-      setShow('create')
-    } else if (choice === 'join') {
-      setShow('join')
-    } else {
-      setErrorMsg('Please choose option')
-    }
-  }
+  const {
+    errorMsg,
+    choice,
+    show,
+    submitChoice,
+    choose,
+    setShow
+  } = useWorkspaceProcessMain()
 
   return (
     <div className='workspace-container'>
@@ -51,3 +42,9 @@ function WorkspaceProcessMain() {
 }
 
 export default WorkspaceProcessMain
+
+export function WorkspaceRequestMain() {
+  return (
+    <WorkspaceRequest />
+  )
+}
