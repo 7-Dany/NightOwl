@@ -59,8 +59,6 @@ export const createUser = async (
     const user = await usersModel.create(newUser)
     const token = jwt.sign({ user: user }, config.token as unknown as string)
     request.session.user = { ...user, token }
-    request.session.workspaceRequest = null
-    request.session.workspace = null
     response.status(201).json({
       statue: 'Success',
       data: {
@@ -108,7 +106,7 @@ export const updateUser = async (
   }
 }
 
-export const changePassword = async (
+export const updatePassword = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -122,7 +120,7 @@ export const changePassword = async (
       // @ts-ignore
       const email = decode['user'].email
       console.log(email)
-      const getUserPassword = await usersModel.showPassword(email)
+      const getUserPassword = await usersModel.showPasswordByEmail(email)
       const checkPassword = compareSync(password + config.pepper, getUserPassword.password)
       if (checkPassword) {
         response.status(409).json({
@@ -168,7 +166,7 @@ export const checkEmailExistence = async (
   }
 }
 
-export const forgotPassword = async (
+export const updateForgottenPassword = async (
   request: Request,
   response: Response,
   next: NextFunction
@@ -224,13 +222,33 @@ export const userSession = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { user, workspace } = request.session
-    if (user.token) {
-      response.status(200).json({
-        status: 'Success',
-        data: { user: { ...user }, workspace: { ...workspace } },
-        message: 'User session got retrieved successfully'
-      })
+    const { user } = request.session
+    if (user) {
+      const checkWorkspace = await workspaceMemberModel.showByUserId(user.id)
+      if (checkWorkspace) {
+        response.status(200).json({
+          status: 'Success',
+          data: { user: { ...user }, workspace: { ...checkWorkspace } },
+          message: 'User session got retrieved successfully'
+        })
+        return
+      } else {
+        const checkRequest = await workspaceRequestsModel.showByUserId(user.id)
+        if (checkRequest) {
+          response.status(200).json({
+            status: 'Success',
+            data: { user: { ...user }, workspaceRequest: { ...checkRequest } },
+            message: 'User session got retrieved successfully'
+          })
+          return
+        } else {
+          response.status(200).json({
+            status: 'Success',
+            data: { user: { ...user } },
+            message: 'User session got retrieved successfully'
+          })
+        }
+      }
     } else {
       response.status(204).json({ status: 'failed', message: 'User session is not exist' })
     }
@@ -238,10 +256,9 @@ export const userSession = async (
   }
 }
 
-export const deleteSession = async (request: Request, response: Response, next: NextFunction) => {
+export const deleteUserSession = async (request: Request, response: Response, next: NextFunction) => {
   try {
     request.session.user = null
-    request.session.workspace = null
     response.status(202).json({
       status: 'Success',
       message: 'User session got deleted successfully'
@@ -268,10 +285,8 @@ export const authenticateUser = async (
         return
       } else {
         request.session.user = { ...authenticatedUser, token }
-        const workspaceMember = await workspaceMemberModel.showByUser(authenticatedUser.id as string)
+        const workspaceMember = await workspaceMemberModel.showByUserId(authenticatedUser.id as string)
         if (workspaceMember) {
-          request.session.workspace = { ...workspaceMember }
-          request.session.workspaceRequest = null
           response.status(200).json({
             status: 'Success',
             data: { user: { ...authenticatedUser, token }, workspace: { ...workspaceMember } },
@@ -279,10 +294,9 @@ export const authenticateUser = async (
           })
           return
         }
-        const workspaceMemberRequest = await workspaceRequestsModel.showByUser(authenticatedUser.id as string)
-        if (workspaceMemberRequest) {
-          request.session.workspaceRequest = { ...workspaceMemberRequest }
-          request.session.workspace = null
+        const workspaceMemberRequest = await workspaceRequestsModel.showByUserId(authenticatedUser.id as string)
+        console.log(workspaceMemberRequest)
+        if (workspaceMemberRequest?.id) {
           response.status(200).json({
             status: 'Success',
             data: { user: { ...authenticatedUser, token }, workspaceRequest: { ...workspaceMemberRequest } },
@@ -290,8 +304,6 @@ export const authenticateUser = async (
           })
           return
         }
-        request.session.workspace = null
-        request.session.workspaceRequest = null
         response.status(200).json({
           status: 'Success',
           data: { user: { ...authenticatedUser, token } },
