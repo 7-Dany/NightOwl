@@ -10,42 +10,11 @@ import {
   ChatIcon,
   Logout
 } from '../Assets'
-import { NavLink, useNavigate } from 'react-router-dom'
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../Context/auth.context'
-import { deleteUserSession } from '../Api/users.api'
-import { AuthUser, Workspace } from '../Types'
+import { NavLink } from 'react-router-dom'
+import useLogout from '../Hooks/useLogout'
 
 function WorkspaceSidebar() {
-  const [logout, setLogout] = useState(false)
-  const { user, setUser, setWorkspace } = useContext(AuthContext)
-  const navigate = useNavigate()
-
-  function logoutUser(event: React.MouseEvent<HTMLDivElement>) {
-    setLogout(true)
-  }
-
-  useEffect(() => {
-    const controller = new AbortController()
-    if (logout) {
-      deleteUserSession({ controller, token: user.token })
-        .then(data => {
-          setUser({} as AuthUser)
-          setWorkspace({} as Workspace)
-          setLogout(false)
-          navigate('/')
-        })
-        .catch(error => {
-          setUser({} as AuthUser)
-          setWorkspace({} as Workspace)
-          setLogout(false)
-          navigate('/')
-        })
-    }
-    return () => {
-      controller.abort()
-    }
-  }, [logout])
+  const { logoutUser } = useLogout()
 
   return (
     <div className='sidebar'>
