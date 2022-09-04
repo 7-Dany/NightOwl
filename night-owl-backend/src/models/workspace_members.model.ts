@@ -21,7 +21,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async show(workspaceId: string): Promise<WorkspaceMember[]> {
+  async showByWorkspaceId(workspaceId: string): Promise<WorkspaceMember[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT u.id, u.username, u.email, u.image, wm.role
@@ -36,7 +36,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async showByUser(userId: string): Promise<WorkspaceMember> {
+  async showByUserId(userId: string): Promise<WorkspaceMember> {
     try {
       const connect = await database.connect()
       const sql = `SELECT workspace_id, name, role

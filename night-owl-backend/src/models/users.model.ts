@@ -39,7 +39,7 @@ export class UsersModel {
     }
   }
 
-  async showPassword(email: string): Promise<User> {
+  async showPasswordByEmail(email: string): Promise<User> {
     try {
       const connect = await database.connect()
       const sql = `SELECT password

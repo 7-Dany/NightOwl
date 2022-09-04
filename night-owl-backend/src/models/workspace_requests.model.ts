@@ -4,7 +4,6 @@ export type WorkspaceRequest = {
   id?: string
   user_id: string
   workspace_id: string
-  state: string
 }
 
 export class WorkspaceRequestsModel {
@@ -21,10 +20,10 @@ export class WorkspaceRequestsModel {
     }
   }
 
-  async show(workspaceId: string): Promise<WorkspaceRequest[]> {
+  async showByWorkspaceId(workspaceId: string): Promise<WorkspaceRequest[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT u.id, u.username, u.email, u.image, state
+      const sql = `SELECT u.id userId, u.username, u.email, u.image
                    FROM workspace_requests
                             INNER JOIN users u on u.id = workspace_requests.user_id
                    WHERE workspace_id = $1`
@@ -36,10 +35,10 @@ export class WorkspaceRequestsModel {
     }
   }
 
-  async showByUser(userId: string): Promise<WorkspaceRequest> {
+  async showByUserId(userId: string): Promise<WorkspaceRequest> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT wr.id, workspace_id, name, state
+      const sql = `SELECT wr.id, workspace_id, name
                    From workspace_requests wr
                             INNER JOIN workspaces w on w.id = wr.workspace_id
                    WHERE user_id = $1 `
@@ -54,10 +53,10 @@ export class WorkspaceRequestsModel {
   async create(request: WorkspaceRequest): Promise<WorkspaceRequest> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO workspace_requests (user_id, workspace_id, state)
-                   VALUES ($1, $2, $3)
+      const sql = `INSERT INTO workspace_requests (user_id, workspace_id)
+                   VALUES ($1, $2)
                    RETURNING *`
-      const results = await connect.query(sql, [request.user_id, request.workspace_id, request.state])
+      const results = await connect.query(sql, [request.user_id, request.workspace_id])
       connect.release()
       return results.rows[0]
     } catch (error) {
@@ -65,14 +64,14 @@ export class WorkspaceRequestsModel {
     }
   }
 
-  async delete(id: string): Promise<WorkspaceRequest> {
+  async deleteByUserId(userId: string): Promise<WorkspaceRequest> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
                    FROM workspace_requests
-                   WHERE id = $1
+                   WHERE user_id = $1
                    RETURNING *`
-      const results = await connect.query(sql, [id])
+      const results = await connect.query(sql, [userId])
       connect.release()
       return results.rows[0]
     } catch (error) {
