@@ -1,4 +1,4 @@
-import WorkspaceRequestMain from '../Features/Process/WorkspaceRequestMain'
+import { WorkspaceRequestMain } from '../Features/Process'
 
 function WorkspaceRequestPage() {
   return (
