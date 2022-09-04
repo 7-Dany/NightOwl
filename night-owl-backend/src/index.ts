@@ -34,7 +34,7 @@ app.use(express.json())
 // Adding cookie to save user credentials
 app.use(sessionMiddleware)
 // Using all api routes
-app.use('/api', routes)
+app.use('/', routes)
 // add routing for / path
 app.get('/', (req: Request, res: Response) => {
   res.json({
