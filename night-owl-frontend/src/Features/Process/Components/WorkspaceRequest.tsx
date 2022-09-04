@@ -7,7 +7,7 @@ function WorkspaceRequest() {
 
   return (
     <div className='join-workspace-container'>
-      {workspaceRequest.state &&
+      {workspaceRequest.id &&
         <div className='join-workspace'>
           <div className={'join-workspace__close'} onClick={closeWorkspaceRequest}>
             <Xicon className={'join-workspace__x-icon'} />
