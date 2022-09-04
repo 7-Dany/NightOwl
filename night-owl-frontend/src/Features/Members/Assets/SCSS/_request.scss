@@ -1,3 +1,88 @@
-.request {
+.request-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
 
+.request {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border: 1px solid $Whitish-Gray;
+  width: fit-content;
+  height: 60px;
+  border-radius: 12px;
+  padding-inline: 2rem;
+
+  &__image {
+    width: 32px;
+    height: 32px;
+  }
+
+  &__name {
+  }
+
+  &__email {
+  }
+
+}
+
+.request-choice {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  color: $White;
+  background-color: $Dark-Gray;
+  border-radius: 12px;
+
+  &__text {
+    margin-inline: 2rem;
+  }
+
+  &__accept-btn {
+    width: 100px;
+    height: 40px;
+    background-color: $White-Blue;
+    color: $White;
+    margin-left: 2rem;
+    border-radius: 12px;
+    transition: 300ms all ease-in-out;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $Very-White-Blue;
+    }
+  }
+
+  &__delete-btn {
+    width: 100px;
+    height: 40px;
+    background-color: $Red;
+    color: $White;
+    border: none;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
+    border-radius: 12px;
+    margin-right: 2rem;
+
+    &:hover {
+      background-color: $White-Red;
+    }
+  }
+
+  &::before {
+    content: '';
+    margin: 0;
+    display: block;
+    width: 0;
+    height: 0;
+    border: 9px solid transparent;
+    border-right-color: $Dark-Gray;
+    position: absolute;
+    top: 1.3rem;
+    left: -1.1rem;
+  }
 }
