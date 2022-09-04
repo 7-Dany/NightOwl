@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import { authUser } from '../Api/users.api'
 import { AuthContext } from '../../../Context/auth.context'
 import { useNavigate } from 'react-router-dom'
-import { AuthUser } from '../../../Types'
+import { AuthUser, Workspace, WorkspaceRequest } from '../../../Types'
 
 type UseSignInReturn = {
   formik: FormikProps<{ email: string, password: string }>
@@ -35,15 +35,21 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
             setUser(data.user)
             if (data.workspace) {
               setWorkspace(data.workspace)
+              setWorkspaceRequest({} as WorkspaceRequest)
               navigate('/home')
             } else if (data.workspaceRequest) {
               setWorkspaceRequest(data.workspaceRequest)
+              setWorkspace({} as Workspace)
               navigate('/workspace/request')
             } else {
+              setWorkspace({} as Workspace)
+              setWorkspaceRequest({} as WorkspaceRequest)
               navigate('/workspace')
             }
           } else {
             setUser({} as AuthUser)
+            setWorkspace({} as Workspace)
+            setWorkspaceRequest({} as WorkspaceRequest)
             navigate('/login')
           }
         })
