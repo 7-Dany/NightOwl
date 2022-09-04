@@ -31,8 +31,10 @@ function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceRe
     onSubmit: (values, actions) => {
       setErrorMsg('')
       const controller = new AbortController()
-      const val = { workspace_id: values.workspaceId, user_id: user.id, token: user.token }
-      createWorkspaceRequest({ controller, values: val })
+      createWorkspaceRequest({
+        controller,
+        values: { workspace_id: values.workspaceId, user_id: user.id, token: user.token }
+      })
         .then(data => {
           setWorkspaceRequest(data as WorkspaceRequest)
           navigate('/workspace/request')

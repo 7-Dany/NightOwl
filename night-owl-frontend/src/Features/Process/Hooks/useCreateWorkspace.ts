@@ -26,7 +26,10 @@ function useCreateWorkspace({ setShow }: UseCreateWorkspaceArgs): UseCreateWorks
     }),
     onSubmit: (values, actions) => {
       const controller = new AbortController()
-      createWorkspace({ controller, values: { user_id: user.id, name: values.name, token: user.token } })
+      createWorkspace({
+        controller,
+        values: { user_id: user.id, name: values.name, token: user.token }
+      })
         .then(data => {
           setWorkspace(data)
           setErrorMsg('')

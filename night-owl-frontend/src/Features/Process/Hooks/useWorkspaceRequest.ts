@@ -13,7 +13,10 @@ function useWorkspaceRequest() {
   useEffect(() => {
     const controller = new AbortController()
     if (deleteRequest) {
-      deleteWorkspaceRequest({ controller, values: { id: workspaceRequest.id, token: user.token } })
+      deleteWorkspaceRequest({
+        controller,
+        values: { id: user.id, token: user.token }
+      })
         .then(data => {
           setErrorMsg('Your request got deleted')
           setWorkspaceRequest({} as WorkspaceRequest)
