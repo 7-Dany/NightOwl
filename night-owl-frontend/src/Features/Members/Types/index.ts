@@ -8,7 +8,7 @@ export type WorkspaceMember = {
 }
 
 export type WorkspaceRequest = {
-  id: string
+  userid: string
   image: string
   username: string
   email: string
