@@ -5,8 +5,6 @@ import { Socket } from 'socket.io'
 declare module 'express-session' {
   interface SessionData {
     user?: any
-    workspace?: any
-    workspaceRequest?: any
   }
 }
 
