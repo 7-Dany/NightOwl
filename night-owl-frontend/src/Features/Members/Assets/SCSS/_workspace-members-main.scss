@@ -1,9 +1,14 @@
 @import "workspace-members", "member", "workspace-requests", "request";
 
-.workspace-members-container {
+.workspace-members-main-container {
   grid-row: 2 /-1;
   grid-column: 2/-1;
   width: 100%;
+}
+
+.workspace-choice-container {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +16,7 @@
   position: relative;
 }
 
-.workspace-members {
+.workspace-choice {
   width: 300px;
   height: 300px;
   border: 1px solid $Whitish-Gray;
@@ -50,7 +55,7 @@
   &:hover {
     border-color: $Very-White-Blue;
 
-    .workspace-members__counts {
+    .workspace-choice__counts {
       background-color: $Very-White-Blue;
     }
   }
@@ -60,7 +65,7 @@
   position: absolute;
   top: 2rem;
   right: 1rem;
-  border: 1px solid $White-Blue;
+  border: 1px solid $Whitish-Gray;
   border-radius: 12px;
   padding: 2rem;
   transition: 300ms all ease-in-out;
@@ -77,11 +82,12 @@
   }
 
   &__title {
-
+    color: $White;
+    transition: 300ms all ease-in-out;
   }
 
   &__icon {
-    fill: $White-Blue;
+    fill: $Whitish-Gray;
     transition: 300ms all ease-in-out;
   }
 
