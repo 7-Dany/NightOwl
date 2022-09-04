@@ -17,11 +17,10 @@ export type WorkspaceRequest = {
   id: string
   name: string
   workspace_id: string
-  state: string
 }
 
 export type UserWithWorkspace = {
   user: AuthUser
   workspace?: Workspace
-  workspaceRequest: WorkspaceRequest
+  workspaceRequest?: WorkspaceRequest
 }
