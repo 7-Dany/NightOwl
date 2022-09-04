@@ -8,9 +8,35 @@
   margin: 2rem 0;
 }
 
-.members-title {
+.members-back {
   align-self: flex-start;
   margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid $Whitish-Gray;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+
+  &__icon {
+    fill: $White;
+    transition: 300ms all ease-in-out;
+  }
+
+  &:hover {
+    border: 1px solid $Very-White-Blue;
+    color: $Very-White-Blue;
+
+    .members-back__icon {
+      fill: $Very-White-Blue;
+    }
+  }
+}
+
+.members-title {
+  width: 80%;
 
   h2 {
     margin: 1rem 0;
