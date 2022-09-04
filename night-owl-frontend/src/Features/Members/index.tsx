@@ -1,65 +1,54 @@
-import { membersImage, requestImage } from './Assets'
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/auth.context'
-import CopyIcon from './Assets/images/CopyIcon'
-import { WorkspaceMember, WorkspaceRequest } from './Types'
-import { getMembersAndRequests } from './Api/workspace.api'
+import { membersImage, requestImage, CopyIcon } from './Assets'
 import WorkspaceMembers from './Components/WorkspaceMembers'
+import WorkspaceRequests from './Components/WorkspaceRequests'
+import useWorkspaceMemberMain from './Hooks/useWorkspaceMemberMain'
 
 function WorkspaceMembersMain() {
-  const { workspace, user } = useContext(AuthContext)
-  const [copiedMsg, setCopiedMsg] = useState('workspace-id__hidden-msg')
-  const [members, setMembers] = useState<WorkspaceMember[]>([])
-  const [requests, setRequests] = useState<WorkspaceRequest[]>([])
-
-  function copyText(event: React.MouseEvent<HTMLDivElement>) {
-    navigator.clipboard.writeText(workspace.workspace_id)
-      .then(data => {
-        setCopiedMsg('workspace-id__active-msg')
-        setTimeout(() => {
-          setCopiedMsg('workspace-id__hidden-msg')
-        }, 1000)
-      })
-  }
-
-  useEffect(() => {
-    const controller = new AbortController()
-    getMembersAndRequests({ controller, workspace_id: workspace.workspace_id, token: user.token })
-      .then(data => {
-        if (data) {
-          setRequests(data.requests)
-          setMembers(data.members)
-        } else {
-          setRequests([])
-          setMembers([])
-        }
-      })
-      .catch(error => {
-        setRequests([])
-        setMembers([])
-      })
-    return () => {
-      controller.abort()
-    }
-  }, [])
+  const {
+    copiedMsg,
+    members,
+    requests,
+    workspace,
+    show,
+    showRequestsOrMembers,
+    copyText
+  } = useWorkspaceMemberMain()
 
   return members && requests ? (
-    <div className='workspace-members-container'>
-      <div className='workspace-members'>
-        <div className='workspace-members__counts'>{members.length}</div>
-        <img src={membersImage} alt='2 guys having discussion' className='workspace-members__img' />
-        <h2 className='workspace-members__title'>Members</h2>
-      </div>
-      <div className='workspace-members'>
-        <div className='workspace-members__counts'>{requests.length}</div>
-        <img src={requestImage} alt='2 guys having discussion' className='workspace-members__img' />
-        <h2 className='workspace-members__title'>Requests</h2>
-      </div>
-      <div className='workspace-id' onClick={copyText}>
-        <h3 className='workspace-id__title'>ID: {workspace.workspace_id}</h3>
-        <CopyIcon className={'workspace-id__icon'} />
-        <span className={copiedMsg}>Copied! <span className='arrow'></span></span>
-      </div>
+    <div className='workspace-members-main-container'>
+      {show === 'main' &&
+        <div className='workspace-choice-container'>
+          <div className='workspace-choice'
+               onClick={(event) => {
+                 showRequestsOrMembers(event, 'members')
+               }}
+          >
+            <div className='workspace-choice__counts'>{members.length}</div>
+            <img src={membersImage} alt='2 guys having discussion' className='workspace-choice__img' />
+            <h2 className='workspace-choice__title'>Members</h2>
+          </div>
+          <div className='workspace-choice'
+               onClick={(event) => {
+                 showRequestsOrMembers(event, 'requests')
+               }}
+          >
+            <div className='workspace-choice__counts'>{requests.length}</div>
+            <img src={requestImage} alt='2 guys having discussion' className='workspace-choice__img' />
+            <h2 className='workspace-choice__title'>Requests</h2>
+          </div>
+          <div className='workspace-id' onClick={copyText}>
+            <h3 className='workspace-id__title'>ID: {workspace.workspace_id}</h3>
+            <CopyIcon className={'workspace-id__icon'} />
+            <span className={copiedMsg}>Copied! <span className='arrow'></span></span>
+          </div>
+        </div>
+      }
+      {show === 'members' &&
+        <WorkspaceMembers members={members} showRequestsOrMembers={showRequestsOrMembers} />
+      }
+      {show === 'requests' &&
+        <WorkspaceRequests requests={requests} showRequestsOrMembers={showRequestsOrMembers} />
+      }
     </div>
   ) : (
     <h1>loading</h1>
