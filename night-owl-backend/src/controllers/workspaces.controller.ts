@@ -37,8 +37,8 @@ export const getWorkspaceMembersAndRequests = async (request: Request, response:
     const workspaceId = request.params.id
     const checkWorkspace = await workspacesModel.show(workspaceId)
     if (checkWorkspace) {
-      const workspaceMembers = await workspaceMembersModel.show(workspaceId)
-      const workspaceRequests = await workspaceRequestsModel.show(workspaceId)
+      const workspaceMembers = await workspaceMembersModel.showByWorkspaceId(workspaceId)
+      const workspaceRequests = await workspaceRequestsModel.showByWorkspaceId(workspaceId)
       response.status(200).json({
         status: 'Success',
         data: { requests: [...workspaceRequests], members: [...workspaceMembers] },

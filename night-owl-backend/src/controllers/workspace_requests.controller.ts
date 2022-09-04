@@ -1,4 +1,4 @@
-import { WorkspaceRequestsModel, WorkspacesModel } from '../models'
+import { WorkspaceRequestsModel, WorkspacesModel, WorkspaceMembersModel } from '../models'
 import { Request, Response, NextFunction } from 'express'
 import { StatusError } from '../middlewares/error.middleware'
 
@@ -20,7 +20,7 @@ export const getAllWorkspaceRequests = async (request: Request, response: Respon
 export const getWorkspaceRequest = async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id
-    const workspaceRequest = await workspaceRequestsModel.show(id)
+    const workspaceRequest = await workspaceRequestsModel.showByWorkspaceId(id)
     response.status(200).json({
       status: 'Success',
       data: { ...workspaceRequest },
@@ -35,8 +35,7 @@ export const createWorkspaceRequest = async (request: Request, response: Respons
   try {
     const workspaceRequest = {
       user_id: request.body.user_id,
-      workspace_id: request.body.workspace_id,
-      state: 'hold'
+      workspace_id: request.body.workspace_id
     }
     const checkWorkspace = await workspacesModel.show(workspaceRequest.workspace_id)
     if (checkWorkspace) {
@@ -61,8 +60,7 @@ export const createWorkspaceRequest = async (request: Request, response: Respons
 export const deleteWorkspaceRequest = async (request: Request, response: Response, next: NextFunction) => {
   try {
     const id = request.params.id
-    const deletedWorkspaceRequest = await workspaceRequestsModel.delete(id)
-    request.session.workspaceRequest = null
+    const deletedWorkspaceRequest = await workspaceRequestsModel.deleteByUserId(id)
     response.status(202).json({
       status: 'Success',
       data: { ...deletedWorkspaceRequest },
