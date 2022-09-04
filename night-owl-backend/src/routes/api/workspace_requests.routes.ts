@@ -4,16 +4,16 @@ import {
   createWorkspaceRequest,
   getAllWorkspaceRequests,
   getWorkspaceRequest,
-  deleteWorkspaceRequest
+  deleteWorkspaceRequest,
 } from '../../controllers/workspace_requests.controller'
 
 const workspaceRequestsRoutes = Router()
 
-workspaceRequestsRoutes.route('/')
+workspaceRequestsRoutes.route('/workspace/requests')
   .get(authTokenMiddleware, getAllWorkspaceRequests)
   .post(authTokenMiddleware, createWorkspaceRequest)
 
-workspaceRequestsRoutes.route('/:id')
+workspaceRequestsRoutes.route('/workspace/requests/:id')
   .get(authTokenMiddleware, getWorkspaceRequest)
   .delete(authTokenMiddleware, deleteWorkspaceRequest)
 

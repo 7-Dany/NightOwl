@@ -1,13 +1,16 @@
 import { Router } from 'express'
 import {
   authenticateUser,
-  changePassword,
-  checkEmailExistence, createUser, deleteSession,
+  updatePassword,
+  checkEmailExistence,
+  createUser,
+  deleteUserSession,
   deleteUser,
-  forgotPassword,
+  updateForgottenPassword,
   getAllUsers,
   getUser,
-  updateUser, userSession
+  updateUser,
+  userSession
 } from '../../controllers/users.controller'
 import {
   authTokenMiddleware,
@@ -20,29 +23,29 @@ import {
 
 const usersRoutes = Router()
 
-usersRoutes.route('/')
+usersRoutes.route('/users')
   .get(authTokenMiddleware, getAllUsers)
   .post(rateLimiterMiddleware, validateSignUpMiddleware, createUser)
-  .patch(authTokenMiddleware, changePassword)
+  .patch(authTokenMiddleware, updatePassword)
   .delete(authTokenMiddleware, deleteUser)
 
-usersRoutes.route('/:id')
+usersRoutes.route('/users/:id')
   .get(authTokenMiddleware, getUser)
   .put(authTokenMiddleware, updateUser)
 
-usersRoutes.route('/check')
+usersRoutes.route('/users/check')
   .post(checkEmailExistence)
 
-usersRoutes.route('/reset')
-  .patch(resetPasswordTokenMiddleware, forgotPassword)
+usersRoutes.route('/users/reset')
+  .patch(resetPasswordTokenMiddleware, updateForgottenPassword)
 
-usersRoutes.route('/auth')
+usersRoutes.route('/users/auth')
   .post(rateLimiterMiddleware, validateLoginMiddleware, authenticateUser)
 
-usersRoutes.route('/auth/session')
+usersRoutes.route('/users/auth/session')
   .get(userSession)
 
-usersRoutes.route('/auth/logout')
-  .get(authTokenMiddleware, deleteSession)
+usersRoutes.route('/users/auth/logout')
+  .get(authTokenMiddleware, deleteUserSession)
 
 export default usersRoutes

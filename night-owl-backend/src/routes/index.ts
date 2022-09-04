@@ -3,10 +3,10 @@ import { usersRoutes, workspacesRoutes, workspaceMembersRoutes, workspaceRequest
 
 const routes = Router()
 
-routes.use('/users', usersRoutes)
-routes.use('/workspaces', workspacesRoutes)
-routes.use('/workspace/members', workspaceMembersRoutes)
-routes.use('/workspace/requests', workspaceRequestsRoutes)
+routes.use('/api', usersRoutes)
+routes.use('/api', workspacesRoutes)
+routes.use('/api', workspaceMembersRoutes)
+routes.use('/api', workspaceRequestsRoutes)
 
 routes.get('/api', (req: Request, res: Response) => {
   res.send('Hello from api')

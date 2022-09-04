@@ -10,10 +10,10 @@ import {
 
 const workspaceMembersRoutes = Router()
 
-workspaceMembersRoutes.route('/')
+workspaceMembersRoutes.route('/workspace/members')
   .get(authTokenMiddleware, getAllWorkspaceMembers)
   .delete(authTokenMiddleware, deleteWorkspaceMember)
-workspaceMembersRoutes.route('/:id')
+workspaceMembersRoutes.route('/workspace/members/:id')
   .get(authTokenMiddleware, getWorkspaceMembers)
   .post(authTokenMiddleware, createWorkspaceMember)
 
