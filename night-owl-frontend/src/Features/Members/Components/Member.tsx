@@ -1,9 +1,11 @@
 import { ChatIcon, DotsIcons } from '../../../Assets'
-import { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
+import { socket } from '../../../socket'
+import { useNavigate } from 'react-router-dom'
 
 type MemberProps = {
-  id: string
+  memberId: string
   image: string
   name: string
   email: string
@@ -12,8 +14,27 @@ type MemberProps = {
   timezone: string
 }
 
-function Member({ id, image, name, projects, timezone, email, role }: MemberProps) {
+function Member({ memberId, image, name, projects, timezone, email, role }: MemberProps) {
   const { user } = useContext(AuthContext)
+  const [activeChat, setActiveChat] = useState(false)
+  const navigate = useNavigate()
+
+  function openChat(event: React.MouseEvent<HTMLDivElement>) {
+    setActiveChat(true)
+  }
+
+  useEffect(() => {
+    if (activeChat) {
+      socket.connect()
+      socket.emit('create_conversation', { userId: user.id, memberId }, () => {
+        navigate('/chat')
+      })
+    }
+    return () => {
+      socket.removeListener('create_conversation')
+    }
+  }, [activeChat])
+
   return (
     <div className='member'>
       <img src={image} alt='person' className='member__image' />
@@ -23,7 +44,9 @@ function Member({ id, image, name, projects, timezone, email, role }: MemberProp
       <p className='member__role'>{role}</p>
       <p className='member__timezone'>{timezone}</p>
       {user.email !== email ?
-        <ChatIcon className={'member__chat'} /> :
+        <div className='member__option-container' onClick={openChat}>
+          <ChatIcon className={'member__chat'} />
+        </div> :
         <p className='member__active'>You</p>
       }
     </div>
