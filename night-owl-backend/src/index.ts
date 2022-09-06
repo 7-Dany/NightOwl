@@ -15,6 +15,7 @@ import {
   corsConfig,
   authorizeUser
 } from './middlewares'
+import { createPrivateConversation, getAllConversationForUser } from './controllers/conversation_members.controller'
 
 // Listening to default port
 const PORT = config.port || 4000
@@ -46,10 +47,18 @@ app.get('/', (req: Request, res: Response) => {
 io.use(wrap(sessionMiddleware))
 // authorize user middleware to prevent connection
 io.use(authorizeUser)
+
 io.on('connect', (defaultSocket: Socket) => {
   const socket = <SessionSocket>defaultSocket
-  console.log(socket.user)
+  socket.on('create_conversation', createPrivateConversation)
+  socket.on('get_conversations', (data, callBack) => {
+    getAllConversationForUser(data, callBack)
+      .then(data => {
+        socket.emit('receive_conversations', { conversations: data })
+      })
+  })
 })
+
 // Using error middleware to send status and message in json data
 app.use(errorMiddleware)
 // Using page not found middleware to send 404 if in case the route not exist
