@@ -47,6 +47,20 @@ export class ConversationsModel {
     }
   }
 
+  async createPrivateConversation(): Promise<Conversation> {
+    try {
+      const connect = await database.connect()
+      const sql = `INSERT INTO conversations (name)
+                   VALUES ($1)
+                   RETURNING id conversation_id, name`
+      const results = await connect.query(sql, [null])
+      connect.release()
+      return results.rows[0]
+    } catch (error) {
+      throw new Error(`Unable to create conversation, ${(error as Error).message}`)
+    }
+  }
+
   async update(id: string, name: string): Promise<Conversation> {
     try {
       const connect = await database.connect()
