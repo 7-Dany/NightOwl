@@ -35,10 +35,20 @@
     flex: 1 1 10%;
   }
 
-  &__chat {
+  &__option-container {
     flex: 1 1 10%;
-    fill: $Grayish-White;
     cursor: pointer;
+
+    &:hover {
+      .member__chat {
+        fill: $Very-White-Blue;
+      }
+    }
+  }
+
+  &__chat {
+    fill: $Grayish-White;
+    transition: 300ms all ease-in-out;
   }
 
   &__active {
