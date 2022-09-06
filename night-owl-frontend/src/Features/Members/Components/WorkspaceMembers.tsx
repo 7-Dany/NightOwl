@@ -14,7 +14,7 @@ function WorkspaceMembers({ members, showRequestsOrMembers }: WorkspaceMembersPr
     return (
       <Member
         key={member.id}
-        id={member.id}
+        memberId={member.id}
         image={member.image}
         name={member.username}
         email={member.email}
