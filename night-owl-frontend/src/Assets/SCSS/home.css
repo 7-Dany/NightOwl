@@ -624,10 +624,16 @@
 .member__timezone {
   flex: 1 1 10%;
 }
-.member__chat {
+.member__option-container {
   flex: 1 1 10%;
-  fill: #2B2A32;
   cursor: pointer;
+}
+.member__option-container:hover .member__chat {
+  fill: #5896FF;
+}
+.member__chat {
+  fill: #2B2A32;
+  transition: 300ms all ease-in-out;
 }
 .member__active {
   flex: 1 1 10%;
@@ -1007,7 +1013,7 @@
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-  max-height: 73vh;
+  min-height: 73vh;
   row-gap: 1rem;
   padding: 1.5rem;
 }
@@ -1097,6 +1103,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 .team-channel__name-and-image {
   display: flex;
@@ -1199,6 +1206,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 .private-channel__name-and-image {
   display: grid;
