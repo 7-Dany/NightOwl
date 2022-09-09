@@ -4,7 +4,8 @@ import {
   getAllWorkspaces,
   getWorkspace,
   deleteWorkspace,
-  getWorkspaceMembersAndRequests
+  getWorkspaceMembersAndRequests,
+  updateWorkspaceName
 } from '../../controllers/workspaces.controller'
 import { authTokenMiddleware } from '../../middlewares'
 
@@ -16,6 +17,7 @@ workspacesRoutes.route('/workspaces')
 
 workspacesRoutes.route('/workspaces/:id')
   .get(authTokenMiddleware, getWorkspace)
+  .patch(authTokenMiddleware, updateWorkspaceName)
   .delete(authTokenMiddleware, deleteWorkspace)
 
 workspacesRoutes.route('/workspaces/members/requests/:id')
