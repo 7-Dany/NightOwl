@@ -21,6 +21,6 @@ export async function deleteWorkspaceRequest({
     withCredentials: true,
     signal: controller.signal
   }
-  const response = await axios.delete(`${url}/workspace/requests/${values.userId}`, config)
+  const response = await axios.delete(`${url}/workspace/requests/user/${values.userId}`, config)
   return response.data.data
 }
