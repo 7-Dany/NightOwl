@@ -21,6 +21,20 @@ export class WorkspaceMembersModel {
     }
   }
 
+  async show(id: string): Promise<WorkspaceMember> {
+    try {
+      const connect = await database.connect()
+      const sql = `SELECT *
+                   FROM workspace_members
+                   WHERE id = $1`
+      const results = await connect.query(sql, [id])
+      connect.release()
+      return results.rows[0]
+    } catch (error) {
+      throw new Error(`Unable to show workspace member by id, ${(error as Error).message}`)
+    }
+  }
+
   async showByWorkspaceId(workspaceId: string): Promise<WorkspaceMember[]> {
     try {
       const connect = await database.connect()
@@ -32,7 +46,7 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows
     } catch (error) {
-      throw new Error(`Unable to get all workspaces, ${(error as Error).message}`)
+      throw new Error(`Unable to show workspace members by workspace id, ${(error as Error).message}`)
     }
   }
 
@@ -47,7 +61,7 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get workspace member by user id, ${(error as Error).message}`)
+      throw new Error(`Unable to show workspace member by user id, ${(error as Error).message}`)
     }
   }
 
@@ -61,7 +75,7 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get all workspaces, ${(error as Error).message}`)
+      throw new Error(`Unable to create workspace member, ${(error as Error).message}`)
     }
   }
 
@@ -76,11 +90,11 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to delete workspaces, ${(error as Error).message}`)
+      throw new Error(`Unable to delete workspace member by id, ${(error as Error).message}`)
     }
   }
 
-  async deleteWorkspaceMembers(workspaceId: string): Promise<WorkspaceMember[]> {
+  async deleteByWorkspaceId(workspaceId: string): Promise<WorkspaceMember[]> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -91,11 +105,11 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows
     } catch (error) {
-      throw new Error(`Unable to delete all members for workspace, ${(error as Error).message}`)
+      throw new Error(`Unable to delete all workspace members for workspace id, ${(error as Error).message}`)
     }
   }
 
-  async deleteMember(userId: string): Promise<WorkspaceMember> {
+  async deleteByUserId(userId: string): Promise<WorkspaceMember> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -106,7 +120,7 @@ export class WorkspaceMembersModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to delete workspace member, ${(error as Error).message}`)
+      throw new Error(`Unable to delete workspace member by user id, ${(error as Error).message}`)
     }
   }
 }
