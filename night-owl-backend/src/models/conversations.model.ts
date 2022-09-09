@@ -1,15 +1,16 @@
 import database from '../database'
 
 export type Conversation = {
-  id?: string
+  conversation_id?: string
   name: string
+  type: string
 }
 
 export class ConversationsModel {
   async index(): Promise<Conversation[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
+      const sql = `SELECT id AS conversation_id, name, type
                    FROM conversations`
       const results = await connect.query(sql)
       connect.release()
@@ -22,24 +23,24 @@ export class ConversationsModel {
   async show(id: string): Promise<Conversation> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
+      const sql = `SELECT id AS conversation_id, name, type
                    FROM conversations
                    WHERE id = $1`
       const results = await connect.query(sql, [id])
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get conversation, ${(error as Error).message}`)
+      throw new Error(`Unable to show conversation by id, ${(error as Error).message}`)
     }
   }
 
-  async create(name: string): Promise<Conversation> {
+  async create(name: string, type: string): Promise<Conversation> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO conversations (name)
-                   VALUES ($1)
-                   RETURNING id, name`
-      const results = await connect.query(sql, [name])
+      const sql = `INSERT INTO conversations (name, type)
+                   VALUES ($1, $2)
+                   RETURNING id AS conversation_id, name, type`
+      const results = await connect.query(sql, [name, type])
       connect.release()
       return results.rows[0]
     } catch (error) {
@@ -50,14 +51,14 @@ export class ConversationsModel {
   async createPrivateConversation(): Promise<Conversation> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO conversations (name)
-                   VALUES ($1)
-                   RETURNING id conversation_id, name`
-      const results = await connect.query(sql, [null])
+      const sql = `INSERT INTO conversations (name, type)
+                   VALUES ($1, $2)
+                   RETURNING id conversation_id, name, type`
+      const results = await connect.query(sql, [null, 'Private'])
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to create conversation, ${(error as Error).message}`)
+      throw new Error(`Unable to create private conversation, ${(error as Error).message}`)
     }
   }
 
@@ -67,12 +68,12 @@ export class ConversationsModel {
       const sql = `UPDATE conversations
                    SET name=$1
                    WHERE id = $2
-                   RETURNING id, name`
+                   RETURNING id AS conversation_id, name, type`
       const results = await database.query(sql, [name, id])
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to update conversation, ${(error as Error).message}`)
+      throw new Error(`Unable to update conversation's name, ${(error as Error).message}`)
     }
   }
 
@@ -82,12 +83,12 @@ export class ConversationsModel {
       const sql = `DELETE
                    FROM conversations
                    WHERE id = $1
-                   RETURNING *`
+                   RETURNING id AS conversation_id, name, type`
       const results = await connect.query(sql, [id])
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to delete conversations, ${(error as Error).message}`)
+      throw new Error(`Unable to delete conversation by id, ${(error as Error).message}`)
     }
   }
 }
