@@ -52,6 +52,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
       .catch(error => {
         setUser({} as AuthUser)
         setWorkspace({} as Workspace)
+        setWorkspaceRequest({} as WorkspaceRequest)
       })
     return () => {
       controller.abort()
