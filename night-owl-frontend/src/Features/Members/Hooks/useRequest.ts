@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
-import { createWorkspaceMember } from '../Api/workspace_members'
+import { createWorkspaceMember } from '../Api/workspace_members.api'
 import { deleteWorkspaceRequest } from '../Api/workspace_requests.api'
 
 type UseRequestArgs = {
