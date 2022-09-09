@@ -4,7 +4,11 @@ import { WorkspaceMembersModel, WorkspaceRequestsModel } from '../models'
 const workspaceMembersModel = new WorkspaceMembersModel()
 const workspaceRequestsModel = new WorkspaceRequestsModel()
 
-export const getAllWorkspaceMembers = async (request: Request, response: Response, next: NextFunction) => {
+export const getAllWorkspaceMembers = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const workspaceMembers = await workspaceMembersModel.index()
     response.status(200).json({
@@ -17,13 +21,17 @@ export const getAllWorkspaceMembers = async (request: Request, response: Respons
   }
 }
 
-export const getWorkspaceMembers = async (request: Request, response: Response, next: NextFunction) => {
+export const getWorkspaceMembers = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id = request.params.id
     const workspaceMembers = await workspaceMembersModel.showByWorkspaceId(id)
     response.status(200).json({
       status: 'Success',
-      data: [...workspaceMembers],
+      data: { ...workspaceMembers },
       message: 'All workspace members got retrieved successfully'
     })
   } catch (error) {
@@ -31,10 +39,14 @@ export const getWorkspaceMembers = async (request: Request, response: Response, 
   }
 }
 
-export const createWorkspaceMember = async (request: Request, response: Response, next: NextFunction) => {
+export const createWorkspaceMember = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const workspaceMember = {
-      workspace_id: request.params.id,
+      workspace_id: request.body.workspace_id,
       user_id: request.body.user_id,
       role: request.body.role
     }
@@ -53,10 +65,40 @@ export const createWorkspaceMember = async (request: Request, response: Response
   }
 }
 
-export const deleteWorkspaceMember = async (request: Request, response: Response, next: NextFunction) => {
+export const deleteWorkspaceMember = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const userId = request.body.user_id
-    const deletedWorkspaceMember = await workspaceMembersModel.deleteMember(userId)
+    const id = request.params.id
+    const checkWorkspaceMember = await workspaceMembersModel.show(id)
+    if (checkWorkspaceMember) {
+      const deletedWorkspaceMember = await workspaceMembersModel.delete(id)
+      response.status(202).json({
+        status: 'Success',
+        data: { ...deletedWorkspaceMember },
+        message: 'Workspace got deleted successfully'
+      })
+    } else {
+      response.status(422).json({
+        status: 'Failed',
+        message: 'Workspace member is not exist'
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteWorkspaceMemberByUserId = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = request.params.user_id
+    const deletedWorkspaceMember = await workspaceMembersModel.deleteByUserId(userId)
     response.status(202).json({
       status: 'Success',
       data: { ...deletedWorkspaceMember },
