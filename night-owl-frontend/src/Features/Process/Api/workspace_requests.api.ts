@@ -16,7 +16,7 @@ type CreateWorkspaceRequestArgs = {
 type DeleteWorkspaceRequestsArgs = {
   controller: AbortController
   values: {
-    id: string
+    userId: string
     token: string
   }
 }
@@ -43,6 +43,6 @@ export async function deleteWorkspaceRequest({
     withCredentials: true,
     signal: controller.signal
   }
-  const response = await axios.delete(`${url}/workspace/requests/${values.id}`, config)
+  const response = await axios.delete(`${url}/workspace/requests/user/${values.userId}`, config)
   return response.data.data
 }
