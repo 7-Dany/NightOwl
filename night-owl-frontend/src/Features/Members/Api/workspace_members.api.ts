@@ -23,7 +23,8 @@ export async function createWorkspaceMember({
     withCredentials: true,
     signal: controller.signal
   }
-  const response = await axios.post(`${url}/workspace/members/${values.workspaceId}`, {
+  const response = await axios.post(`${url}/workspace/members`, {
+    workspace_id: values.workspaceId,
     role: values.role,
     user_id: values.userId
   }, config)
