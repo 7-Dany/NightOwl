@@ -1,8 +1,9 @@
 import { ChatIcon, DotsIcons } from '../../../Assets'
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/auth.context'
-import { socket } from '../../../socket'
 import { useNavigate } from 'react-router-dom'
+import { createPrivateChat } from '../Api/conversations.api'
+import { ActiveContext } from '../../../Context/active.context'
 
 type MemberProps = {
   memberId: string
@@ -16,24 +17,34 @@ type MemberProps = {
 
 function Member({ memberId, image, name, projects, timezone, email, role }: MemberProps) {
   const { user } = useContext(AuthContext)
-  const [activeChat, setActiveChat] = useState(false)
+  const { setActiveConversation } = useContext(ActiveContext)
+  const [newChat, setNewChat] = useState(false)
   const navigate = useNavigate()
 
   function openChat(event: React.MouseEvent<HTMLDivElement>) {
-    setActiveChat(true)
+    setNewChat(true)
   }
 
   useEffect(() => {
-    if (activeChat) {
-      socket.connect()
-      socket.emit('create_conversation', { userId: user.id, memberId }, () => {
-        navigate('/chat')
+    const controller = new AbortController()
+    if (newChat) {
+      createPrivateChat({
+        controller,
+        values: { user_id: user.id, member_id: memberId, token: user.token }
       })
+        .then(data => {
+          setNewChat(false)
+          setActiveConversation(data)
+          navigate('/chat')
+        })
+        .catch(error => {
+          setNewChat(false)
+        })
     }
     return () => {
-      socket.removeListener('create_conversation')
+      controller.abort()
     }
-  }, [activeChat])
+  }, [newChat])
 
   return (
     <div className='member'>
