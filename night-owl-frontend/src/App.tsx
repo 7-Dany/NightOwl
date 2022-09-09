@@ -9,26 +9,29 @@ import {
   PrivateWorkspaceRequestRoute,
   PrivateWorkspaceRoute
 } from './Hooks/PrivateRouters'
+import ActiveContextProvider from './Context/active.context'
 
 function App() {
   return (
     <AuthContextProvider>
-      <Routes>
-        <Route path='/login' element={<LoginPage />} />
-        <Route element={<PrivateAuthRoutes />}>
-          <Route element={<PrivateWorkspaceRoute />}>
-            <Route path='/workspace' element={<WorkspacePage />} />
+      <ActiveContextProvider>
+        <Routes>
+          <Route path='/login' element={<LoginPage />} />
+          <Route element={<PrivateAuthRoutes />}>
+            <Route element={<PrivateWorkspaceRoute />}>
+              <Route path='/workspace' element={<WorkspacePage />} />
+            </Route>
+            <Route element={<PrivateWorkspaceRequestRoute />}>
+              <Route path='/workspace/request' element={<WorkspaceRequestPage />} />
+            </Route>
+            <Route element={<PrivateAppRoutes />}>
+              <Route path='/chat' element={<ChatPage />} />
+              <Route path='/home' element={<HomePage />} />
+              <Route path='/members' element={<MembersPage />} />
+            </Route>
           </Route>
-          <Route element={<PrivateWorkspaceRequestRoute />}>
-            <Route path='/workspace/request' element={<WorkspaceRequestPage />} />
-          </Route>
-          <Route element={<PrivateAppRoutes />}>
-            <Route path='/chat' element={<ChatPage />} />
-            <Route path='/home' element={<HomePage />} />
-            <Route path='/members' element={<MembersPage />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </ActiveContextProvider>
     </AuthContextProvider>
   )
 }
