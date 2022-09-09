@@ -4,6 +4,7 @@ import {
   getAllWorkspaceMembers,
   getWorkspaceMembers,
   createWorkspaceMember,
+  deleteWorkspaceMemberByUserId,
   deleteWorkspaceMember
 } from '../../controllers/workspace_members.controller'
 
@@ -12,10 +13,14 @@ const workspaceMembersRoutes = Router()
 
 workspaceMembersRoutes.route('/workspace/members')
   .get(authTokenMiddleware, getAllWorkspaceMembers)
-  .delete(authTokenMiddleware, deleteWorkspaceMember)
+  .post(authTokenMiddleware, createWorkspaceMember)
+
+workspaceMembersRoutes.route('/workspace/members/user/:user_id')
+  .delete(authTokenMiddleware, deleteWorkspaceMemberByUserId)
+
 workspaceMembersRoutes.route('/workspace/members/:id')
   .get(authTokenMiddleware, getWorkspaceMembers)
-  .post(authTokenMiddleware, createWorkspaceMember)
+  .delete(authTokenMiddleware, deleteWorkspaceMember)
 
 
 export default workspaceMembersRoutes
