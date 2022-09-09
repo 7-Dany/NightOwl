@@ -1,43 +1,109 @@
-import { ConversationMembersModel, ConversationsModel } from '../models'
+import { ConversationMembersModel } from '../models'
+import { Request, Response, NextFunction } from 'express'
 
-const conversationsModel = new ConversationsModel()
 const conversationMembersModel = new ConversationMembersModel()
 
-export async function getAllConversationForUser(
-  data: { userId: string },
-  callBack: Function
-) {
+export const getAllConversationMembers = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    return await conversationMembersModel.showByUserId(data.userId)
+    const conversationMembers = await conversationMembersModel.index()
+    response.status(200).json({
+      status: 'Success',
+      data: [...conversationMembers],
+      message: 'All conversation members got retrieved successfully'
+    })
   } catch (error) {
-
+    next(error)
   }
 }
 
-export async function createPrivateConversation(
-  data: { userId: string, memberId: string },
-  callBack: Function
-): Promise<void> {
+export const getConversationMember = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const conversationMembers = {
-      userId: data.userId,
-      memberId: data.memberId
-    }
-    const checkConversationMember = await conversationMembersModel
-      .showConversationIdFor2Users(conversationMembers.userId, conversationMembers.memberId)
-    if (checkConversationMember) {
-      callBack()
+    const conversationMemberId = request.params.id
+    const conversationMember = await conversationMembersModel.show(conversationMemberId)
+    if (conversationMember) {
+      response.status(200).json({
+        status: 'Success',
+        data: { ...conversationMember },
+        message: 'Conversation member got retrieved successfully'
+      })
     } else {
-      const newConversation = await conversationsModel.createPrivateConversation()
-      const createPrivateConversationMembers = await conversationMembersModel
-        .createPrivateChatMembers(
-          newConversation.id as string,
-          conversationMembers.userId,
-          conversationMembers.memberId
-        )
-      callBack()
+      response.status(422).json({
+        status: 'Failed',
+        message: 'Conversation member is not exist'
+      })
     }
   } catch (error) {
+    next(error)
+  }
+}
 
+export const getAllConversationsForUser = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = request.params.user_id
+    const conversations = await conversationMembersModel.showByUserId(userId)
+    response.status(200).json({
+      status: 'Success',
+      data: [...conversations],
+      message: 'All conversations got retrieved successfully'
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const createConversationMember = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const conversationId = request.body.conversation_id
+    const userId = request.body.user_id
+    const newConversationMember = await conversationMembersModel.create(conversationId, userId)
+    response.status(200).json({
+      status: 'Success',
+      data: { ...newConversationMember },
+      message: 'New conversation member got created successfully'
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteConversationMember = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const conversationMemberId = request.params.id
+    const checkConversationMember = await conversationMembersModel.show(conversationMemberId)
+    if (checkConversationMember) {
+      const deletedConversationMember = await conversationMembersModel.delete(conversationMemberId)
+      response.status(202).json({
+        status: 'Success',
+        data: { ...deletedConversationMember },
+        message: 'conversation member got deleted successfully'
+      })
+    } else {
+      response.status(422).json({
+        status: 'Failed',
+        message: 'Conversation member is not exist'
+      })
+    }
+  } catch (error) {
+    next(error)
   }
 }
