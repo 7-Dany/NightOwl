@@ -35,7 +35,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get user, ${(error as Error).message}`)
+      throw new Error(`Unable to show user by id, ${(error as Error).message}`)
     }
   }
 
@@ -49,7 +49,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get user password, ${(error as Error).message}`)
+      throw new Error(`Unable to show user password by email, ${(error as Error).message}`)
     }
   }
 
@@ -63,7 +63,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get user by email, ${(error as Error).message}`)
+      throw new Error(`Unable to show user by email, ${(error as Error).message}`)
     }
   }
 
@@ -97,7 +97,7 @@ export class UsersModel {
          WHERE id = $1`,
         [id]
       )
-      // if username, email or image not change the old one will remain the same
+      // if username, email or image wouldn't change the old one will remain the same
       const updatedUser = {
         username: user.username ? user.username : getUser.rows[0].username,
         email: user.email ? user.email : getUser.rows[0].email,
@@ -118,7 +118,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to update user, ${(error as Error).message}`)
+      throw new Error(`Unable to update user's username, email or image, ${(error as Error).message}`)
     }
   }
 
@@ -134,7 +134,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to change password, ${(error as Error).message}`)
+      throw new Error(`Unable to update user password, ${(error as Error).message}`)
     }
   }
 
@@ -149,7 +149,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to update verification, ${(error as Error).message}`)
+      throw new Error(`Unable to update user is_verified, ${(error as Error).message}`)
     }
   }
 
@@ -164,7 +164,7 @@ export class UsersModel {
       connect.release()
       return result.rows[0]
     } catch (error) {
-      throw new Error(`Unable to delete user, ${(error as Error).message}`)
+      throw new Error(`Unable to delete user email, ${(error as Error).message}`)
     }
   }
 
@@ -186,7 +186,7 @@ export class UsersModel {
         return null
       }
     } catch (error) {
-      throw new Error(`Unable to login, ${(error as Error).message}`)
+      throw new Error(`Unable to authenticate user, ${(error as Error).message}`)
     }
   }
 }
