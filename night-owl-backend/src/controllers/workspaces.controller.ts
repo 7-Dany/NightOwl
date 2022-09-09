@@ -5,7 +5,11 @@ const workspacesModel = new WorkspacesModel()
 const workspaceMembersModel = new WorkspaceMembersModel()
 const workspaceRequestsModel = new WorkspaceRequestsModel()
 
-export const getAllWorkspaces = async (request: Request, response: Response, next: NextFunction) => {
+export const getAllWorkspaces = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const workspaces = await workspacesModel.index()
     response.status(200).json({
@@ -18,10 +22,14 @@ export const getAllWorkspaces = async (request: Request, response: Response, nex
   }
 }
 
-export const getWorkspace = async (request: Request, response: Response, next: NextFunction) => {
+export const getWorkspace = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const id = request.params.id
-    const workspace = await workspacesModel.show(id)
+    const workspaceId = request.params.id
+    const workspace = await workspacesModel.show(workspaceId)
     response.status(200).json({
       status: 'Success',
       data: { ...workspace },
@@ -32,7 +40,11 @@ export const getWorkspace = async (request: Request, response: Response, next: N
   }
 }
 
-export const getWorkspaceMembersAndRequests = async (request: Request, response: Response, next: NextFunction) => {
+export const getWorkspaceMembersAndRequests = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const workspaceId = request.params.id
     const checkWorkspace = await workspacesModel.show(workspaceId)
@@ -55,7 +67,11 @@ export const getWorkspaceMembersAndRequests = async (request: Request, response:
   }
 }
 
-export const createWorkspace = async (request: Request, response: Response, next: NextFunction) => {
+export const createWorkspace = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const workspaceName = request.body.name
     const newWorkspace = await workspacesModel.create(workspaceName)
@@ -75,14 +91,46 @@ export const createWorkspace = async (request: Request, response: Response, next
   }
 }
 
-export const deleteWorkspace = async (request: Request, response: Response, next: NextFunction) => {
+export const updateWorkspaceName = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const id = request.params.id
-    const deletedWorkspaceMembers = await workspaceMembersModel.deleteWorkspaceMembers(id)
-    const deletedWorkspace = await workspacesModel.delete(id)
+    const workspaceId = request.params.id
+    const workspaceName = request.body.name
+    const workspace = await workspacesModel.show(workspaceId)
+    if (workspace) {
+      const updatedWorkspace = await workspacesModel.update(workspaceId, workspaceName)
+      response.status(200).json({
+        status: 'Success',
+        data: { ...updatedWorkspace },
+        message: 'Workspace name got updated successfully'
+      })
+    } else {
+      response.status(422).json({
+        status: 'Failed',
+        message: 'Workspace is not exist'
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteWorkspace = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const workspaceId = request.params.id
+    const deletedWorkspaceMembers = await workspaceMembersModel.deleteByWorkspaceId(workspaceId)
+    const deletedWorkspaceRequests = await workspaceRequestsModel.deleteByWorkspaceId(workspaceId)
+    const deletedWorkspace = await workspacesModel.delete(workspaceId)
     response.status(202).json({
       status: 'Success',
-      data: { ...deletedWorkspace, members: [...deletedWorkspaceMembers] },
+      data: { ...deletedWorkspace, members: [...deletedWorkspaceMembers], requests: [...deletedWorkspaceRequests] },
       message: 'Workspace got deleted successfully'
     })
   } catch (error) {
