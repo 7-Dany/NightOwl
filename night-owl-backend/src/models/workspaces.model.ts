@@ -29,7 +29,7 @@ export class WorkspacesModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to get workspace, ${(error as Error).message}`)
+      throw new Error(`Unable to show workspace by id, ${(error as Error).message}`)
     }
   }
 
@@ -47,6 +47,21 @@ export class WorkspacesModel {
     }
   }
 
+  async update(id: string, name: string): Promise<Workspace> {
+    try {
+      const connect = await database.connect()
+      const sql = `UPDATE workspaces
+                   SET name=$1
+                   WHERE id = $2
+                   RETURNING *`
+      const results = await connect.query(sql, [name, id])
+      connect.release()
+      return results.rows[0]
+    } catch (error) {
+      throw new Error(`Unable to update workspace name, ${(error as Error).message}`)
+    }
+  }
+
   async delete(id: string): Promise<Workspace> {
     try {
       const connect = await database.connect()
@@ -58,7 +73,7 @@ export class WorkspacesModel {
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable delete workspace, ${(error as Error).message}`)
+      throw new Error(`Unable to delete workspace by id, ${(error as Error).message}`)
     }
   }
 }
