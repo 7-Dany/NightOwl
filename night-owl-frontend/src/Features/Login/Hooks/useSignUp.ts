@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { createUser } from '../Api/users.api'
 import { AuthContext } from '../../../Context/auth.context'
-import { AuthUser } from '../../../Types'
+import { AuthUser, Workspace, WorkspaceRequest } from '../../../Types'
 import { useNavigate } from 'react-router-dom'
 
 type UseSignUpReturn = {
@@ -17,7 +17,7 @@ type UseSignUpArgs = {
 }
 
 function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
-  const { setUser } = useContext(AuthContext)
+  const { setUser, setWorkspaceRequest, setWorkspace } = useContext(AuthContext)
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const formik = useFormik({
@@ -38,6 +38,8 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
         .then(data => {
           if (data.token) {
             setUser(data)
+            setWorkspaceRequest({} as WorkspaceRequest)
+            setWorkspace({} as Workspace)
             navigate('/workspace')
           } else {
             setUser({} as AuthUser)
