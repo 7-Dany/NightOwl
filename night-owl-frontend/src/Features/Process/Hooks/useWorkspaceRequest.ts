@@ -15,7 +15,7 @@ function useWorkspaceRequest() {
     if (deleteRequest) {
       deleteWorkspaceRequest({
         controller,
-        values: { id: user.id, token: user.token }
+        values: { userId: user.id, token: user.token }
       })
         .then(data => {
           setErrorMsg('Your request got deleted')
