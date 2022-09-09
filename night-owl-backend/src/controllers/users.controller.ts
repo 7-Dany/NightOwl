@@ -53,7 +53,10 @@ export const createUser = async (
     const newUser = { username, email, image, is_verified: false, password } as User
     const checkEmail = await usersModel.showByEmail(newUser.email)
     if (checkEmail) {
-      response.status(409).json({ status: 'Failed', message: 'Email is already used' })
+      response.status(409).json({
+        status: 'Failed',
+        message: 'Email is already used'
+      })
       return
     }
     const user = await usersModel.create(newUser)
@@ -61,10 +64,7 @@ export const createUser = async (
     request.session.user = { ...user, token }
     response.status(201).json({
       statue: 'Success',
-      data: {
-        ...user,
-        token
-      },
+      data: { ...user, token },
       message: 'User got created successfully'
     })
   } catch (error) {
@@ -86,7 +86,8 @@ export const updateUser = async (
       const checkEmail = await usersModel.showByEmail(user.email)
       if (checkEmail && getUser.email !== user.email) {
         response.status(409).json({
-          status: 'Failed', message: 'This email is already used please use another email'
+          status: 'Failed',
+          message: 'This email is already used please use another email'
         })
         return
       }
@@ -95,10 +96,7 @@ export const updateUser = async (
     const token = jwt.sign({ user: updatedUser }, config.token as unknown as string)
     response.status(200).json({
       status: 'Success',
-      data: {
-        ...updatedUser,
-        token
-      },
+      data: { ...updatedUser, token },
       message: 'User got updated successfully'
     })
   } catch (error) {
@@ -119,7 +117,6 @@ export const updatePassword = async (
     if (decode) {
       // @ts-ignore
       const email = decode['user'].email
-      console.log(email)
       const getUserPassword = await usersModel.showPasswordByEmail(email)
       const checkPassword = compareSync(password + config.pepper, getUserPassword.password)
       if (checkPassword) {
@@ -156,7 +153,7 @@ export const checkEmailExistence = async (
         message: 'User got retrieved successfully'
       })
     } else {
-      response.status(204).json({
+      response.status(422).json({
         status: 'Failed',
         message: 'Email is not exist'
       })
@@ -182,10 +179,7 @@ export const updateForgottenPassword = async (
     const token = jwt.sign({ user: updatedUser }, config.token as unknown as string)
     response.status(200).json({
       status: 'Success',
-      data: {
-        ...updatedUser,
-        token
-      },
+      data: { ...updatedUser, token },
       message: 'Password get updated successfully'
     })
   } catch (error) {
@@ -209,7 +203,10 @@ export const deleteUser = async (
         message: 'User got deleted successfully'
       })
     } else {
-      response.status(404).json({ status: 'Success', message: 'User is not exist' })
+      response.status(422).json({
+        status: 'Failed',
+        message: 'User is not exist'
+      })
     }
   } catch (error) {
     next(error)
@@ -250,13 +247,20 @@ export const userSession = async (
         }
       }
     } else {
-      response.status(204).json({ status: 'failed', message: 'User session is not exist' })
+      response.status(422).json({
+        status: 'Failed',
+        message: 'User session is not exist'
+      })
     }
   } catch (error) {
   }
 }
 
-export const deleteUserSession = async (request: Request, response: Response, next: NextFunction) => {
+export const deleteUserSession = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     request.session.user = null
     response.status(202).json({
@@ -281,7 +285,10 @@ export const authenticateUser = async (
       const authenticatedUser = await usersModel.authenticate(userToAuthenticate)
       const token = jwt.sign({ user: authenticatedUser }, config.token as unknown as string)
       if (!authenticatedUser) {
-        response.status(401).json({ status: 'Unauthorized user', message: 'wrong email or password' })
+        response.status(401).json({
+          status: 'Unauthorized user',
+          message: 'wrong email or password'
+        })
         return
       } else {
         request.session.user = { ...authenticatedUser, token }
@@ -311,7 +318,10 @@ export const authenticateUser = async (
         })
       }
     } else {
-      response.status(422).json({ status: 'Failed', message: 'User is not exist' })
+      response.status(422).json({
+        status: 'Failed',
+        message: 'User is not exist'
+      })
     }
   } catch
     (error) {
