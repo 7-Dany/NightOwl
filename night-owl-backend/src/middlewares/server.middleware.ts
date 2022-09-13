@@ -28,10 +28,11 @@ export const corsConfig = {
 }
 export const authorizeUser = (defaultSocket: Socket, next: any) => {
   const socket = <SessionSocket>defaultSocket
-  if (!socket.request.session || !socket.request.session.user) {
+  if (!socket.request.session || !socket.request.session.user || !socket.request.session.workspace) {
     unauthorizedError(next)
   } else {
     socket.user = { ...socket.request.session.user }
+    socket.workspace = { ...socket.request.session.workspace }
     next()
   }
 }
