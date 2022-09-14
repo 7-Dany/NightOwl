@@ -1,24 +1,26 @@
 import React, { createContext, useEffect, useReducer, useState } from 'react'
 import {
   defaultSocketContextState,
-  ISocketContextActions,
+  TSocketContextActions,
   SocketReducer,
-  TSocketContextState
+  TSocketContextState,
+  TConversationMessage
 } from './SocketContextReducers'
 import { useSocket } from '../Hooks/useSocket'
 
 type SocketContextType = {
   SocketState: TSocketContextState
-  SocketDispatch: React.Dispatch<ISocketContextActions>
+  SocketDispatch: React.Dispatch<TSocketContextActions>
 }
+
 type SocketContextProviderProps = {
   children: React.ReactNode
 }
+
 export const SocketContext = createContext<SocketContextType>({} as SocketContextType)
 
 function SocketContextProvider({ children }: SocketContextProviderProps) {
   const [SocketState, SocketDispatch] = useReducer(SocketReducer, defaultSocketContextState)
-  const [loading, setLoading] = useState(true)
   const socket = useSocket('http://localhost:4000', {
     reconnectionDelay: 5000,
     reconnectionAttempts: 5,
@@ -27,6 +29,18 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
   })
 
   function StartListeners() {
+    // User connected event
+    socket.on('user_connected', (users: string[]) => {
+      console.log(`New user got connected, New user list got received`)
+      SocketDispatch({ type: 'update_users', payload: users })
+    })
+
+    // User disconnected event
+    socket.on('user_disconnected', (user_id: string) => {
+      console.log(`User got disconnected, delete user from list`)
+      SocketDispatch({ type: 'remove_user', payload: user_id })
+    })
+
     // Reconnect event
     socket.io.on('reconnect', attempt => {
       console.log(`Reconnect on attempt: ${attempt}`)
@@ -49,13 +63,10 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
   }
 
   function SendHandshake() {
-    console.log('Sending handshake to server...')
-    socket.emit('handshake', (user_id: string, users: string[]) => {
-      console.log('User handshake callback message received')
-
-      SocketDispatch({ type: 'update_user_id', payload: user_id })
+    // Sending handshake to server to get all active users for workspace
+    socket.emit('handshake', (users: string[]) => {
+      console.log(`User handshake callback message received users: `, users)
       SocketDispatch({ type: 'update_users', payload: users })
-      setLoading(false)
     })
   }
 
@@ -75,7 +86,22 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
     // eslint-disable-next-line
   }, [])
 
-  if (loading) return (<div>{children}</div>)
+  function ConversationListeners(conversation_id: string) {
+    // Sending conversation id to server to let the user join it and get all messages for that conversation
+    socket.emit('join_conversation', { conversation_id }, (messages: TConversationMessage[]) => {
+      console.log(`conversation: ${conversation_id} is active`)
+      SocketDispatch({ type: 'update_messages', payload: messages })
+    })
+  }
+
+  useEffect(() => {
+    // When the active conversation changes it should send the conversation id to the server
+    if (SocketState.activeConversation.conversation_id) {
+      console.log(`active conversation got changed`)
+      ConversationListeners(SocketState.activeConversation.conversation_id)
+    }
+  }, [SocketState.activeConversation.conversation_id])
+
   return (
     <SocketContext.Provider value={{ SocketState, SocketDispatch }}>
       {children}
