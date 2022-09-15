@@ -1,14 +1,8 @@
-import database from '../database'
-
-export type WorkspaceMember = {
-  id?: string
-  workspace_id: string
-  user_id: string
-  role?: string
-}
+import database from '../../database'
+import { IMember, IWorkspaceMember } from './types'
 
 export class WorkspaceMembersModel {
-  async index(): Promise<WorkspaceMember[]> {
+  async index(): Promise<IMember[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -21,7 +15,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async show(id: string): Promise<WorkspaceMember> {
+  async show(id: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -35,10 +29,10 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async showByWorkspaceId(workspaceId: string): Promise<WorkspaceMember[]> {
+  async showByWorkspaceId(workspaceId: string): Promise<IWorkspaceMember[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT u.id, u.username, u.email, u.image, wm.role
+      const sql = `SELECT workspace_id, user_id, role, u.username, u.email, u.image
                    FROM workspace_members wm
                             INNER JOIN users u on u.id = wm.user_id
                    WHERE workspace_id = $1`
@@ -50,7 +44,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async showByUserId(userId: string): Promise<WorkspaceMember> {
+  async showByUserId(userId: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `SELECT workspace_id, name, role
@@ -65,13 +59,17 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async create(workspaceMember: WorkspaceMember): Promise<WorkspaceMember> {
+  async create(workspaceMember: IMember): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `INSERT INTO workspace_members (workspace_id, user_id, role)
                    VALUES ($1, $2, $3)
                    RETURNING *`
-      const results = await connect.query(sql, [workspaceMember.workspace_id, workspaceMember.user_id, workspaceMember.role])
+      const results = await connect.query(sql, [
+        workspaceMember.workspace_id,
+        workspaceMember.user_id,
+        workspaceMember.role
+      ])
       connect.release()
       return results.rows[0]
     } catch (error) {
@@ -79,7 +77,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async delete(id: string): Promise<WorkspaceMember> {
+  async delete(id: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -94,7 +92,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async deleteByWorkspaceId(workspaceId: string): Promise<WorkspaceMember[]> {
+  async deleteByWorkspaceId(workspaceId: string): Promise<IMember[]> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -109,7 +107,7 @@ export class WorkspaceMembersModel {
     }
   }
 
-  async deleteByUserId(userId: string): Promise<WorkspaceMember> {
+  async deleteByUserId(userId: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `DELETE

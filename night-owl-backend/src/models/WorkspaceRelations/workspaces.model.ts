@@ -1,12 +1,8 @@
-import database from '../database'
-
-export type Workspace = {
-  id?: string
-  name: string
-}
+import database from '../../database'
+import { IWorkspace } from './types'
 
 export class WorkspacesModel {
-  async index(): Promise<Workspace[]> {
+  async index(): Promise<IWorkspace[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -19,7 +15,7 @@ export class WorkspacesModel {
     }
   }
 
-  async show(id: string): Promise<Workspace> {
+  async show(id: string): Promise<IWorkspace> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -33,7 +29,7 @@ export class WorkspacesModel {
     }
   }
 
-  async create(name: string): Promise<Workspace> {
+  async create(name: string): Promise<IWorkspace> {
     try {
       const connect = await database.connect()
       const sql = `INSERT INTO workspaces (name)
@@ -47,7 +43,7 @@ export class WorkspacesModel {
     }
   }
 
-  async update(id: string, name: string): Promise<Workspace> {
+  async update(id: string, name: string): Promise<IWorkspace> {
     try {
       const connect = await database.connect()
       const sql = `UPDATE workspaces
@@ -62,7 +58,7 @@ export class WorkspacesModel {
     }
   }
 
-  async delete(id: string): Promise<Workspace> {
+  async delete(id: string): Promise<IWorkspace> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
