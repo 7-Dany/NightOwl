@@ -26,6 +26,7 @@ export class SocketServer {
         credentials: true
       }
     })
+
     /** Wrapping session middleware to let socket io to use cookie */
     this.io.use(wrap(sessionMiddleware))
 
@@ -76,9 +77,11 @@ export class SocketServer {
       )
     })
 
-    /** Setting up get messages event */
+    /** Setting up join conversation event */
     socket.on('join_conversation', async ({ conversation_id }, callback: (messages: IUserMessage[]) => void) => {
       console.log(`User:${userId} has joined conversation: ${conversation_id}`)
+
+      /** Join conversation and send all messages for that conversation */
       socket.join(conversation_id)
       const messages = await messagesModel.showByConversation(conversation_id)
       callback(messages)
@@ -87,6 +90,8 @@ export class SocketServer {
     /** Setting up save message event */
     socket.on('save_message', async (data: { newMessage: IMessage, conversation: string }, callback) => {
       console.log(`New message received from: ${userId} its data:`, data)
+
+      /** Create new message and send it to both users the sender and receiver */
       const createdMessage = await messagesModel.create(data.newMessage)
       socket.to(data.conversation).emit('receive_message', { newMessage: createdMessage })
       callback(createdMessage)
@@ -95,6 +100,8 @@ export class SocketServer {
     /** After the user get disconnected he will be deleted from active users in workspace */
     socket.on('disconnect', () => {
       console.log(`Disconnect received from workspace: ${workspaceId}, user: ${userId}`)
+
+      /** Deleting user id from workspaces and send it to all users as disconnected user*/
       this.workspaces[workspaceId] = this.workspaces[workspaceId]?.filter(id => userId !== id)
       this.SendMessage('user_disconnected', this.workspaces[workspaceId], userId)
     })
@@ -102,12 +109,14 @@ export class SocketServer {
 
   /**
    * Send a message through a socket
-   * @Param name The name of the event, users List of socket id's, payload any information needed by the user.
+   * @Param name The name of the event ex handshake.
+   * @Param users List of socket id's.
+   * @Param payload any information needed by the user.
    */
-  SendMessage = (name: string, users: string[], payload?: Object) => {
+  SendMessage = (name: string, users: string[], payload?: any) => {
     console.log(`Emitting event ${name}, to`, users)
 
-    /** Sending Information for all users */
+    /** Sending Information to all users */
     users?.forEach(id => payload ? this.io.to(id).emit(name, payload) : this.io.to(id).emit(name))
   }
 }
