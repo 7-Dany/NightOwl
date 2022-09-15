@@ -1,13 +1,8 @@
-import database from '../database'
-
-export type Conversation = {
-  conversation_id?: string
-  name: string
-  type: string
-}
+import database from '../../database'
+import { IConversation } from './types'
 
 export class ConversationsModel {
-  async index(): Promise<Conversation[]> {
+  async index(): Promise<IConversation[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT id AS conversation_id, name, type
@@ -20,7 +15,7 @@ export class ConversationsModel {
     }
   }
 
-  async show(id: string): Promise<Conversation> {
+  async show(id: string): Promise<IConversation> {
     try {
       const connect = await database.connect()
       const sql = `SELECT id AS conversation_id, name, type
@@ -34,7 +29,7 @@ export class ConversationsModel {
     }
   }
 
-  async create(name: string, type: string): Promise<Conversation> {
+  async create(name: string, type: string): Promise<IConversation> {
     try {
       const connect = await database.connect()
       const sql = `INSERT INTO conversations (name, type)
@@ -48,7 +43,7 @@ export class ConversationsModel {
     }
   }
 
-  async createPrivateConversation(): Promise<Conversation> {
+  async createPrivateConversation(): Promise<IConversation> {
     try {
       const connect = await database.connect()
       const sql = `INSERT INTO conversations (name, type)
@@ -62,7 +57,7 @@ export class ConversationsModel {
     }
   }
 
-  async update(id: string, name: string): Promise<Conversation> {
+  async update(id: string, name: string): Promise<IConversation> {
     try {
       const connect = await database.connect()
       const sql = `UPDATE conversations
@@ -77,7 +72,7 @@ export class ConversationsModel {
     }
   }
 
-  async delete(id: string): Promise<Conversation> {
+  async delete(id: string): Promise<IConversation> {
     try {
       const connect = await database.connect()
       const sql = `DELETE

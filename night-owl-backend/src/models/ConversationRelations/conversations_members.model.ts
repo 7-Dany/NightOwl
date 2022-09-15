@@ -1,34 +1,8 @@
-import database from '../database'
-import { WorkspaceMember } from './workspace_members.model'
-
-export type ConversationMember = {
-  id?: string
-  conversation_id: string
-  user_id: string
-}
-
-type ConversationMembersWithLastMessage = {
-  conversation_id: string
-  name: string
-  type: string
-  user_id: string
-  username: string
-  image: string
-  created_at: string
-  text: string
-}
-
-type ConversationMemberWithConversationInfo = {
-  conversation_id: string
-  name: string
-  type: string
-  user_id: string
-  username: string
-  image: string
-}
+import database from '../../database'
+import { IMember, IConversationMember, IConversationMessage } from './types'
 
 export class ConversationMembersModel {
-  async index(): Promise<ConversationMember[]> {
+  async index(): Promise<IMember[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -41,7 +15,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async show(id: string): Promise<ConversationMember> {
+  async show(id: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
@@ -55,7 +29,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async showByUserId(userId: string): Promise<ConversationMembersWithLastMessage[]> {
+  async showByUserId(userId: string): Promise<IConversationMessage[]> {
     try {
       const connect = await database.connect()
       const sql = `SELECT cm.conversation_id,
@@ -64,16 +38,19 @@ export class ConversationMembersModel {
                           c.name,
                           u.username,
                           u.image,
+                          m.message_id,
                           m.created_at,
                           m.text
                    FROM conversation_members cm
                             INNER JOIN users u on u.id = cm.user_id
                             INNER JOIN conversations c ON c.id = cm.conversation_id
-                            FULL JOIN (SELECT created_at, text, conversation_id
-                                       FROM messages
-                                       ORDER BY created_at DESC
-                                       limit 1) m
-                                      on m.conversation_id = cm.conversation_id
+                            LEFT JOIN(SELECT DISTINCT ON (conversation_id) conversation_id,
+                                                                           text,
+                                                                           created_at,
+                                                                           id as message_id
+                                      FROM messages
+                                      ORDER BY conversation_id, id DESC) m
+                                     on m.conversation_id = cm.conversation_id
                    WHERE cm.conversation_id IN
                          (SELECT conversation_id FROM conversation_members WHERE user_id = $1)
                      AND cm.user_id != $1`
@@ -85,8 +62,10 @@ export class ConversationMembersModel {
     }
   }
 
-  async showConversationIdFor2Users(firstUserId: string, secondUserId: string)
-    : Promise<ConversationMemberWithConversationInfo | null> {
+  async showConversationIdFor2Users(
+    firstUserId: string,
+    secondUserId: string
+  ): Promise<IConversationMember | null> {
     try {
       const connect = await database.connect()
       const checkSql = `SELECT conversation_id
@@ -113,7 +92,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async create(conversationId: string, userId: string): Promise<ConversationMember> {
+  async create(conversationId: string, userId: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `INSERT INTO conversation_members (conversation_id, user_id)
@@ -127,8 +106,11 @@ export class ConversationMembersModel {
     }
   }
 
-  async createPrivateConversationMembers(conversationId: string, firstMemberId: string, secondMemberId: string)
-    : Promise<ConversationMemberWithConversationInfo> {
+  async createPrivateConversationMembers(
+    conversationId: string,
+    firstMemberId: string
+    , secondMemberId: string
+  ): Promise<IConversationMember> {
     try {
       const connect = await database.connect()
       const createSql = `INSERT INTO conversation_members (conversation_id, user_id)
@@ -154,7 +136,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async delete(id: string): Promise<ConversationMember> {
+  async delete(id: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -169,7 +151,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async deleteByConversationId(conversationId: string): Promise<WorkspaceMember[]> {
+  async deleteByConversationId(conversationId: string): Promise<IMember[]> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
@@ -184,7 +166,7 @@ export class ConversationMembersModel {
     }
   }
 
-  async deleteByUserId(userId: string): Promise<WorkspaceMember> {
+  async deleteByUserId(userId: string): Promise<IMember> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
