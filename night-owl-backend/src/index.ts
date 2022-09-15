@@ -4,25 +4,25 @@ import config from './config'
 import helmet from 'helmet'
 import cors from 'cors'
 import http from 'http'
-import { Server, Socket } from 'socket.io'
 import routes from './routes'
-import { SessionSocket } from './types'
 import {
   sessionMiddleware,
   errorMiddleware,
   pageNotFoundMiddleware,
-  wrap,
-  corsConfig,
-  authorizeUser
+  corsConfig
 } from './middlewares'
+import { SocketServer } from './socket'
+
 
 // Listening to default port
 const PORT = config.port || 4000
-// create an instance server
+// create an express app instance
 const app: Application = express()
-// create a socket io instance
+// create a http server instance
 const server = http.createServer(app)
-const io = new Server(server, { cors: corsConfig })
+// create a socket io server instance
+new SocketServer(server)
+
 // HTTP request logger middleware
 app.use(morgan('short'))
 // Adding secure headers to express app
@@ -35,20 +35,12 @@ app.use(express.json())
 app.use(sessionMiddleware)
 // Using all api routes
 app.use('/', routes)
+
 // add routing for / path
 app.get('/', (req: Request, res: Response) => {
   res.json({
     message: 'Hello World 🌍'
   })
-})
-
-// Adding session middleware for socket
-io.use(wrap(sessionMiddleware))
-// authorize user middleware to prevent connection
-io.use(authorizeUser)
-
-io.on('connect', (defaultSocket: Socket) => {
-  const socket = <SessionSocket>defaultSocket
 })
 
 // Using error middleware to send status and message in json data
