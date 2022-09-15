@@ -223,6 +223,7 @@ export const userSession = async (
     if (user) {
       const checkWorkspace = await workspaceMemberModel.showByUserId(user.id)
       if (checkWorkspace) {
+        request.session.workspace = { workspace_id: checkWorkspace.workspace_id }
         response.status(200).json({
           status: 'Success',
           data: { user: { ...user }, workspace: { ...checkWorkspace } },
@@ -263,6 +264,7 @@ export const deleteUserSession = async (
 ): Promise<void> => {
   try {
     request.session.user = null
+    request.session.workspace = null
     response.status(202).json({
       status: 'Success',
       message: 'User session got deleted successfully'
@@ -294,6 +296,7 @@ export const authenticateUser = async (
         request.session.user = { ...authenticatedUser, token }
         const workspaceMember = await workspaceMemberModel.showByUserId(authenticatedUser.id as string)
         if (workspaceMember) {
+          request.session.workspace = { workspace_id: workspaceMember.workspace_id }
           response.status(200).json({
             status: 'Success',
             data: { user: { ...authenticatedUser, token }, workspace: { ...workspaceMember } },
@@ -302,7 +305,6 @@ export const authenticateUser = async (
           return
         }
         const workspaceMemberRequest = await workspaceRequestsModel.showByUserId(authenticatedUser.id as string)
-        console.log(workspaceMemberRequest)
         if (workspaceMemberRequest?.id) {
           response.status(200).json({
             status: 'Success',
