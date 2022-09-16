@@ -2,19 +2,19 @@ import React from 'react'
 import './Assets/SCSS/home.css'
 import { Routes, Route } from 'react-router-dom'
 import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage } from './Pages'
-import AuthContextProvider from './Context/auth.context'
+import AuthContextProvider from './Context/AuthContext'
 import {
   PrivateAppRoutes,
   PrivateAuthRoutes,
   PrivateWorkspaceRequestRoute,
   PrivateWorkspaceRoute
 } from './Hooks/PrivateRouters'
-import ActiveContextProvider from './Context/active.context'
+import SocketContextProvider from './Context/SocketContext'
 
 function App() {
   return (
     <AuthContextProvider>
-      <ActiveContextProvider>
+      <SocketContextProvider>
         <Routes>
           <Route path='/login' element={<LoginPage />} />
           <Route element={<PrivateAuthRoutes />}>
@@ -31,7 +31,7 @@ function App() {
             </Route>
           </Route>
         </Routes>
-      </ActiveContextProvider>
+      </SocketContextProvider>
     </AuthContextProvider>
   )
 }
