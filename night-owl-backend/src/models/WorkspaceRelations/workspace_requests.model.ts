@@ -32,9 +32,9 @@ export class WorkspaceRequestsModel {
   async showByWorkspaceId(workspaceId: string): Promise<IWorkspaceUserRequest[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT workspace_id, user_id, u.username, u.email, u.image
-                   FROM workspace_requests
-                            INNER JOIN users u on u.id = workspace_requests.user_id
+      const sql = `SELECT wr.id, workspace_id, user_id, u.username, u.email, u.image
+                   FROM workspace_requests wr
+                            INNER JOIN users u on u.id = wr.user_id
                    WHERE workspace_id = $1`
       const results = await connect.query(sql, [workspaceId])
       connect.release()
