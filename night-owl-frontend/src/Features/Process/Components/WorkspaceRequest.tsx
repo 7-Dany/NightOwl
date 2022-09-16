@@ -3,7 +3,13 @@ import React from 'react'
 import useWorkspaceRequest from '../Hooks/useWorkspaceRequest'
 
 function WorkspaceRequest() {
-  const { closeWorkspaceRequest, workspaceRequest, deleteRequest, errorMsg, confirmOption } = useWorkspaceRequest()
+  const {
+    closeWorkspaceRequest,
+    workspaceRequest,
+    deleteRequest,
+    errorMsg,
+    confirmOption
+  } = useWorkspaceRequest()
 
   return (
     <div className='join-workspace-container'>
