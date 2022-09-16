@@ -76,15 +76,14 @@ export const createWorkspace = async (
     const workspaceName = request.body.name
     const newWorkspace = await workspacesModel.create(workspaceName)
     const workspaceMember = {
-      workspace_id: newWorkspace.id as string,
+      workspace_id: newWorkspace.workspace_id as string,
       user_id: request.body.user_id,
       role: 'Admin'
     }
     const workspaceAdmin = await workspaceMembersModel.create(workspaceMember)
-    request.session.workspace = { workspace_id: workspaceAdmin.workspace_id }
     response.status(201).json({
       status: 'Success',
-      data: { workspace_id: newWorkspace.id, name: newWorkspace.name, role: workspaceAdmin.role },
+      data: { ...workspaceAdmin, name: newWorkspace.name },
       message: 'Workspace got created successfully'
     })
   } catch (error) {
