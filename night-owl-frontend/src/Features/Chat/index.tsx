@@ -1,35 +1,18 @@
 import { TeamChannelsContainer, PrivateChannelsContainer, ChatRoomHeader, ChatRoom } from './Components'
-import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/auth.context'
-import { AuthUser } from '../../Types'
-import { socket } from '../../socket'
-import { getAllUserConversation } from './Api/conversation_members.api'
-import { Conversation } from './Types'
-import { ActiveContext } from '../../Context/active.context'
+import useWorkspaceChatMain from './Hooks/useWorkspaceChatMain'
 
 function WorkspaceChatMain() {
-  const { setUser, user } = useContext(AuthContext)
-  const { activeConversation } = useContext(ActiveContext)
-  const [userConversations, setUserConversations] = useState<Conversation[]>([])
-
-  useEffect(() => {
-    const controller = new AbortController()
-    getAllUserConversation({ controller, values: { user_id: user.id, token: user.token } })
-      .then(data => {
-        setUserConversations(data)
-      })
-      .catch(error => {
-        setUserConversations([])
-      })
-    socket.connect()
-    socket.on('connect_error', () => {
-      setUser({} as AuthUser)
-    })
-    return () => {
-      socket.off('connect_error')
-    }
-  }, [])
-
+  /** TODO: Making record voice button works
+   *  TODO: Making send image button works
+   *  TODO: Making send attachments button works
+   *  TODO: Split chat into 3 categories, Projects, Teams and Private
+   *  TODO: Adding options for chat to
+   *  TODO: 1. show its members if its Team or Projects
+   *  TODO: 2. show shared files, images, videos
+   *  TODO: 3. be able to kick the user if its Team or Projects chat, or leave the chat
+   *  TODO: 4. be able to delete the chat
+   */
+  const { activeConversation, userConversations } = useWorkspaceChatMain()
   return (
     <div className='chats-container'>
       <div className='chats'>
@@ -37,12 +20,13 @@ function WorkspaceChatMain() {
         <TeamChannelsContainer />
         <PrivateChannelsContainer userConversations={userConversations} />
       </div>
-      {activeConversation.conversation_id ?
+      {activeConversation?.conversation_id ?
         <div className='chat-room-container'>
           <ChatRoomHeader />
           <ChatRoom />
         </div>
-        : <div></div>
+        :
+        <div></div>
       }
     </div>
   )
