@@ -1,9 +1,7 @@
 import { ChatIcon, DotsIcons } from '../../../Assets'
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../../Context/auth.context'
-import { useNavigate } from 'react-router-dom'
-import { createPrivateChat } from '../Api/conversations.api'
-import { ActiveContext } from '../../../Context/active.context'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../../Context/AuthContext'
+import useMember from '../Hooks/useMember'
 
 type MemberProps = {
   memberId: string
@@ -17,35 +15,7 @@ type MemberProps = {
 
 function Member({ memberId, image, name, projects, timezone, email, role }: MemberProps) {
   const { user } = useContext(AuthContext)
-  const { setActiveConversation } = useContext(ActiveContext)
-  const [newChat, setNewChat] = useState(false)
-  const navigate = useNavigate()
-
-  function openChat(event: React.MouseEvent<HTMLDivElement>) {
-    setNewChat(true)
-  }
-
-  useEffect(() => {
-    const controller = new AbortController()
-    if (newChat) {
-      createPrivateChat({
-        controller,
-        values: { user_id: user.id, member_id: memberId, token: user.token }
-      })
-        .then(data => {
-          setNewChat(false)
-          setActiveConversation(data)
-          navigate('/chat')
-        })
-        .catch(error => {
-          setNewChat(false)
-        })
-    }
-    return () => {
-      controller.abort()
-    }
-  }, [newChat])
-
+  const { openChat } = useMember({ userId: user.id, memberId, token: user.token })
   return (
     <div className='member'>
       <img src={image} alt='person' className='member__image' />
