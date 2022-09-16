@@ -1,9 +1,9 @@
 import { DotsIcons, PersonImage } from '../../../Assets'
 import { useContext } from 'react'
-import { ActiveContext } from '../../../Context/active.context'
+import { SocketContext } from '../../../Context/SocketContext'
 
 function ChatRoomHeader() {
-  const { activeConversation } = useContext(ActiveContext)
+  const { activeConversation } = useContext(SocketContext).SocketState
   return (
     <div className='chat-room-header'>
       <div className='chat-room-header__info'>
