@@ -50,14 +50,23 @@ export const createWorkspaceMember = async (
       user_id: request.body.user_id,
       role: request.body.role
     }
-    const newWorkspaceMember = await workspaceMembersModel.create(workspaceMember)
-    const checkRequest = await workspaceRequestsModel.showByUserId(workspaceMember.user_id)
-    if (checkRequest) {
-      await workspaceRequestsModel.deleteByUserId(workspaceMember.user_id)
+    const state = request.body.state
+    if (state === 'Request') {
+      const checkRequest = await workspaceRequestsModel.showByUserId(workspaceMember.user_id)
+      if (checkRequest) {
+        await workspaceRequestsModel.deleteByUserId(workspaceMember.user_id)
+      } else {
+        response.status(409).json({
+          status: 'Failed',
+          message: 'Request is not exist'
+        })
+        return
+      }
     }
+    const newWorkspaceMember = await workspaceMembersModel.create(workspaceMember)
     response.status(201).json({
       status: 'Success',
-      body: { ...newWorkspaceMember },
+      data: { ...newWorkspaceMember },
       message: 'New member got added to workspace successfully'
     })
   } catch (error) {
