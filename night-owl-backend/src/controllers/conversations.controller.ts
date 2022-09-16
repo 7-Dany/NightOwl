@@ -73,6 +73,7 @@ export const createPrivateConversation = async (
   try {
     const userId = request.body.user_id
     const memberId = request.body.member_id
+    console.log(userId, memberId)
     const checkConversationMember = await conversationMembersModel
       .showConversationIdFor2Users(userId, memberId)
     if (checkConversationMember) {
