@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react'
-import { WorkspaceRequest } from '../../../Types'
+import { IWorkspaceRequest } from '../../../Types'
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { createWorkspaceRequest } from '../Api/workspace_requests.api'
-import { AuthContext } from '../../../Context/auth.context'
+import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -12,7 +12,7 @@ type UseJoinWorkspaceArgs = {
 }
 
 type UseJoinWorkspaceReturn = {
-  workspaceRequest: WorkspaceRequest
+  workspaceRequest: IWorkspaceRequest
   errorMsg: string
   formik: FormikProps<{ workspaceId: string }>
   closeJoinWorkspace: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -36,7 +36,7 @@ function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceRe
         values: { workspace_id: values.workspaceId, user_id: user.id, token: user.token }
       })
         .then(data => {
-          setWorkspaceRequest(data as WorkspaceRequest)
+          setWorkspaceRequest(data as IWorkspaceRequest)
           navigate('/workspace/request')
         })
         .catch(error => {
@@ -47,6 +47,7 @@ function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceRe
   })
 
   function closeJoinWorkspace(event: React.MouseEvent<HTMLDivElement>) {
+    /** Close join workspace model */
     setShow('')
     setErrorMsg('')
   }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import { createWorkspace } from '../Api/workspaces.api'
-import { AuthContext } from '../../../Context/auth.context'
+import { AuthContext } from '../../../Context/AuthContext'
 
 type UseCreateWorkspaceArgs = {
   setShow: React.Dispatch<React.SetStateAction<string>>
@@ -43,6 +43,7 @@ function useCreateWorkspace({ setShow }: UseCreateWorkspaceArgs): UseCreateWorks
   })
 
   function closeCreateWorkspace(event: React.MouseEvent<HTMLDivElement>) {
+    /** Close create workspace model */
     setShow('')
     setErrorMsg('')
   }
