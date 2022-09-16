@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { Workspace } from '../../../Types'
+import { IWorkspace } from '../../../Types'
 
 const { url } = config
 
@@ -13,12 +13,16 @@ type CreateWorkspaceArgs = {
   }
 }
 
-export async function createWorkspace({ controller, values }: CreateWorkspaceArgs): Promise<Workspace> {
+export async function createWorkspace(
+  {
+    controller,
+    values
+  }: CreateWorkspaceArgs): Promise<IWorkspace> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,
     signal: controller.signal
   }
-  const response = await axios.post(`${url}/workspaces`, { ...values }, config)
+  const response = await axios.post(`${url}/workspaces`, { user_id: values.user_id, name: values.name }, config)
   return response.data.data
 }

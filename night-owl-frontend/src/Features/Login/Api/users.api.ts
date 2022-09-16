@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { AuthUser, UserWithWorkspace } from '../../../Types'
+import { IAuthUser, IWorkspaceUser } from '../../../Types'
 
 const { url } = config
 
@@ -22,7 +22,12 @@ type NewUserArgs = {
   }
 }
 
-export async function authUser({ controller, user }: AuthUserArgs): Promise<UserWithWorkspace> {
+export async function authUser(
+  {
+    controller,
+    user
+  }: AuthUserArgs): Promise<IWorkspaceUser> {
+  /** To authenticate user and check if he has workspace or workspace request or not*/
   const config = {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
@@ -32,8 +37,17 @@ export async function authUser({ controller, user }: AuthUserArgs): Promise<User
   return response.data.data
 }
 
-export async function createUser({ controller, user }: NewUserArgs): Promise<AuthUser> {
-  const config = { headers: { 'Content-Type': 'application/json' }, withCredentials: true, signal: controller.signal }
+export async function createUser(
+  {
+    controller,
+    user
+  }: NewUserArgs): Promise<IAuthUser> {
+  /** To create new user */
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+    signal: controller.signal
+  }
   const response = await axios.post(`${url}/users`, { ...user }, config)
   return response.data.data
 }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../Config'
-import { UserWithWorkspace } from '../Types'
+import { IWorkspaceUser } from '../Types'
 
 const { url } = config
 
@@ -13,7 +13,7 @@ type DeleteUserSessionArgs = {
   token: string
 }
 
-export async function getUser({ controller }: GetUserArgs): Promise<UserWithWorkspace> {
+export async function getUser({ controller }: GetUserArgs): Promise<IWorkspaceUser> {
   const config = {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,

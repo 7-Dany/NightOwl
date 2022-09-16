@@ -2,8 +2,8 @@ import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { createUser } from '../Api/users.api'
-import { AuthContext } from '../../../Context/auth.context'
-import { AuthUser, Workspace, WorkspaceRequest } from '../../../Types'
+import { AuthContext } from '../../../Context/AuthContext'
+import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../../../Types'
 import { useNavigate } from 'react-router-dom'
 
 type UseSignUpReturn = {
@@ -35,25 +35,32 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
       actions.resetForm()
       setError('')
       createUser({ controller, user })
+        /** After new user get created he will be redirected to create or join workspace */
         .then(data => {
           if (data.token) {
             setUser(data)
-            setWorkspaceRequest({} as WorkspaceRequest)
-            setWorkspace({} as Workspace)
+            setWorkspaceRequest({} as IWorkspaceRequest)
+            setWorkspace({} as IWorkspace)
             navigate('/workspace')
           } else {
-            setUser({} as AuthUser)
+            setUser({} as IAuthUser)
+            setWorkspaceRequest({} as IWorkspaceRequest)
+            setWorkspace({} as IWorkspace)
             navigate('/login')
           }
         })
         .catch(error => {
           setError(error.response.data.message)
+          setUser({} as IAuthUser)
+          setWorkspace({} as IWorkspace)
+          setWorkspaceRequest({} as IWorkspaceRequest)
         })
     }
   })
 
   function login(event: React.MouseEvent<HTMLButtonElement>) {
-    setLogin(false)
+    /** after clicking on get back to log in, sign in form will show */
+    setLogin(true)
   }
 
   return {

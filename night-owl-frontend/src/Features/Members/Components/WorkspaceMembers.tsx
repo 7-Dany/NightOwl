@@ -1,10 +1,10 @@
 import Member from './Member'
-import { WorkspaceMember } from '../Types'
+import { IWorkspaceMember } from '../../../Types'
 import { LeftArrowIcon } from '../Assets'
 import React from 'react'
 
 type WorkspaceMembersProps = {
-  members: WorkspaceMember[]
+  members: IWorkspaceMember[]
   showRequestsOrMembers: (event: React.MouseEvent<HTMLDivElement>, show: string) => void
 }
 
@@ -14,7 +14,7 @@ function WorkspaceMembers({ members, showRequestsOrMembers }: WorkspaceMembersPr
     return (
       <Member
         key={member.id}
-        memberId={member.id}
+        memberId={member.user_id}
         image={member.image}
         name={member.username}
         email={member.email}

@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../../Context/auth.context'
-import { WorkspaceMember, WorkspaceRequest } from '../Types'
+import { AuthContext } from '../../../Context/AuthContext'
+import { IWorkspaceMember, IWorkspaceUserRequest } from '../../../Types'
 import { getMembersAndRequests } from '../Api/workspace.api'
-import { Workspace } from '../../../Types'
+import { IWorkspace } from '../../../Types'
 
 type UseWorkspaceMemberMainReturn = {
   show: string
   copiedMsg: string
-  members: WorkspaceMember[]
-  requests: WorkspaceRequest[]
-  workspace: Workspace
+  members: IWorkspaceMember[]
+  requests: IWorkspaceUserRequest[]
+  workspace: IWorkspace
   showRequestsOrMembers: (event: React.MouseEvent<HTMLDivElement>, show: string) => void
   copyText: (event: React.MouseEvent<HTMLDivElement>) => void
 }
@@ -17,11 +17,12 @@ type UseWorkspaceMemberMainReturn = {
 function useWorkspaceMemberMain(): UseWorkspaceMemberMainReturn {
   const { workspace, user } = useContext(AuthContext)
   const [copiedMsg, setCopiedMsg] = useState('workspace-id__hidden-msg')
-  const [members, setMembers] = useState<WorkspaceMember[]>([])
-  const [requests, setRequests] = useState<WorkspaceRequest[]>([])
+  const [members, setMembers] = useState<IWorkspaceMember[]>([])
+  const [requests, setRequests] = useState<IWorkspaceUserRequest[]>([])
   const [show, setShow] = useState('main')
 
   function copyText(event: React.MouseEvent<HTMLDivElement>): void {
+    /** When workspace id get clicked it will get copied to clipboard */
     navigator.clipboard.writeText(workspace.workspace_id)
       .then(data => {
         setCopiedMsg('workspace-id__active-msg')
@@ -32,6 +33,7 @@ function useWorkspaceMemberMain(): UseWorkspaceMemberMainReturn {
   }
 
   function showRequestsOrMembers(event: React.MouseEvent<HTMLDivElement>, show: string): void {
+    /** Change show to members or request to be show one of them */
     setShow(show)
   }
 

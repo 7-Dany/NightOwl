@@ -1,10 +1,10 @@
-import { WorkspaceRequest } from '../Types'
+import { IWorkspaceUserRequest } from '../../../Types'
 import { LeftArrowIcon } from '../Assets'
 import React from 'react'
 import Request from './Request'
 
 type WorkspaceRequestsProps = {
-  requests: WorkspaceRequest[]
+  requests: IWorkspaceUserRequest[]
   showRequestsOrMembers: (event: React.MouseEvent<HTMLDivElement>, show: string) => void
 }
 
@@ -13,8 +13,8 @@ function WorkspaceRequests({ requests, showRequestsOrMembers }: WorkspaceRequest
   const workspaceRequests = requests.map(request => {
     return (
       <Request
-        key={request.userid}
-        userId={request.userid}
+        key={request.user_id}
+        userId={request.user_id}
         image={request.image}
         name={request.username}
         email={request.email}
