@@ -32,7 +32,7 @@ export class WorkspaceMembersModel {
   async showByWorkspaceId(workspaceId: string): Promise<IWorkspaceMember[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT workspace_id, user_id, role, u.username, u.email, u.image
+      const sql = `SELECT wm.id, workspace_id, user_id, role, u.username, u.email, u.image
                    FROM workspace_members wm
                             INNER JOIN users u on u.id = wm.user_id
                    WHERE workspace_id = $1`
@@ -47,9 +47,9 @@ export class WorkspaceMembersModel {
   async showByUserId(userId: string): Promise<IMember> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT workspace_id, name, role
-                   FROM workspace_members
-                            INNER JOIN workspaces w on w.id = workspace_members.workspace_id
+      const sql = `SELECT wm.id, workspace_id, name, role
+                   FROM workspace_members wm
+                            INNER JOIN workspaces w on w.id = wm.workspace_id
                    WHERE user_id = $1`
       const results = await connect.query(sql, [userId])
       connect.release()
