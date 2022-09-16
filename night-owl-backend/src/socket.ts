@@ -41,12 +41,20 @@ export class SocketServer {
 
   StartListeners = (defaultSocket: Socket) => {
     const socket = <SessionSocket>defaultSocket
-    const { workspace, user } = socket
-    const workspaceId = workspace.workspace_id
+    const { user } = socket
     const userId = user.id
+    let workspaceId: string
 
     /** Setting up handshake event to save workspace if not exist and save user to workspaces as active user */
-    socket.on('handshake', (callback: (users: string[]) => void) => {
+    socket.on('handshake', (data: { workspaceId: string }, callback: (users: string[]) => void) => {
+
+      /** Using user id as room to send notifications and server updates */
+      socket.join(userId)
+
+      /** Making sure workspace id is undefined to save active users for that id */
+      workspaceId = data.workspaceId
+      if (!workspaceId) return
+
       console.log(`Handshake received from workspace: ${workspaceId}, user: ${userId} }`)
 
       /** Check if this is a reconnection */
@@ -62,9 +70,11 @@ export class SocketServer {
       /** Generating new user */
       if (Object.keys(this.workspaces).includes(workspaceId)) {
         this.workspaces[workspaceId]?.push(userId)
+        console.log(`Workspace is exist and user:${userId} got added to: ${this.workspaces[workspaceId]}`)
       } else {
         this.workspaces[workspaceId] = []
         this.workspaces[workspaceId]?.push(userId)
+        console.log(`User: ${userId} got created and added to workspace: ${this.workspaces[workspaceId]}`)
       }
       callback(this.workspaces[workspaceId])
 
