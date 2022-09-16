@@ -15,11 +15,13 @@ function useWorkspaceProcessMain(): UseWorkspaceProcessMainReturn {
   const [show, setShow] = useState('')
 
   function choose(event: React.MouseEvent<HTMLDivElement>, choice: string) {
+    /** Based on choice it will show create workspace or join workspace models */
     setChoice(choice)
     setErrorMsg('')
   }
 
   function submitChoice(event: React.MouseEvent<HTMLButtonElement>) {
+    /** Submit choice after continue button get clicked */
     if (choice === 'create') {
       setShow('create')
     } else if (choice === 'join') {
