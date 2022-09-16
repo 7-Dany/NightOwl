@@ -5,12 +5,11 @@
 }
 
 .chat-room-body {
-  display: grid;
-  grid-template-columns: 1fr;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
   min-height: 73vh;
+  max-height: 73vh;
   row-gap: 1rem;
   padding: 1.5rem;
 
@@ -38,6 +37,8 @@
     top: 17px;
     left: 1rem;
     cursor: pointer;
+    border: none;
+    background-color: transparent;
   }
 
   &__mic-icon {
@@ -51,6 +52,8 @@
     top: 17px;
     right: 116px;
     cursor: pointer;
+    border: none;
+    background-color: transparent;
   }
 
   &__image-icon {
@@ -64,6 +67,8 @@
     top: 17px;
     right: 76px;
     cursor: pointer;
+    border: none;
+    background-color: transparent;
   }
 
   &__attachment-icon {
@@ -85,6 +90,7 @@
     align-items: center;
     border-radius: 12px;
     transition: 300ms all ease-in-out;
+    border: none;
 
     &:hover {
       background-color: $Very-White-Blue;
