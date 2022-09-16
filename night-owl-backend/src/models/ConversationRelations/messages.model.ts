@@ -35,7 +35,8 @@ export class MessagesModel {
       const sql = `SELECT m.id AS message_id, text, created_at, media_url, user_id, username, image
                    FROM messages m
                             INNER JOIN users u on u.id = m.user_id
-                   WHERE conversation_id = $1`
+                   WHERE conversation_id = $1
+                   ORDER BY created_at`
       const results = await connect.query(sql, [conversationId])
       connect.release()
       return results.rows
