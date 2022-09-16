@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from 'react-router-dom'
 import { useContext } from 'react'
-import { AuthContext } from '../Context/auth.context'
+import { AuthContext } from '../Context/AuthContext'
 
 function useAuth() {
   const { user } = useContext(AuthContext)
