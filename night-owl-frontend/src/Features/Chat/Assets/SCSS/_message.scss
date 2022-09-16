@@ -1,51 +1,71 @@
+.message-container {
+
+  &__message-date {
+    text-align: center;
+    width: 100%;
+    margin-block: 0.4rem;
+  }
+
+  &__person-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
 .others-msg {
-  display: grid;
-  grid-template-rows: 30px 1fr;
-  grid-template-columns: 30px 1fr;
-  align-items: center;
-  gap: 0.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  height: max-content;
 
   img {
-    grid-column: 1/2;
-    grid-row: 1/2;
     width: 32px;
     height: 32px;
   }
 
   p {
-    grid-row: 1/2;
-    grid-column: 2/-1;
     color: $White;
   }
 
   .message {
+    max-width: 50%;
+    overflow-wrap: break-word;
+    margin-left: 1.8rem;
+    margin-block: 0.4rem;
     align-self: flex-start;
     justify-self: left;
-    max-width: 50%;
-    grid-column: 2/-1;
-    grid-row: 2/-1;
     background-color: $Others-Message-Color;
     padding: 1rem;
     border-radius: 2px 25px 25px;
     line-height: 1.2;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
 
-    p {
+    &__content {
       color: $White;
+    }
+
+    &:hover {
+      background-color: $Whitish-Gray;
     }
   }
 
 }
 
 .user-msg {
-  display: grid;
-  grid-template-rows: 30px 1fr;
-  grid-template-columns: 1fr 30px;
-  align-items: center;
-  gap: 0.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-direction: column;
+  height: max-content;
+
+  .message-container__person-info {
+    flex-direction: row-reverse;
+  }
 
   img {
-    grid-column: -1/-2;
-    grid-row: 1/2;
     width: 32px;
     height: 32px;
   }
@@ -55,24 +75,29 @@
     flex-direction: row-reverse;
     gap: 1rem;
     text-align: right;
-    grid-column: -2/1;
-    grid-row: 1/2;
     color: $White;
   }
 
   .message {
-    align-self: flex-start;
+    overflow-wrap: break-word;
+    margin-right: 1.8rem;
+    margin-block: 0.4rem;
+    align-self: flex-end;
     justify-self: right;
     max-width: 50%;
-    grid-column: -2/ 1;
-    grid-row: 2/-1;
     background-color: $Others-Message-Color;
     padding: 1rem;
     border-radius: 25px 2px 25px 25px;
     line-height: 1.2;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
 
-    p {
+    &__content {
       color: $White;
+    }
+
+    &:hover {
+      background-color: $Whitish-Gray;
     }
   }
 }
