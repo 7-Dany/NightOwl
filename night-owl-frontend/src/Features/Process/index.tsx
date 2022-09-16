@@ -5,6 +5,11 @@ import WorkspaceRequest from './Components/WorkspaceRequest'
 import useWorkspaceProcessMain from './Hooks/useWorkspaceProcessMain'
 
 function WorkspaceProcessMain() {
+  /** TODO: Adding way to let the user change his image or skip it
+   *  TODO: Adding way to create project or tasks after the user create workspace
+   *  TODO: Adding way to let the user upload logo for the workspace after it get created
+   *  TODO: Adding way to invite users after workspace get created
+   */
   const {
     errorMsg,
     choice,

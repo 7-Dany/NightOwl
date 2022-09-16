@@ -3,10 +3,13 @@ import SignUp from './Components/SignUp'
 import { useState } from 'react'
 
 function LoginMain() {
-  const [login, setLogin] = useState(false)
+  /** TODO: Making forget password works
+   *  TODO: After new user get created adding way to verify his email or skip for later
+   */
+  const [login, setLogin] = useState(true)
   return (
     <div>
-      {login ? <SignUp setLogin={setLogin} /> : <SignIn setLogin={setLogin} />}
+      {login ? <SignIn setLogin={setLogin} /> : <SignUp setLogin={setLogin} />}
     </div>
   )
 }
