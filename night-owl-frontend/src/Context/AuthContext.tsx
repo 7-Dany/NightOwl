@@ -1,19 +1,19 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { getUser } from '../Api/users.api'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { AuthUser, Workspace, WorkspaceRequest } from '../Types'
+import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../Types'
 
 type AuthContextProviderProps = {
   children: React.ReactNode
 }
 
 type AuthContextType = {
-  user: AuthUser
-  setUser: React.Dispatch<React.SetStateAction<AuthUser>>
-  workspace: Workspace
-  setWorkspace: React.Dispatch<React.SetStateAction<Workspace>>
-  workspaceRequest: WorkspaceRequest
-  setWorkspaceRequest: React.Dispatch<React.SetStateAction<WorkspaceRequest>>
+  user: IAuthUser
+  setUser: React.Dispatch<React.SetStateAction<IAuthUser>>
+  workspace: IWorkspace
+  setWorkspace: React.Dispatch<React.SetStateAction<IWorkspace>>
+  workspaceRequest: IWorkspaceRequest
+  setWorkspaceRequest: React.Dispatch<React.SetStateAction<IWorkspaceRequest>>
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -22,9 +22,9 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 function AuthContextProvider({ children }: AuthContextProviderProps) {
   const location = useLocation()
   const navigate = useNavigate()
-  const [user, setUser] = useState<AuthUser>({} as AuthUser)
-  const [workspace, setWorkspace] = useState<Workspace>({} as Workspace)
-  const [workspaceRequest, setWorkspaceRequest] = useState<WorkspaceRequest>({} as WorkspaceRequest)
+  const [user, setUser] = useState<IAuthUser>({} as IAuthUser)
+  const [workspace, setWorkspace] = useState<IWorkspace>({} as IWorkspace)
+  const [workspaceRequest, setWorkspaceRequest] = useState<IWorkspaceRequest>({} as IWorkspaceRequest)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -34,25 +34,25 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
           setUser(data.user)
           if (data.workspace?.name) {
             setWorkspace(data.workspace)
-            setWorkspaceRequest({} as WorkspaceRequest)
+            setWorkspaceRequest({} as IWorkspaceRequest)
             navigate(location.pathname)
           } else if (data.workspaceRequest?.id) {
             setWorkspaceRequest(data.workspaceRequest)
-            setWorkspace({} as Workspace)
+            setWorkspace({} as IWorkspace)
             navigate(location.pathname)
           } else {
             navigate(location.pathname)
           }
         } else {
-          setUser({} as AuthUser)
-          setWorkspace({} as Workspace)
-          setWorkspaceRequest({} as WorkspaceRequest)
+          setUser({} as IAuthUser)
+          setWorkspace({} as IWorkspace)
+          setWorkspaceRequest({} as IWorkspaceRequest)
         }
       })
       .catch(error => {
-        setUser({} as AuthUser)
-        setWorkspace({} as Workspace)
-        setWorkspaceRequest({} as WorkspaceRequest)
+        setUser({} as IAuthUser)
+        setWorkspace({} as IWorkspace)
+        setWorkspaceRequest({} as IWorkspaceRequest)
       })
     return () => {
       controller.abort()
