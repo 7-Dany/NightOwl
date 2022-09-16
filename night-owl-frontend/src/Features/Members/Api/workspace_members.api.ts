@@ -1,6 +1,6 @@
 import config from '../../../Config'
 import axios from 'axios'
-import { WorkspaceMember } from '../Types'
+import { IWorkspaceMember } from '../../../Types'
 
 const { url } = config
 
@@ -14,10 +14,11 @@ type CreateWorkspaceMemberArgs = {
   }
 }
 
-export async function createWorkspaceMember({
-                                              controller,
-                                              values
-                                            }: CreateWorkspaceMemberArgs): Promise<WorkspaceMember> {
+export async function createWorkspaceMember(
+  {
+    controller,
+    values
+  }: CreateWorkspaceMemberArgs): Promise<IWorkspaceMember> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,
@@ -26,7 +27,8 @@ export async function createWorkspaceMember({
   const response = await axios.post(`${url}/workspace/members`, {
     workspace_id: values.workspaceId,
     role: values.role,
-    user_id: values.userId
+    user_id: values.userId,
+    state: 'Request'
   }, config)
   return response.data.data
 }

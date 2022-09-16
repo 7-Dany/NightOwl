@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { WorkspaceRequest } from '../../../Types'
+import { IRequest } from '../../../Types'
 
 const { url } = config
 
@@ -12,10 +12,11 @@ type DeleteWorkspaceRequestArgs = {
   }
 }
 
-export async function deleteWorkspaceRequest({
-                                               controller,
-                                               values
-                                             }: DeleteWorkspaceRequestArgs): Promise<WorkspaceRequest> {
+export async function deleteWorkspaceRequest(
+  {
+    controller,
+    values
+  }: DeleteWorkspaceRequestArgs): Promise<IRequest> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,

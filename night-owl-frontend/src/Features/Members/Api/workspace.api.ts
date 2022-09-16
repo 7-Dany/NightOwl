@@ -1,11 +1,11 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { WorkspaceRequest, WorkspaceMember } from '../Types'
+import { IWorkspaceMember, IWorkspaceUserRequest } from '../../../Types'
 
 const { url } = config
 type GetMembersAndRequestsReturn = {
-  requests: WorkspaceRequest[]
-  members: WorkspaceMember[]
+  requests: IWorkspaceUserRequest[]
+  members: IWorkspaceMember[]
 }
 
 type GetMembersAndRequestsArgs = {
@@ -16,10 +16,11 @@ type GetMembersAndRequestsArgs = {
   }
 }
 
-export async function getMembersAndRequests({
-                                              controller,
-                                              values
-                                            }: GetMembersAndRequestsArgs): Promise<GetMembersAndRequestsReturn> {
+export async function getMembersAndRequests(
+  {
+    controller,
+    values
+  }: GetMembersAndRequestsArgs): Promise<GetMembersAndRequestsReturn> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,

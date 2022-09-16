@@ -1,4 +1,4 @@
-import { WorkspaceRequest } from '../../../Types'
+import { IRequest } from '../../../Types'
 import axios from 'axios'
 import config from '../../../Config'
 
@@ -21,10 +21,11 @@ type DeleteWorkspaceRequestsArgs = {
   }
 }
 
-export async function createWorkspaceRequest({
-                                               controller,
-                                               values
-                                             }: CreateWorkspaceRequestArgs): Promise<WorkspaceRequest> {
+export async function createWorkspaceRequest(
+  {
+    controller,
+    values
+  }: CreateWorkspaceRequestArgs): Promise<IRequest> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,
@@ -34,10 +35,11 @@ export async function createWorkspaceRequest({
   return response.data.data
 }
 
-export async function deleteWorkspaceRequest({
-                                               controller,
-                                               values
-                                             }: DeleteWorkspaceRequestsArgs): Promise<WorkspaceRequest> {
+export async function deleteWorkspaceRequest(
+  {
+    controller,
+    values
+  }: DeleteWorkspaceRequestsArgs): Promise<IRequest> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,
