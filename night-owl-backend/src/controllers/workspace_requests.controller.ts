@@ -84,7 +84,7 @@ export const deleteWorkspaceRequest = async (
         message: 'Workspace Request got deleted successfully'
       })
     } else {
-      response.status(422).json({
+      response.status(409).json({
         status: 'Failed',
         message: 'Workspace request is not exist'
       })
@@ -109,7 +109,7 @@ export const deleteWorkspaceRequestByUser = async (
         message: 'Workspace request got deleted successfully'
       })
     } else {
-      response.status(422).json({
+      response.status(409).json({
         status: 'Failed',
         message: 'Workspace request is not exist'
       })
