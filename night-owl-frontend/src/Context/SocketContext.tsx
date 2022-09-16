@@ -1,12 +1,13 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react'
+import React, { createContext, useContext, useEffect, useReducer } from 'react'
 import {
   defaultSocketContextState,
   TSocketContextActions,
   SocketReducer,
-  TSocketContextState,
-  TConversationMessage
+  TSocketContextState
 } from './SocketContextReducers'
+import { IUserMessage } from '../Types'
 import { useSocket } from '../Hooks/useSocket'
+import { AuthContext } from './AuthContext'
 
 type SocketContextType = {
   SocketState: TSocketContextState
@@ -20,6 +21,7 @@ type SocketContextProviderProps = {
 export const SocketContext = createContext<SocketContextType>({} as SocketContextType)
 
 function SocketContextProvider({ children }: SocketContextProviderProps) {
+  const { workspace } = useContext(AuthContext)
   const [SocketState, SocketDispatch] = useReducer(SocketReducer, defaultSocketContextState)
   const socket = useSocket('http://localhost:4000', {
     reconnectionDelay: 5000,
@@ -64,43 +66,51 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
 
   function SendHandshake() {
     // Sending handshake to server to get all active users for workspace
-    socket.emit('handshake', (users: string[]) => {
+    socket.emit('handshake', { workspaceId: workspace.workspace_id }, (users: string[]) => {
       console.log(`User handshake callback message received users: `, users)
       SocketDispatch({ type: 'update_users', payload: users })
     })
   }
 
   useEffect(() => {
-    // Connect to the web socket
-    socket.connect()
+    if (workspace.workspace_id) {
+      // Connect to the web socket
+      socket.connect()
 
-    // Save socket in context
-    SocketDispatch({ type: 'update_socket', payload: socket })
+      // Save socket in context
+      SocketDispatch({ type: 'update_socket', payload: socket })
 
-    // Start event listeners
-    StartListeners()
+      // Start event listeners
+      StartListeners()
 
-    // Send the handshake
-    SendHandshake()
+      // Send the handshake
+      SendHandshake()
+    }
 
+    return () => {
+      socket.disconnect()
+    }
     // eslint-disable-next-line
-  }, [])
+  }, [workspace.workspace_id])
 
-  function ConversationListeners(conversation_id: string) {
+  function JoinConversation(conversation_id: string) {
     // Sending conversation id to server to let the user join it and get all messages for that conversation
-    socket.emit('join_conversation', { conversation_id }, (messages: TConversationMessage[]) => {
+    socket.emit('join_conversation', { conversation_id }, (messages: IUserMessage[]) => {
       console.log(`conversation: ${conversation_id} is active`)
       SocketDispatch({ type: 'update_messages', payload: messages })
     })
   }
 
+  function ConversationListeners() {
+
+  }
+
   useEffect(() => {
     // When the active conversation changes it should send the conversation id to the server
     if (SocketState.activeConversation.conversation_id) {
-      console.log(`active conversation got changed`)
-      ConversationListeners(SocketState.activeConversation.conversation_id)
+      JoinConversation(SocketState.activeConversation.conversation_id)
     }
-  }, [SocketState.activeConversation.conversation_id])
+  }, [SocketState.activeConversation?.conversation_id])
 
   return (
     <SocketContext.Provider value={{ SocketState, SocketDispatch }}>
