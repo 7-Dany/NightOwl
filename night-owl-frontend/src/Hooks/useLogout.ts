@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../Context/auth.context'
+import { AuthContext } from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { deleteUserSession } from '../Api/users.api'
-import { AuthUser, Workspace } from '../Types'
+import { IAuthUser, IWorkspace } from '../Types'
+import { SocketContext } from '../Context/SocketContext'
 
 type UseLogoutReturn = {
   logoutUser: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -11,6 +12,7 @@ type UseLogoutReturn = {
 function useLogout(): UseLogoutReturn {
   const [logout, setLogout] = useState(false)
   const { user, setUser, setWorkspace } = useContext(AuthContext)
+  const { SocketState } = useContext(SocketContext)
   const navigate = useNavigate()
 
   function logoutUser(event: React.MouseEvent<HTMLDivElement>) {
@@ -22,16 +24,18 @@ function useLogout(): UseLogoutReturn {
     if (logout) {
       deleteUserSession({ controller, token: user.token })
         .then(data => {
-          setUser({} as AuthUser)
-          setWorkspace({} as Workspace)
+          setUser({} as IAuthUser)
+          setWorkspace({} as IWorkspace)
           setLogout(false)
           navigate('/')
+          SocketState.socket?.disconnect()
         })
         .catch(error => {
-          setUser({} as AuthUser)
-          setWorkspace({} as Workspace)
+          setUser({} as IAuthUser)
+          setWorkspace({} as IWorkspace)
           setLogout(false)
           navigate('/')
+          SocketState.socket?.disconnect()
         })
     }
     return () => {
