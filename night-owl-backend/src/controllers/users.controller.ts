@@ -223,7 +223,6 @@ export const userSession = async (
     if (user) {
       const checkWorkspace = await workspaceMemberModel.showByUserId(user.id)
       if (checkWorkspace) {
-        request.session.workspace = { workspace_id: checkWorkspace.workspace_id }
         response.status(200).json({
           status: 'Success',
           data: { user: { ...user }, workspace: { ...checkWorkspace } },
@@ -248,10 +247,7 @@ export const userSession = async (
         }
       }
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'User session is not exist'
-      })
+      return
     }
   } catch (error) {
   }
@@ -264,7 +260,6 @@ export const deleteUserSession = async (
 ): Promise<void> => {
   try {
     request.session.user = null
-    request.session.workspace = null
     response.status(202).json({
       status: 'Success',
       message: 'User session got deleted successfully'
@@ -296,7 +291,6 @@ export const authenticateUser = async (
         request.session.user = { ...authenticatedUser, token }
         const workspaceMember = await workspaceMemberModel.showByUserId(authenticatedUser.id as string)
         if (workspaceMember) {
-          request.session.workspace = { workspace_id: workspaceMember.workspace_id }
           response.status(200).json({
             status: 'Success',
             data: { user: { ...authenticatedUser, token }, workspace: { ...workspaceMember } },
