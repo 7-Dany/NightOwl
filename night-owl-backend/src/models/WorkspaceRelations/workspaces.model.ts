@@ -5,7 +5,7 @@ export class WorkspacesModel {
   async index(): Promise<IWorkspace[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
+      const sql = `SELECT id AS workspace_id, name
                    FROM workspaces`
       const results = await connect.query(sql)
       connect.release()
@@ -18,7 +18,7 @@ export class WorkspacesModel {
   async show(id: string): Promise<IWorkspace> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT *
+      const sql = `SELECT id AS workspace_id, name
                    FROM workspaces
                    WHERE id = $1`
       const results = await connect.query(sql, [id])
@@ -34,7 +34,7 @@ export class WorkspacesModel {
       const connect = await database.connect()
       const sql = `INSERT INTO workspaces (name)
                    VALUES ($1)
-                   RETURNING *`
+                   RETURNING id AS workspace_id, name`
       const results = await connect.query(sql, [name])
       connect.release()
       return results.rows[0]
@@ -49,7 +49,7 @@ export class WorkspacesModel {
       const sql = `UPDATE workspaces
                    SET name=$1
                    WHERE id = $2
-                   RETURNING *`
+                   RETURNING id AS workspace_id, name`
       const results = await connect.query(sql, [name, id])
       connect.release()
       return results.rows[0]
@@ -64,7 +64,7 @@ export class WorkspacesModel {
       const sql = `DELETE
                    FROM workspaces
                    WHERE id = $1
-                   RETURNING *`
+                   RETURNING id AS workspace_id, name`
       const results = await connect.query(sql, [id])
       connect.release()
       return results.rows[0]
