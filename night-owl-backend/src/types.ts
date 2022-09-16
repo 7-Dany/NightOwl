@@ -5,7 +5,6 @@ import { Socket } from 'socket.io'
 declare module 'express-session' {
   interface SessionData {
     user?: any
-    workspace?: any
   }
 }
 
@@ -16,5 +15,4 @@ interface SessionIncomingMessage extends IncomingMessage {
 export interface SessionSocket extends Socket {
   request: SessionIncomingMessage
   user?: any
-  workspace?: any
 }

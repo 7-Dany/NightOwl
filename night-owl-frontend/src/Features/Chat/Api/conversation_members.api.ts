@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
-import { Conversation } from '../Types'
+import { IPrivateConversation } from '../../../Types'
 
 const { url } = config
 
@@ -12,10 +12,13 @@ type GetAllUserConversationArgs = {
   }
 }
 
-export async function getAllUserConversation({
-                                               controller,
-                                               values
-                                             }: GetAllUserConversationArgs): Promise<Conversation[]> {
+export async function getAllUserConversation(
+  {
+    controller,
+    values
+  }: GetAllUserConversationArgs): Promise<IPrivateConversation[]> {
+
+  /** To get all private conversations for a user */
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,

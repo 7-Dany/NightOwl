@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '../../../Config'
+import { IConversationMember } from '../../../Types'
 
 const { url } = config
 
@@ -12,16 +13,12 @@ type CreatePrivateChatArgs = {
   }
 }
 
-type NewConversation = {
-  conversation_id: string
-  name: string
-  type: string
-  user_id: string
-  username: string
-  image: string
-}
-
-export async function createPrivateChat({ controller, values }: CreatePrivateChatArgs): Promise<NewConversation> {
+export async function createPrivateChat(
+  {
+    controller,
+    values
+  }: CreatePrivateChatArgs): Promise<IConversationMember> {
+  /** To create private conversation between 2 users */
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     signal: controller.signal,
