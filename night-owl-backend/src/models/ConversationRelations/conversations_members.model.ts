@@ -40,14 +40,18 @@ export class ConversationMembersModel {
                           u.image,
                           m.message_id,
                           m.created_at,
-                          m.text
+                          m.text,
+                          m.message_type,
+                          m.sender_id
                    FROM conversation_members cm
                             INNER JOIN users u on u.id = cm.user_id
                             INNER JOIN conversations c ON c.id = cm.conversation_id
                             LEFT JOIN(SELECT DISTINCT ON (conversation_id) conversation_id,
+                                                                           id      as message_id,
                                                                            text,
                                                                            created_at,
-                                                                           id as message_id
+                                                                           message_type,
+                                                                           user_id as sender_id
                                       FROM messages
                                       ORDER BY conversation_id, id DESC) m
                                      on m.conversation_id = cm.conversation_id

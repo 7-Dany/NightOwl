@@ -18,7 +18,7 @@ export class MessagesModel {
   async show(id: string): Promise<IMessage> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT id AS message_id, text, media_url, created_at, user_id, conversation_id
+      const sql = `SELECT id AS message_id, text, media_url, message_type, created_at, user_id, conversation_id
                    FROM messages
                    WHERE id = $1`
       const results = await connect.query(sql, [id])
@@ -32,7 +32,14 @@ export class MessagesModel {
   async showByConversation(conversationId: string): Promise<IUserMessage[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT m.id AS message_id, text, created_at, media_url, user_id, username, image
+      const sql = `SELECT m.id AS message_id,
+                          text,
+                          created_at,
+                          media_url,
+                          message_type,
+                          user_id,
+                          username,
+                          image
                    FROM messages m
                             INNER JOIN users u on u.id = m.user_id
                    WHERE conversation_id = $1
@@ -48,17 +55,25 @@ export class MessagesModel {
   async create(message: IMessage): Promise<IUserMessage> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO messages (text, media_url, created_at, user_id, conversation_id)
-                   VALUES ($1, $2, $3, $4, $5)
+      const sql = `INSERT INTO messages (text, media_url, message_type, created_at, user_id, conversation_id)
+                   VALUES ($1, $2, $3, $4, $5, $6)
                    RETURNING id`
       const newMessage = await connect.query(sql, [
         message.text,
         message.media_url,
+        message.message_type,
         message.created_at,
         message.user_id,
         message.conversation_id
       ])
-      const getSql = `SELECT m.id AS message_id, text, created_at, media_url, user_id, username, image
+      const getSql = `SELECT m.id AS message_id,
+                             text,
+                             created_at,
+                             message_type,
+                             media_url,
+                             user_id,
+                             username,
+                             image
                       FROM messages m
                                INNER JOIN users u on u.id = m.user_id
                       WHERE m.id = $1`
@@ -76,7 +91,7 @@ export class MessagesModel {
       const sql = `UPDATE messages
                    SET text=$1
                    WHERE id = $2
-                   RETURNING id AS message_id, text, media_url, created_at, user_id, conversation_id`
+                   RETURNING id AS message_id, text, media_url, message_type, created_at, user_id, conversation_id`
       const results = await connect.query(sql, [text, id])
       connect.release()
       return results.rows[0]
@@ -91,7 +106,7 @@ export class MessagesModel {
       const sql = `DELETE
                    FROM messages
                    WHERE id = $1
-                   RETURNING id AS message_id, text, media_url, created_at, user_id, conversation_id`
+                   RETURNING id AS message_id, text,message_type, media_url, created_at, user_id, conversation_id`
       const results = await database.query(sql, [id])
       connect.release()
       return results.rows[0]
