@@ -1,7 +1,6 @@
 import { AttachmentIcon, MicIcon, SendImageIcon, SendMsgIcon } from '../Assets'
 import useChatRoom from '../Hooks/useChatRoom'
 
-
 function ChatRoom() {
   const {
     messageRef,
@@ -10,7 +9,8 @@ function ChatRoom() {
     getMessages,
     sendMessage,
     setMessage,
-    handleKeyPress
+    handleKeyPress,
+    sendRecord
   } = useChatRoom()
 
   const chatMessages = getMessages()
@@ -22,7 +22,7 @@ function ChatRoom() {
         <div ref={messageRef}></div>
       </div>
       <div className='chat-room-footer'>
-        <button className='chat-room-footer__mic-icon-container' title='send voice'>
+        <button className='chat-room-footer__mic-icon-container' title='send voice' onClick={sendRecord}>
           <MicIcon className={'chat-room-footer__mic-icon'} />
         </button>
         <button className='chat-room-footer__image-icon-container' title='send image'>
