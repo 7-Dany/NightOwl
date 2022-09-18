@@ -23,6 +23,8 @@ const server = http.createServer(app)
 // create a socket io server instance
 new SocketServer(server)
 
+// Using uploads folder to save static files
+app.use(express.static('uploads'))
 // HTTP request logger middleware
 app.use(morgan('short'))
 // Adding secure headers to express app
