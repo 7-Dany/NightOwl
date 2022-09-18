@@ -3,6 +3,8 @@ import { Socket, Server } from 'socket.io'
 import { authorizeUser, sessionMiddleware, wrap } from './middlewares'
 import { SessionSocket } from './types'
 import { MessagesModel, IMessage, IUserMessage } from './models'
+import fs from 'fs'
+import { v4 as uuid4 } from 'uuid'
 
 const messagesModel = new MessagesModel()
 
@@ -98,12 +100,37 @@ export class SocketServer {
     })
 
     /** Setting up save message event */
-    socket.on('save_message', async (data: { newMessage: IMessage, conversation: string }, callback) => {
-      console.log(`New message received from: ${userId} its data:`, data)
+    socket.on('save_message', async (
+      newMessage: { data: string | File, type: string },
+      conversation: string,
+      callback: (message: IUserMessage) => void) => {
 
       /** Create new message and send it to both users the sender and receiver */
-      const createdMessage = await messagesModel.create(data.newMessage)
-      socket.to(data.conversation).emit('receive_message', { newMessage: createdMessage })
+      let message: IMessage = {} as IMessage
+      if (newMessage.type === 'text') {
+        /** Create new text message */
+        message = {
+          text: newMessage.data as string,
+          media_url: null,
+          message_type: 'text',
+          conversation_id: conversation,
+          user_id: userId,
+          created_at: new Date().toISOString()
+        }
+      } else if (newMessage.type === 'voice') {
+        let pathName = `uploads/${conversation}-${uuid4()}.mp3`
+        fs.createWriteStream(`${__dirname}/../${pathName}`).write(newMessage.data)
+        message = {
+          text: null,
+          media_url: `http://localhost:4000/${pathName}`,
+          message_type: 'voice',
+          conversation_id: conversation,
+          user_id: userId,
+          created_at: new Date().toISOString()
+        }
+      }
+      const createdMessage = await messagesModel.create(message)
+      socket.to(conversation).emit('receive_message', { newMessage: createdMessage })
       callback(createdMessage)
     })
 
