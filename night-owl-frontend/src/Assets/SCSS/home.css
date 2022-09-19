@@ -1,3 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+.header {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 1px solid #292524;
+}
+.header__title {
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #FFFFFF;
+  margin-right: auto;
+}
+
+.search-area {
+  margin-right: 2rem;
+}
+.search-area__container {
+  position: relative;
+}
+.search-area__icon {
+  fill: #79716B;
+  position: absolute;
+  top: -0.1rem;
+  left: 1rem;
+  width: 24px;
+  height: 24px;
+}
+.search-area__input {
+  width: 280px;
+  height: 44px;
+  border-radius: 30px;
+  outline: none;
+  background-color: #292524;
+  border: none;
+  color: #FFFFFF;
+  padding: 0.5rem 3rem;
+}
+.search-area__input::placeholder {
+  color: #79716B;
+}
+.search-area__input:-webkit-autofill {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+.search-area__input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+.personal-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.personal-info__create-new {
+  background-color: #57534E;
+  width: 120px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+  padding: 0.5rem;
+}
+.personal-info__create-new:hover {
+  background-color: #E7E5E4;
+  color: #79716B;
+}
+.personal-info__create-new:hover .personal-info__create-new__icon {
+  fill: #79716B;
+}
+.personal-info__create-new__icon {
+  fill: #FFFFFF;
+  transition: 300ms all ease-in-out;
+}
+.personal-info__notification-icon {
+  fill: #79716B;
+  cursor: pointer;
+}
+.personal-info__person-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .sidebar {
   grid-column: 1/2;
   grid-row: 1/-1;
@@ -8,7 +104,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 2rem 0;
-  border: 1px solid #414144;
+  border: 1px solid #292524;
 }
 
 .four-circles {
@@ -38,22 +134,149 @@
   align-items: center;
   cursor: pointer;
   border-left: 3px solid transparent;
+  position: relative;
 }
 .main-icons__icon-container.active {
-  border-left: 3px solid #1364EF;
+  border-left: 3px solid #528BFF;
 }
 .main-icons__icon-container.active .main-icons__icon {
-  fill: #1364EF;
+  fill: #528BFF;
 }
 .main-icons__icon-container:hover {
-  border-left: 3px solid #5896FF;
+  border-left: 3px solid #528BFF;
 }
 .main-icons__icon-container:hover .main-icons__icon {
-  fill: #5896FF;
+  fill: #528BFF;
+}
+.main-icons__icon-container:hover:nth-child(1)::after {
+  content: "Home";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -3.55rem;
+}
+.main-icons__icon-container:hover:nth-child(2)::after {
+  content: "Projects";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -4.55rem;
+}
+.main-icons__icon-container:hover:nth-child(3)::after {
+  content: "Calender";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -4.85rem;
+}
+.main-icons__icon-container:hover:nth-child(4)::after {
+  content: "Discussions";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -5.9rem;
+}
+.main-icons__icon-container:hover:nth-child(5)::after {
+  content: "My Tasks";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -4.85rem;
+}
+.main-icons__icon-container:hover:nth-child(6)::after {
+  content: "Chats";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -3.5rem;
 }
 .main-icons__icon {
   width: 100%;
-  fill: #2B2A32;
+  fill: #79716B;
   border-left: 3px solid transparent;
   transition: 300ms ease-in-out all;
 }
@@ -73,102 +296,88 @@
   align-items: center;
   cursor: pointer;
   border: 3px solid transparent;
+  position: relative;
 }
 .footer-icons__icon-container.active {
-  border-left: 3px solid #1364EF;
+  border-left: 3px solid #84ADFF;
 }
 .footer-icons__icon-container.active .footer-icons__icon {
-  fill: #1364EF;
+  fill: #84ADFF;
 }
 .footer-icons__icon-container:hover {
-  border-left: 3px solid #5896FF;
+  border-left: 3px solid #84ADFF;
 }
 .footer-icons__icon-container:hover .footer-icons__icon {
-  fill: #5896FF;
+  fill: #84ADFF;
+}
+.footer-icons__icon-container:hover:nth-child(1)::after {
+  content: "Members";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -5.15rem;
+}
+.footer-icons__icon-container:hover:nth-child(2)::after {
+  content: "Settings";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -4.8rem;
+}
+.footer-icons__icon-container:hover:nth-child(3)::after {
+  content: "Logout";
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #E7E5E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  right: -4.3rem;
 }
 .footer-icons__icon {
   width: 100%;
-  fill: #2B2A32;
+  fill: #79716B;
   border-left: 3px solid transparent;
   transition: 300ms all ease-in-out;
-}
-
-.header {
-  grid-column: 2/-1;
-  grid-row: 1/2;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem;
-  border-bottom: 1px solid #414144;
-}
-
-.search-area__container {
-  position: relative;
-}
-.search-area__icon {
-  fill: #27252f;
-  position: absolute;
-  top: 0;
-  left: 1rem;
-  width: 24px;
-  height: 24px;
-}
-.search-area__input {
-  width: 280px;
-  height: 44px;
-  border-radius: 30px;
-  outline: none;
-  background-color: #0B0B0D;
-  border: none;
-  color: #FFF;
-  padding: 0.5rem 3rem;
-}
-.search-area__input::placeholder {
-  color: #27252f;
-}
-.search-area__input:-webkit-autofill {
-  transition: background-color 600000s 0s, color 600000s 0s;
-}
-.search-area__input:-webkit-autofill:focus {
-  transition: background-color 600000s 0s, color 600000s 0s;
-}
-
-.personal-info {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-.personal-info__create-new {
-  background-color: #1364EF;
-  width: 120px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: center;
-  color: #FFF;
-  cursor: pointer;
-  transition: 300ms all ease-in-out;
-  padding: 0.5rem;
-}
-.personal-info__create-new:hover {
-  background-color: #5896FF;
-}
-.personal-info__create-new__icon {
-  fill: #FFF;
-}
-.personal-info__notification-icon {
-  fill: #2B2A32;
-  cursor: pointer;
-}
-.personal-info__person-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
 }
 
 .login-form-container {
@@ -1002,7 +1211,7 @@
 }
 
 .chat-room {
-  width: 100%;
+  max-width: 50%;
   background-color: #0B0B0D;
   border-radius: 24px 8px 24px 24px;
 }
@@ -1334,16 +1543,28 @@
 }
 
 body {
-  background-color: #040406;
+  background-color: #1C1917;
 }
 
 .App {
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #FFFFFF;
   width: 100%;
   height: 100vh;
-  color: #FFF;
   display: grid;
   grid-template-columns: 80px repeat(2, 4fr);
   grid-template-rows: 80px 1fr;
+}
+
+.main-app-container {
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
 }
 
 /*# sourceMappingURL=home.css.map */

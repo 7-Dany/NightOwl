@@ -1,4 +1,4 @@
-@import "config", "workspace-sidebar", "workspace-header";
+@import "config", "workspace";
 @import "../../Features/Login/Assets/SCSS/login-main";
 @import "../../Features/Process/Assets/SCSS/workspace-process-main";
 @import "../../Features/Members/Assets/SCSS/workspace-members-main";
@@ -11,14 +11,20 @@
 }
 
 body {
-  background-color: $Very-Dark-Blue;
+  background-color: $Gray-900;
 }
 
 .App {
+  @include Body-Medium-Font($Base-White);
   width: 100%;
   height: 100vh;
-  color: $White;
   display: grid;
   grid-template-columns: 80px repeat(2, 4fr);
   grid-template-rows: 80px 1fr;
+}
+
+.main-app-container {
+  grid-column: 2/-1;
+  width: 100%;
+  display: flex;
 }
