@@ -1,15 +1,11 @@
-import WorkSpaceHeader from '../Layout/WorkSpaceHeader'
-import WorkspaceSidebar from '../Layout/WorkspaceSidebar'
 import Chat from '../Features/Chat'
-import React from 'react'
+import Workspace from '../Layout/Workspace'
 
 function ChatPage() {
   return (
-    <div className='App'>
-      <WorkSpaceHeader />
-      <WorkspaceSidebar />
+    <Workspace title={'Chats'}>
       <Chat />
-    </div>
+    </Workspace>
   )
 }
 
