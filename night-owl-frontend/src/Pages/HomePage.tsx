@@ -1,10 +1,11 @@
-import WorkspaceSidebar from '../Layout/WorkspaceSidebar'
+import Workspace from '../Layout/Workspace'
+import Home from '../Features/Home'
 
 function HomePage() {
   return (
-    <div className='App'>
-      <WorkspaceSidebar />
-    </div>
+    <Workspace title={'Home'}>
+      <Home />
+    </Workspace>
   )
 }
 
