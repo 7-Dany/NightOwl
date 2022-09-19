@@ -6,6 +6,8 @@ type MessageProps = {
   userName: string | null
   messageDate: string | null
   messageContent: string
+  messageType: string
+  media: string | null
 }
 
 function Message(
@@ -14,7 +16,9 @@ function Message(
     userImage,
     userName,
     messageDate,
-    messageContent
+    messageContent,
+    messageType,
+    media
   }: MessageProps) {
   const [showDate, setShowDate] = useState(false)
 
@@ -36,9 +40,14 @@ function Message(
         <span className='message-container__message-date'>{messageDate}</span>
       }
       <div className='message' onClick={handleShowDate}>
-        <p className='message__content'>
-          {messageContent}
-        </p>
+        {messageType === 'text' &&
+          <p className='message__content'>
+            {messageContent}
+          </p>
+        }
+        {messageType === 'voice' &&
+          <audio src={media as string} controls></audio>
+        }
       </div>
     </div>
   )
