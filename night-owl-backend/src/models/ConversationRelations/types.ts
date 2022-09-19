@@ -12,8 +12,9 @@ export interface IMember {
 
 export interface IMessage {
   message_id?: string
-  text: string
+  text: string | null
   media_url: null | string
+  message_type: string
   created_at: string
   user_id: string
   conversation_id: string
