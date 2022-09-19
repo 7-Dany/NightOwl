@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { SocketContext } from '../../../Context/SocketContext'
+import { AuthContext } from '../../../Context/AuthContext'
 
 type UsePrivateChannelArgs = {
   conversation_id: string
@@ -13,8 +14,9 @@ type UsePrivateChannelArgs = {
 
 type UsePrivateChannelReturn = {
   active: string
-  getTime: (created_at: string) => Date
+  getTime: (created_at: string) => Date | null
   handleOnClick: (event: React.MouseEvent<HTMLDivElement>) => void
+  userId: string
 }
 
 function usePrivateChannel(
@@ -27,14 +29,19 @@ function usePrivateChannel(
     type
   }: UsePrivateChannelArgs): UsePrivateChannelReturn {
   const { SocketDispatch, SocketState } = useContext(SocketContext)
+  const { user } = useContext(AuthContext)
   const [active, setActive] = useState('private-channel__not-active')
 
   function getTime(created_at: string) {
     /** Get time without offset */
-    let date = new Date(created_at)
-    const timestamp = date.getTime()
-    const offset = date.getTimezoneOffset() * 60 * 1000
-    return new Date(timestamp - offset)
+    if (created_at) {
+      let date = new Date(created_at)
+      const timestamp = date.getTime()
+      const offset = date.getTimezoneOffset() * 60 * 1000
+      return new Date(timestamp - offset)
+    } else {
+      return null
+    }
   }
 
   function handleOnClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -57,7 +64,8 @@ function usePrivateChannel(
   return {
     active,
     handleOnClick,
-    getTime
+    getTime,
+    userId: user.id
   }
 }
 
