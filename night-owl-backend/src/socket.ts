@@ -118,8 +118,11 @@ export class SocketServer {
           created_at: new Date().toISOString()
         }
       } else if (newMessage.type === 'voice') {
-        let pathName = `uploads/${conversation}-${uuid4()}.mp3`
-        fs.createWriteStream(`${__dirname}/../${pathName}`).write(newMessage.data)
+        /** Creating mp3 file and save it to uploads then save its url path to message
+         * TODO: Change uploads from BE to S3 Bucket
+         */
+        let pathName = `records/${conversation}-${uuid4()}.mp3`
+        fs.createWriteStream(`${__dirname}/../uploads/${pathName}`).write(newMessage.data)
         message = {
           text: null,
           media_url: `http://localhost:4000/${pathName}`,
