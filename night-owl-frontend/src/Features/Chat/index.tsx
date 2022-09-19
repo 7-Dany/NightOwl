@@ -16,7 +16,6 @@ function WorkspaceChatMain() {
   return (
     <div className='chats-container'>
       <div className='chats'>
-        <h2>Chats</h2>
         <TeamChannelsContainer />
         <PrivateChannelsContainer userConversations={userConversations} />
       </div>
