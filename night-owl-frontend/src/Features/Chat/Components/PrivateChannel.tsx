@@ -11,12 +11,16 @@ function PrivateChannel(
     text,
     username,
     conversation_id,
-    created_at
+    created_at,
+    message_type,
+    sender_id
   }: IPrivateConversation) {
+
   const {
     active,
     getTime,
-    handleOnClick
+    handleOnClick,
+    userId
   } = usePrivateChannel({
     conversation_id,
     type,
@@ -26,6 +30,7 @@ function PrivateChannel(
     username,
     created_at
   })
+
   const time = getTime(created_at)
 
   return (
@@ -34,10 +39,21 @@ function PrivateChannel(
         <div className={active}></div>
         <img src={image} alt='person' />
         <p className='private-channel__title'>{username}</p>
-        <p className='private-channel__last-msg'>{text.length > 25 ? text.slice(0, 25) + '...' : text}</p>
+        {message_type === 'text' &&
+          < p className='private-channel__last-msg'>
+            {sender_id === userId ? 'You: ' : ''}{text?.length > 15 ? text.slice(0, 15) + '...' : text}
+          </p>
+        }
+        {message_type === 'voice' &&
+          <p className='private-channel__last-msg'>
+            {sender_id === userId ? 'You: ' : ''}Voice Record
+          </p>
+        }
       </div>
       <div className='private-channel__unseen-msg'>
-        <span className='private-channel__last-msg-date'>{`${time.getHours()}:${time.getMinutes()}`}</span>
+        <span className='private-channel__last-msg-date'>
+          {time ? `${time.getHours()}:${time.getMinutes()}` : ''}
+        </span>
       </div>
     </div>
   )
