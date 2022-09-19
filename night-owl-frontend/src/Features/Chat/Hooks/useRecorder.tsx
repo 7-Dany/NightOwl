@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-type Recorder = {
+export type Recorder = {
   recordingMinutes: number
   recordingSeconds: number
   initRecording: boolean
   mediaStream: MediaStream | null
   mediaRecorder: MediaRecorder | null
-  audio: string | null
+  audio: File | null
 }
 
 const initialRecorder: Recorder = {
@@ -20,7 +20,7 @@ const initialRecorder: Recorder = {
 
 function useRecorder() {
   const [recorderState, setRecorderState] = useState<Recorder>(initialRecorder)
-  const [voiceRecorded, setVoiceRecorded] = useState<Blob | null>(null)
+
   useEffect(() => {
     const MAX_RECORDER_TIME = 5
     let recorderInterval: number | ReturnType<typeof setInterval> | null = null
@@ -68,12 +68,12 @@ function useRecorder() {
         chunks.push(event.data)
       }
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' })
-        setVoiceRecorded(blob)
+        const blob = new Blob(chunks, { type: 'audio/mp3' })
+        const file = new File([blob], `voice`, { type: 'audio/mp3' })
         chunks = []
         setRecorderState(prevState => {
           if (prevState.mediaRecorder) {
-            return { ...initialRecorder, audio: window.URL.createObjectURL(blob) }
+            return { ...initialRecorder, audio: file }
           } else {
             return initialRecorder
           }
@@ -107,8 +107,6 @@ function useRecorder() {
 
   return {
     recorderState,
-    voiceRecorded,
-    setVoiceRecorded,
     startRecording: () => startRecording(setRecorderState),
     saveRecording: () => saveRecording(recorderState.mediaRecorder),
     cancelRecording: () => setRecorderState(initialRecorder)
