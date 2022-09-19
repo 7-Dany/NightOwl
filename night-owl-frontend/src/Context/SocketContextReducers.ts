@@ -1,11 +1,12 @@
 import { Socket } from 'socket.io-client'
-import { IUserMessage, IConversationMember } from '../Types'
+import { IUserMessage, IConversationMember, INewMessage } from '../Types'
 
 export type TSocketContextState = {
   socket: Socket | undefined
   users: string[],
   activeConversation: IConversationMember,
-  messages: IUserMessage[]
+  messages: IUserMessage[],
+  newMessage: INewMessage | null
 }
 
 export type TSocketContextTypes =
@@ -15,14 +16,18 @@ export type TSocketContextTypes =
   | 'update_active_conversation'
   | 'update_messages'
   | 'add_new_message'
+  | 'send_message'
+  | 'reset_new_message'
 
 export type TSocketContextPayload =
   string
   | string[]
+  | null
   | Socket
   | IConversationMember
   | IUserMessage[]
   | IUserMessage
+  | INewMessage
 
 export type TSocketContextActions = {
   type: TSocketContextTypes,
@@ -33,7 +38,8 @@ export const defaultSocketContextState: TSocketContextState = {
   socket: undefined,
   users: [],
   activeConversation: {} as IConversationMember,
-  messages: []
+  messages: [],
+  newMessage: null
 }
 
 export function SocketReducer(state: TSocketContextState, action: TSocketContextActions): TSocketContextState {
@@ -51,6 +57,10 @@ export function SocketReducer(state: TSocketContextState, action: TSocketContext
       return { ...state, messages: action.payload as IUserMessage[] }
     case 'add_new_message':
       return { ...state, messages: [...state.messages, action.payload as IUserMessage] }
+    case 'send_message':
+      return { ...state, newMessage: action.payload as INewMessage }
+    case 'reset_new_message':
+      return { ...state, newMessage: action.payload as null }
     default:
       return { ...state }
   }
