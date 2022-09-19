@@ -5,7 +5,7 @@ import {
   SocketReducer,
   TSocketContextState
 } from './SocketContextReducers'
-import { IUserMessage } from '../Types'
+import { INewMessage, IUserMessage } from '../Types'
 import { useSocket } from '../Hooks/useSocket'
 import { AuthContext } from './AuthContext'
 
@@ -41,6 +41,11 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
     socket.on('user_disconnected', (user_id: string) => {
       console.log(`User got disconnected, delete user from list`)
       SocketDispatch({ type: 'remove_user', payload: user_id })
+    })
+
+    // Receive conversation message event
+    socket.on('receive_message', (data: { newMessage: IUserMessage }) => {
+      SocketDispatch({ type: 'add_new_message', payload: data.newMessage })
     })
 
     // Reconnect event
@@ -94,15 +99,11 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
   }, [workspace.workspace_id])
 
   function JoinConversation(conversation_id: string) {
-    // Sending conversation id to server to let the user join it and get all messages for that conversation
+    /** Sending conversation id to server to let the user join it and get all messages for that conversation */
     socket.emit('join_conversation', { conversation_id }, (messages: IUserMessage[]) => {
       console.log(`conversation: ${conversation_id} is active`)
       SocketDispatch({ type: 'update_messages', payload: messages })
     })
-  }
-
-  function ConversationListeners() {
-
   }
 
   useEffect(() => {
@@ -110,7 +111,25 @@ function SocketContextProvider({ children }: SocketContextProviderProps) {
     if (SocketState.activeConversation.conversation_id) {
       JoinConversation(SocketState.activeConversation.conversation_id)
     }
+
   }, [SocketState.activeConversation?.conversation_id])
+
+  function SendMessage(newMessage: INewMessage, conversation: string) {
+    /** Sending new message to the server it can be text, voice, file, image or video */
+    socket.emit('save_message', newMessage, conversation, (savedMessage: IUserMessage) => {
+      SocketDispatch({ type: 'add_new_message', payload: savedMessage })
+      SocketDispatch({ type: 'reset_new_message', payload: null })
+    })
+  }
+
+  useEffect(() => {
+    /** When there is new message it will send it to the server to be saved, then send it to the all users in conversation */
+    if (SocketState.newMessage?.data) {
+      SendMessage(SocketState.newMessage, SocketState.activeConversation.conversation_id)
+    }
+
+  }, [SocketState.newMessage])
+
 
   return (
     <SocketContext.Provider value={{ SocketState, SocketDispatch }}>
