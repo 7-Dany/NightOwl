@@ -1,0 +1,266 @@
+.header {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 1px solid $Gray-800;
+
+  &__title {
+    @include Headline-Small-Font($Base-White);
+    margin-right: auto;
+  }
+}
+
+.search-area {
+  margin-right: 2rem;
+
+  &__container {
+    position: relative;
+  }
+
+  &__icon {
+    fill: $Gray-500;
+    position: absolute;
+    top: -0.1rem;
+    left: 1rem;
+    width: 24px;
+    height: 24px;
+  }
+
+  &__input {
+    width: 280px;
+    height: 44px;
+    border-radius: 30px;
+    outline: none;
+    background-color: $Gray-800;
+    border: none;
+    color: $Base-White;
+    padding: 0.5rem 3rem;
+
+    &::placeholder {
+      color: $Gray-500;
+    }
+
+    &:-webkit-autofill {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    &:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+  }
+}
+
+.personal-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  &__create-new {
+    background-color: $Gray-600;
+    width: 120px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    color: $Base-White;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
+    padding: 0.5rem;
+
+    &:hover {
+      background-color: $Gray-200;
+      color: $Gray-500;
+
+      .personal-info__create-new__icon {
+        fill: $Gray-500;
+      }
+    }
+
+    &__icon {
+      fill: $Base-White;
+      transition: 300ms all ease-in-out;
+    }
+  }
+
+  &__notification-icon {
+    fill: $Gray-500;
+    cursor: pointer;
+  }
+
+  &__person-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.sidebar {
+  grid-column: 1/2;
+  grid-row: 1/-1;
+  width: 80px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  border: 1px solid $Gray-800;
+}
+
+.four-circles {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 300ms all ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: rotate(180deg);
+  }
+}
+
+.main-icons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+
+  &__icon-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    position: relative;
+
+    &.active {
+      border-left: 3px solid $Blue-400;
+
+      .main-icons__icon {
+        fill: $Blue-400;
+      }
+    }
+
+    &:hover {
+      border-left: 3px solid $Blue-400;
+
+      .main-icons__icon {
+        fill: $Blue-400;
+      }
+
+      &:nth-child(1)::after {
+        content: 'Home';
+        @include Sidebar-Title;
+        right: -3.55rem;
+      }
+
+      &:nth-child(2)::after {
+        content: 'Projects';
+        @include Sidebar-Title;
+        right: -4.55rem;
+      }
+
+      &:nth-child(3)::after {
+        content: 'Calender';
+        @include Sidebar-Title;
+        right: -4.85rem;
+      }
+
+      &:nth-child(4)::after {
+        content: 'Discussions';
+        @include Sidebar-Title;
+        right: -5.9rem;
+      }
+
+      &:nth-child(5)::after {
+        content: 'My Tasks';
+        @include Sidebar-Title;
+        right: -4.85rem;
+      }
+
+      &:nth-child(6)::after {
+        content: 'Chats';
+        @include Sidebar-Title;
+        right: -3.5rem;
+      }
+    }
+  }
+
+  &__icon {
+    width: 100%;
+    fill: $Gray-500;
+    border-left: 3px solid transparent;
+    transition: 300ms ease-in-out all;
+  }
+}
+
+.footer-icons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  &__icon-container {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 3px solid transparent;
+    position: relative;
+
+    &.active {
+      border-left: 3px solid $Blue-300;
+
+      .footer-icons__icon {
+        fill: $Blue-300;
+      }
+    }
+
+    &:hover {
+      border-left: 3px solid $Blue-300;
+
+      .footer-icons__icon {
+        fill: $Blue-300;
+      }
+
+      &:nth-child(1)::after {
+        content: 'Members';
+        @include Sidebar-Title;
+        right: -5.15rem;
+      }
+
+      &:nth-child(2)::after {
+        content: 'Settings';
+        @include Sidebar-Title;
+        right: -4.8rem;
+      }
+
+      &:nth-child(3)::after {
+        content: 'Logout';
+        @include Sidebar-Title;
+        right: -4.3rem;
+      }
+    }
+  }
+
+  &__icon {
+    width: 100%;
+    fill: $Gray-500;
+    border-left: 3px solid transparent;
+    transition: 300ms all ease-in-out;
+  }
+}
