@@ -61,11 +61,16 @@ export interface IMessage {
   message_id?: string
   text: string
   media_url: null | string
+  message_type: string
   created_at: string
   user_id: string
   conversation_id: string
 }
 
+export interface INewMessage {
+  data: string | Blob
+  type: string
+}
 
 export interface IUserMessage extends IMessage {
   username: string
@@ -77,4 +82,5 @@ export interface IPrivateConversation extends IMessage {
   type: string
   username: string
   image: string
+  sender_id: string
 }
