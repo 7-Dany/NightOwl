@@ -10,3 +10,170 @@ $Others-Message-Color: #141318;
 $White: #FFF;
 $Red: #e36565;
 $White-Red: #d59898;
+
+// Color System
+// 1 - Base Colors
+$Base-White: #FFFFFF;
+$Base-Black: #000000;
+
+// Till Color-200: Color-500 is used for Texts, The rest is Base-White
+// 2 - Gray Colors
+$Gray-25: #FDFDFC;
+$Gray-50: #FAFAF9;
+$Gray-100: #F5F5F4;
+$Gray-200: #E7E5E4;
+$Gray-300: #D7D3D0;
+$Gray-400: #A9A29D;
+$Gray-500: #79716B;
+$Gray-600: #57534E;
+$Gray-700: #44403C;
+$Gray-800: #292524;
+$Gray-900: #1C1917;
+
+// 3 - Dark Blue
+$Blue-25: #F5F8FF;
+$Blue-50: #EFF4FF;
+$Blue-100: #D1E0FF;
+$Blue-200: #B2CCFF;
+$Blue-300: #84ADFF;
+$Blue-400: #528BFF;
+$Blue-500: #2970FF;
+$Blue-600: #155EEF;
+$Blue-700: #004EEB;
+$Blue-800: #0040C1;
+$Blue-900: #00359E;
+
+// 4 - Warning
+$Yellow-200: #FEDF89;
+$Yellow-500: #F79009;
+
+// 5 - Alert
+$Red-200: #FECDCA;
+$Red-500: #F04438;
+
+// 6 - Success
+$Green-200: #A6F4C5;
+$Green-500: #12B76A;
+
+// Box Shadow
+@mixin Box-Shadow-md() {
+  box-shadow: 0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+}
+
+@mixin Box-Shadow-lg() {
+  box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03);
+}
+
+@mixin Box-Shadow-1x() {
+  box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03);
+}
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+@mixin Body-Small-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.4px;
+  color: $Color;
+}
+
+@mixin Body-Medium-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: $Color;
+}
+
+@mixin Body-Large-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.15px;
+  color: $Color;
+}
+
+@mixin Headline-Small-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: $Color;
+}
+
+@mixin Mobile-Headline-Medium-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  color: $Color;
+}
+
+@mixin Mobile-Headline-Large-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: $Color;
+}
+
+@mixin Mobile-Display-Small-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2.25rem;
+  line-height: 2.75rem;
+  color: $Color;
+}
+
+@mixin Desktop-Headline-Medium-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2.8125rem;
+  line-height: 2.25rem;
+  color: $Color;
+}
+
+@mixin Desktop-Headline-Large-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 3.5625rem;
+  line-height: 2.5rem;
+  color: $Color;
+}
+
+@mixin Desktop-Display-Small-Font($Color) {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 4rem;
+  line-height: 2.75rem;
+  color: $Color;
+}
+
+// Sidebar Icon Title
+@mixin Sidebar-Title() {
+  @include Body-Medium-Font($Gray-200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  border: 1px solid $Gray-700;
+  background-color: $Gray-800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+}
