@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import record from '../Components/Record'
 
 export type Recorder = {
   recordingMinutes: number
@@ -6,7 +7,7 @@ export type Recorder = {
   initRecording: boolean
   mediaStream: MediaStream | null
   mediaRecorder: MediaRecorder | null
-  audio: File | null
+  audio: Blob | null
 }
 
 const initialRecorder: Recorder = {
@@ -21,14 +22,32 @@ const initialRecorder: Recorder = {
 function useRecorder() {
   const [recorderState, setRecorderState] = useState<Recorder>(initialRecorder)
 
+  async function startRecording(setRecorderState: React.Dispatch<React.SetStateAction<Recorder>>) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      setRecorderState(prevState => {
+        return { ...prevState, initRecording: true, mediaStream: stream }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function saveRecording(recorder: any) {
+    if (recorder?.state !== 'inactive') {
+      recorder?.stop()
+    }
+  }
+
   useEffect(() => {
-    const MAX_RECORDER_TIME = 5
+    const MAX_RECORDER_TIME = 2
     let recorderInterval: number | ReturnType<typeof setInterval> | null = null
     if (recorderState.initRecording) {
       recorderInterval = setInterval(() => {
         setRecorderState(prevState => {
-          if (prevState.recordingMinutes === MAX_RECORDER_TIME && prevState.recordingSeconds === 0) {
+          if (prevState.recordingMinutes === MAX_RECORDER_TIME && prevState.recordingSeconds === 30) {
             typeof recorderInterval === 'number' && clearInterval(recorderInterval)
+            saveRecording(prevState.mediaRecorder)
             return prevState
           }
           if (prevState.recordingSeconds >= 0 && prevState.recordingSeconds < 59) {
@@ -47,7 +66,7 @@ function useRecorder() {
     return () => {
       typeof recorderInterval === 'number' && clearInterval(recorderInterval)
     }
-  })
+  }, [recorderState.initRecording])
 
   useEffect(() => {
     setRecorderState(prevState => {
@@ -69,14 +88,9 @@ function useRecorder() {
       }
       recorder.onstop = () => {
         const blob = new Blob(chunks, { type: 'audio/mp3' })
-        const file = new File([blob], `voice`, { type: 'audio/mp3' })
         chunks = []
         setRecorderState(prevState => {
-          if (prevState.mediaRecorder) {
-            return { ...initialRecorder, audio: file }
-          } else {
-            return initialRecorder
-          }
+          return { ...prevState, audio: blob, mediaStream: null, mediaRecorder: null }
         })
       }
     }
@@ -88,22 +102,6 @@ function useRecorder() {
     }
   }, [recorderState.mediaRecorder])
 
-  async function startRecording(setRecorderState: React.Dispatch<React.SetStateAction<Recorder>>) {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      setRecorderState(prevState => {
-        return { ...prevState, initRecording: true, mediaStream: stream }
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  function saveRecording(recorder: any) {
-    if (recorder.state !== 'inactive') {
-      recorder.stop()
-    }
-  }
 
   return {
     recorderState,
