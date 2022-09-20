@@ -1,4 +1,4 @@
-import { AttachmentIcon, MicIcon, SendImageIcon, SendMsgIcon } from '../Assets'
+import { AttachmentIcon, MicIcon, SendMsgIcon } from '../Assets'
 import useChatRoom from '../Hooks/useChatRoom'
 
 function ChatRoom() {
@@ -25,12 +25,6 @@ function ChatRoom() {
         <button className='chat-room-footer__mic-icon-container' title='send voice' onClick={sendRecord}>
           <MicIcon className={'chat-room-footer__mic-icon'} />
         </button>
-        <button className='chat-room-footer__image-icon-container' title='send image'>
-          <SendImageIcon className={'chat-room-footer__image-icon'} />
-        </button>
-        <button className='chat-room-footer__attachment-icon-container' title='send attachment'>
-          <AttachmentIcon className={'chat-room-footer__attachment-icon'} />
-        </button>
         <label htmlFor='msg-field'>
           <input
             type='text'
@@ -43,6 +37,9 @@ function ChatRoom() {
             onKeyUp={(event) => handleKeyPress(event)}
           />
         </label>
+        <button className='chat-room-footer__attachment-icon-container' title='send attachment'>
+          <AttachmentIcon className={'chat-room-footer__attachment-icon'} />
+        </button>
         <button
           className='chat-room-footer__send-msg-btn-container'
           title='send message'
