@@ -102,7 +102,50 @@
     transition: 300ms all ease-in-out;
   }
 
-  label {
+  &__record {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $Gray-800;
+    height: 50px;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  &__record-stop {
+    border-radius: 50%;
+    border: 1px solid $Blue-200;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
+
+    &__icon {
+      fill: $Gray-200;
+      transition: 300ms all ease-in-out;
+    }
+
+    &:hover {
+      border-color: $Blue-500;
+
+      .chat-room-footer__record-stop__icon {
+        fill: $Blue-500;
+      }
+    }
+  }
+
+  &__record-time {
+    background-color: $Gray-600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    @include Body-Medium-Font($Gray-100);
+  }
+
+  &__send-msg-label {
     width: 100%;
   }
 

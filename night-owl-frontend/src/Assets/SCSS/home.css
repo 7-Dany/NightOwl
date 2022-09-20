@@ -1434,7 +1434,50 @@
   height: 24px;
   transition: 300ms all ease-in-out;
 }
-.chat-room-footer label {
+.chat-room-footer__record {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #292524;
+  height: 50px;
+  padding: 1rem;
+  border-radius: 12px;
+}
+.chat-room-footer__record-stop {
+  border-radius: 50%;
+  border: 1px solid #A5F0FC;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+}
+.chat-room-footer__record-stop__icon {
+  fill: #E7E5E4;
+  transition: 300ms all ease-in-out;
+}
+.chat-room-footer__record-stop:hover {
+  border-color: #06AED4;
+}
+.chat-room-footer__record-stop:hover .chat-room-footer__record-stop__icon {
+  fill: #06AED4;
+}
+.chat-room-footer__record-time {
+  background-color: #57534E;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #F5F5F4;
+}
+.chat-room-footer__send-msg-label {
   width: 100%;
 }
 .chat-room-footer__send-msg {
