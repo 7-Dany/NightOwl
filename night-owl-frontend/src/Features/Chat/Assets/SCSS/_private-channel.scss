@@ -36,14 +36,14 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: $Secondary-Gray;
+    background-color: $Gray-600;
     position: absolute;
     bottom: 0.3rem;
     left: 1.35rem;
   }
 
   &__title {
-    color: $White;
+    @include Body-Medium-Font($Gray-100);
     grid-column: 2/-1;
     grid-row: 1/2;
   }
@@ -51,7 +51,7 @@
   &__last-msg {
     grid-column: 2/-1;
     grid-row: 2/-1;
-    color: $Secondary-Gray;
+    color: $Gray-600;
   }
 
   &__unseen-msg {
@@ -61,19 +61,7 @@
     gap: 0.4rem;
   }
 
-  &__counts {
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    background-color: $Red;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.6rem;
-    color: $White;
-  }
-
   &__last-msg-date {
-    color: $Secondary-Gray;
+    color: $Gray-600;
   }
 }

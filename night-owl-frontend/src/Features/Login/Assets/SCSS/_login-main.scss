@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: $White;
+  @include Headline-Small-Font($Base-White);
   gap: 1.5rem;
 }
 
@@ -23,6 +23,7 @@
 
   &__label {
     margin-left: 0.2rem;
+    @include Body-Large-Font($Gray-100);
   }
 
   &__input {
@@ -30,42 +31,44 @@
     height: 44px;
     border-radius: 12px;
     outline: none;
-    background-color: $Gray;
-    color: $White;
+    background-color: $Gray-800;
+    color: $Base-White;
     padding: 1rem;
     border: 1px solid transparent;
 
     &::placeholder {
-      color: $Dark-Gray;
+      color: $Gray-500;
     }
 
     &.error {
-      border: 1px solid $Red;
+      border: 1px solid $Red-500;
     }
 
     &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
-      border: 1px solid $White-Blue;
+      border: 1px solid $Gray-800;
       -webkit-text-fill-color: #ffffff;
-      -webkit-box-shadow: 0 0 0 50px $Gray inset;
+      -webkit-box-shadow: 0 0 0 50px $Gray-900 inset;
       transition: background-color 5000s ease-in-out 0s;
     }
   }
 
   &__error-msg {
     margin-left: 0.2rem;
-    color: $Red;
+    @include Body-Medium-Font($Red-500);
   }
 
   &__submit {
     height: 44px;
     border-radius: 12px;
     cursor: pointer;
-    background-color: $White-Blue;
-    color: $White;
+    background-color: $Gray-600;
+    @include Body-Large-Font($Gray-100);
     transition: 300ms all ease-in-out;
+    border: none;
 
     &:hover {
-      background-color: $Very-White-Blue;
+      background-color: $Gray-200;
+      color: $Gray-600;
     }
   }
 
@@ -76,7 +79,7 @@
     margin-inline: 0.2rem;
 
     button {
-      color: $White;
+      @include Body-Medium-Font($Gray-100);
       border: none;
       cursor: pointer;
       background-color: transparent;
@@ -85,8 +88,8 @@
 }
 
 .return-to-login {
+  @include Body-Medium-Font($Gray-100);
   font-size: 1.2rem;
-  color: $White;
   border: none;
   cursor: pointer;
   background-color: transparent;

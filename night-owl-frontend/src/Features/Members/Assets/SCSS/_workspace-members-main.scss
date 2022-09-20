@@ -19,7 +19,7 @@
 .workspace-choice {
   width: 300px;
   height: 300px;
-  border: 1px solid $Whitish-Gray;
+  border: 1px solid $Gray-800;
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -42,7 +42,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $White-Blue;
+    background-color: $Blue-700;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,10 +53,10 @@
   }
 
   &:hover {
-    border-color: $Very-White-Blue;
+    border-color: $Blue-500;
 
     .workspace-choice__counts {
-      background-color: $Very-White-Blue;
+      background-color: $Blue-500;
     }
   }
 }
@@ -65,7 +65,7 @@
   position: absolute;
   top: 2rem;
   right: 1rem;
-  border: 1px solid $Whitish-Gray;
+  border: 1px solid $Gray-800;
   border-radius: 12px;
   padding: 2rem;
   transition: 300ms all ease-in-out;
@@ -74,20 +74,20 @@
   gap: 3rem;
 
   &:hover {
-    border-color: $Very-White-Blue;
+    border-color: $Blue-600;
 
     .workspace-id__icon {
-      fill: $Very-White-Blue;
+      fill: $Blue-600;
     }
   }
 
   &__title {
-    color: $White;
+    @include Body-Medium-Font($Gray-100);
     transition: 300ms all ease-in-out;
   }
 
   &__icon {
-    fill: $Whitish-Gray;
+    fill: $Gray-600;
     transition: 300ms all ease-in-out;
   }
 
@@ -95,7 +95,7 @@
     position: absolute;
     top: 1rem;
     left: -6rem;
-    background-color: $Whitish-Gray;
+    background-color: $Gray-800;
     border-radius: 12px;
     padding: 1rem;
     cursor: auto;
@@ -107,7 +107,7 @@
       width: 0;
       height: 0;
       border: 9px solid transparent;
-      border-left-color: $Whitish-Gray;
+      border-left-color: $Gray-800;
       position: absolute;
       top: 0.95rem;
       right: -1rem;

@@ -26,17 +26,17 @@
   }
 
   p {
-    color: $White;
+    color: $Base-White;
   }
 
   .message {
-    max-width: 50%;
+    max-width: 70%;
     overflow-wrap: break-word;
     margin-left: 1.8rem;
     margin-block: 0.4rem;
     align-self: flex-start;
     justify-self: left;
-    background-color: $Others-Message-Color;
+    background-color: $Gray-800;
     padding: 1rem;
     border-radius: 2px 25px 25px;
     line-height: 1.2;
@@ -44,11 +44,11 @@
     transition: 300ms all ease-in-out;
 
     &__content {
-      color: $White;
+      color: $Base-White;
     }
 
     &:hover {
-      background-color: $Whitish-Gray;
+      background-color: $Gray-700;
     }
   }
 
@@ -75,7 +75,7 @@
     flex-direction: row-reverse;
     gap: 1rem;
     text-align: right;
-    color: $White;
+    color: $Base-White;
   }
 
   .message {
@@ -84,20 +84,21 @@
     margin-block: 0.4rem;
     align-self: flex-end;
     justify-self: right;
-    max-width: 50%;
-    background-color: $Others-Message-Color;
+    max-width: 60%;
+    background-color: $Gray-800;
     padding: 1rem;
-    border-radius: 25px 2px 25px 25px;
+    border-radius: 20px 5px 20px 20px;
     line-height: 1.2;
     cursor: pointer;
     transition: 300ms all ease-in-out;
 
     &__content {
-      color: $White;
+      color: $Base-White;
     }
 
     &:hover {
-      background-color: $Whitish-Gray;
+      background-color: $Gray-700;
     }
+
   }
 }

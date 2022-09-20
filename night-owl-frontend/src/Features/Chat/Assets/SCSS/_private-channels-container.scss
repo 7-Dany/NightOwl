@@ -13,7 +13,7 @@
   padding-right: 0.25rem;
 
   &__text {
-    color: $Secondary-Gray;
+    color: $Gray-600;
   }
 
   &__icon-container {
@@ -27,11 +27,11 @@
   }
 
   &__icon {
-    fill: $Secondary-Gray;
+    fill: $Gray-600;
     transition: 300ms all ease-in-out;
 
     &:hover {
-      fill: $White;
+      fill: $Gray-200;
     }
   }
 }

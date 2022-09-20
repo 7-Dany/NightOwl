@@ -11,14 +11,13 @@
     border: 1px solid transparent;
     border-radius: 8px;
     margin-top: 1rem;
-    color: $White;
-    background-color: $White-Blue;
+    @include Body-Medium-Font($Gray-100);
+    background-color: $Gray-600;
     transition: 300ms all ease-in-out;
 
     &:hover {
-      color: $White-Blue;
-      background-color: transparent;
-      border: 1px solid $White-Blue;
+      color: $Gray-600;
+      background-color: $Gray-200;
     }
   }
 
@@ -33,14 +32,13 @@
     border-radius: 8px;
     cursor: pointer;
     transition: 300ms all ease-in-out;
-    background-color: $White-Blue;
-    color: $White;
+    background-color: $Gray-600;
+    @include Body-Medium-Font($Gray-100);
     border: 1px solid transparent;
 
     &:hover {
-      color: $White-Blue;
-      background-color: transparent;
-      border: 1px solid $White-Blue;
+      color: $Gray-600;
+      background-color: $Gray-200;
     }
   }
 
@@ -48,16 +46,15 @@
     width: 100px;
     height: 35px;
     border-radius: 8px;
-    background-color: $Red;
-    color: $White;
+    background-color: $Red-500;
+    @include Body-Medium-Font($Gray-100);
     border: 1px solid transparent;
     transition: 300ms all ease-in-out;
     cursor: pointer;
 
     &:hover {
-      color: $Red;
-      background-color: transparent;
-      border: 1px solid $Red;
+      color: $Red-500;
+      background-color: $Red-200;
     }
   }
 }

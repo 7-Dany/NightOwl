@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1;
-  background-color: $Gray;
+  background-color: $Gray-900;
 }
 
 .create-workspace {
@@ -21,10 +21,10 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  border: 1px solid $Very-White-Blue;
-  background-color: $Gray;
-  color: $White;
+  border: 1px solid $Gray-800;
+  background-color: $Gray-900;
   position: relative;
+  @include Body-Large-Font($Base-White);
 
   &__close {
     position: absolute;
@@ -40,7 +40,7 @@
       transform: rotate(360deg);
 
       .create-workspace__x-icon {
-        fill: $White-Blue;
+        fill: $Blue-400;
       }
     }
   }
@@ -48,14 +48,14 @@
   &__x-icon {
     width: 24px;
     height: 24px;
-    fill: $Whitish-Gray;
+    fill: $Gray-600;
   }
 
   &__title {
   }
 
   &__error-msg {
-    color: $Red;
+    @include Body-Medium-Font($Red-500);
   }
 
   &__form {
@@ -86,29 +86,29 @@
     height: 40px;
     border-radius: 8px;
     outline: none;
-    background-color: $Gray;
-    color: $White;
+    background-color: $Gray-800;
+    @include Body-Medium-Font($Gray-100);
     padding: 1rem;
-    border: 1px solid $White-Blue;
+    border: 1px solid $Gray-500;
 
     &::placeholder {
-      color: $Dark-Gray;
+      color: $Gray-500;
     }
 
     &.error {
-      border: 1px solid $Red;
+      border: 1px solid $Red-500;
     }
 
     &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active {
-      border: 1px solid $White-Blue;
+      border: 1px solid $Gray-800;
       -webkit-text-fill-color: #ffffff;
-      -webkit-box-shadow: 0 0 0 50px $Gray inset;
+      -webkit-box-shadow: 0 0 0 50px $Gray-900 inset;
       transition: background-color 5000s ease-in-out 0s;
     }
   }
 
   &__field-error {
-    color: $Red;
+    @include Body-Medium-Font($Red-500);
     align-self: flex-start;
   }
 
@@ -118,13 +118,14 @@
     border-radius: 8px;
     margin-top: auto;
     transition: 300ms all ease-in-out;
-    background-color: $White-Blue;
+    background-color: $Gray-600;
     cursor: pointer;
-    color: $White;
+    @include Body-Medium-Font($Gray-100);
     border: none;
 
     &:hover {
-      background-color: $Very-White-Blue;
+      background-color: $Gray-200;
+      color: $Gray-600;
     }
   }
 }

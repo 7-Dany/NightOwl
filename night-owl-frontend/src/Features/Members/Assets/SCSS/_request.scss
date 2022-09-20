@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  border: 1px solid $Whitish-Gray;
+  border: 1px solid $Gray-800;
   width: fit-content;
   height: 60px;
   border-radius: 12px;
@@ -33,8 +33,8 @@
   align-items: center;
   gap: 2rem;
   position: relative;
-  color: $White;
-  background-color: $Dark-Gray;
+  @include Body-Medium-Font($Gray-100);
+  background-color: $Gray-800;
   border-radius: 12px;
 
   &__text {
@@ -44,8 +44,8 @@
   &__accept-btn {
     width: 100px;
     height: 40px;
-    background-color: $White-Blue;
-    color: $White;
+    background-color: $Green-500;
+    @include Body-Medium-Font($Gray-100);
     margin-left: 2rem;
     border-radius: 12px;
     transition: 300ms all ease-in-out;
@@ -53,15 +53,15 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $Very-White-Blue;
+      background-color: $Green-200;
     }
   }
 
   &__delete-btn {
     width: 100px;
     height: 40px;
-    background-color: $Red;
-    color: $White;
+    background-color: $Red-500;
+    @include Body-Medium-Font($Gray-100);
     border: none;
     cursor: pointer;
     transition: 300ms all ease-in-out;
@@ -69,7 +69,7 @@
     margin-right: 2rem;
 
     &:hover {
-      background-color: $White-Red;
+      background-color: $Red-200;
     }
   }
 
@@ -80,7 +80,7 @@
     width: 0;
     height: 0;
     border: 9px solid transparent;
-    border-right-color: $Dark-Gray;
+    border-right-color: $Gray-800;
     position: absolute;
     top: 1.3rem;
     left: -1.1rem;

@@ -5,32 +5,34 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  margin: 2rem 0;
+  margin: 1rem 0;
+  position: relative;
 }
 
 .requests-back {
-  align-self: flex-start;
-  margin-left: 2rem;
+  position: absolute;
+  left: 0;
+  top: -1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid $Whitish-Gray;
+  border: 1px solid $Gray-800;
   cursor: pointer;
   transition: 300ms all ease-in-out;
   padding: 0.5rem 0.8rem;
-  border-radius: 8px;
+  border-radius: 5px;
 
   &__icon {
-    fill: $White;
+    fill: $Gray-600;
     transition: 300ms all ease-in-out;
   }
 
   &:hover {
-    border: 1px solid $Very-White-Blue;
-    color: $Very-White-Blue;
+    border: 1px solid $Gray-200;
+    color: $Gray-300;
 
     .requests-back__icon {
-      fill: $Very-White-Blue;
+      fill: $Gray-200;
     }
   }
 }

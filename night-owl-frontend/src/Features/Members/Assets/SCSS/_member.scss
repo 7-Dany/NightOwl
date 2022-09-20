@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  border: 1px solid $Whitish-Gray;
+  border: 1px solid $Gray-800;
   border-radius: 12px;
 
   &__image {
@@ -41,18 +41,18 @@
 
     &:hover {
       .member__chat {
-        fill: $Very-White-Blue;
+        fill: $Blue-500;
       }
     }
   }
 
   &__chat {
-    fill: $Grayish-White;
+    fill: $Gray-600;
     transition: 300ms all ease-in-out;
   }
 
   &__active {
     flex: 1 1 10%;
-    color: $Very-White-Blue;
+    color: $Gray-200;
   }
 }
