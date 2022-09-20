@@ -1,4 +1,4 @@
-import { DotsIcons, PersonImage } from '../../../Assets'
+import { PersonImage } from '../../../Assets'
 import { useContext } from 'react'
 import { SocketContext } from '../../../Context/SocketContext'
 
@@ -18,9 +18,6 @@ function ChatRoomHeader() {
           <span>+24</span>
         </div>
       }
-      <div className='chat-room-header__settings'>
-        <DotsIcons className={'chat-room-header__settings-icon'} />
-      </div>
     </div>
   )
 }
