@@ -68,7 +68,7 @@ export interface IMessage {
 }
 
 export interface INewMessage {
-  data: string | Blob
+  data: string | Blob | { file: File, fileType: string }
   type: string
 }
 
