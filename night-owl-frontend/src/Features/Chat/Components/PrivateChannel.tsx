@@ -40,13 +40,18 @@ function PrivateChannel(
         <img src={image} alt='person' />
         <p className='private-channel__title'>{username}</p>
         {message_type === 'text' &&
-          < p className='private-channel__last-msg'>
+          <p className='private-channel__last-msg'>
             {sender_id === userId ? 'You: ' : ''}{text?.length > 15 ? text.slice(0, 15) + '...' : text}
           </p>
         }
         {message_type === 'voice' &&
           <p className='private-channel__last-msg'>
-            {sender_id === userId ? 'You: ' : ''}Voice Record
+            {sender_id === userId ? 'You: ' : ''}sent a record
+          </p>
+        }
+        {message_type === 'image' &&
+          <p className='private-channel__last-msg'>
+            {sender_id === userId ? 'You: ' : ''}sent a photo
           </p>
         }
       </div>
