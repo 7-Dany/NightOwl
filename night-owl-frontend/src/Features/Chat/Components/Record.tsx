@@ -6,29 +6,26 @@ import { SocketContext } from '../../../Context/SocketContext'
 type RecordProps = {
   order: boolean
   setOrder: React.Dispatch<React.SetStateAction<boolean>>
-  message: string
-  sendBtn: React.MutableRefObject<null>
+  sendBtn: React.RefObject<HTMLButtonElement>
 }
 
-function Record({ order, setOrder, message, sendBtn }: RecordProps) {
+function Record({ order, setOrder, sendBtn }: RecordProps) {
   const { recorderState, cancelRecording, startRecording, saveRecording } = useRecorder()
   const { SocketDispatch } = useContext(SocketContext)
   const [confirm, setConfirm] = useState(false)
 
-  function startRecord() {
-    setOrder(true)
-    startRecording()
-  }
-
-  function stopRecord() {
-    setOrder(false)
-    cancelRecording()
-  }
-
-  function sendRecord() {
-    setOrder(false)
-    saveRecording()
-    setConfirm(true)
+  function handleRecorder(option: string) {
+    if (option === 'start') {
+      setOrder(true)
+      startRecording()
+    } else if (option === 'stop') {
+      setOrder(false)
+      cancelRecording()
+    } else if (option === 'send') {
+      setOrder(false)
+      saveRecording()
+      setConfirm(true)
+    }
   }
 
   useEffect(() => {
@@ -36,21 +33,21 @@ function Record({ order, setOrder, message, sendBtn }: RecordProps) {
       SocketDispatch({ type: 'send_message', payload: { data: recorderState.audio, type: 'voice' } })
       cancelRecording()
       setOrder(false)
-    } else if (message.length > 0) {
-      cancelRecording()
       setConfirm(false)
     }
-  }, [recorderState.audio, message, confirm])
+  }, [recorderState.audio, confirm])
 
   return (
     <>
-      <button className='chat-room-footer__mic-icon-container' title='send voice' onClick={startRecord}>
+      <button className='chat-room-footer__mic-icon-container' title='send voice'
+              onClick={(event) => handleRecorder('start')}>
         <MicIcon className={'chat-room-footer__mic-icon'} />
       </button>
       {order &&
         <>
           <div className='chat-room-footer__record'>
-            <div className='chat-room-footer__record-stop' onClick={stopRecord}>
+            <div className='chat-room-footer__record-stop'
+                 onClick={(event) => handleRecorder('stop')}>
               <StopIcon className={'chat-room-footer__record-stop__icon'} />
             </div>
             <div className='chat-room-footer__record-time'>
@@ -61,7 +58,7 @@ function Record({ order, setOrder, message, sendBtn }: RecordProps) {
             className='chat-room-footer__send-msg-btn-container'
             title='send message'
             type='submit'
-            onClick={sendRecord}
+            onClick={(event) => handleRecorder('send')}
             ref={sendBtn}
           >
             <SendMsgIcon className={'chat-room-footer__send-msg-btn'} />
