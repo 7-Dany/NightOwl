@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { saveAs } from 'file-saver'
 
 type MessageProps = {
   className: string
@@ -26,6 +27,10 @@ function Message(
     setShowDate(prevShowDate => !prevShowDate)
   }
 
+  function saveFile() {
+    saveAs(media as string)
+  }
+
   return (
     <div className={`${className} message-container`}>
       <div className='message-container__person-info'>
@@ -39,14 +44,19 @@ function Message(
       {showDate &&
         <span className='message-container__message-date'>{messageDate}</span>
       }
-      <div className='message' onClick={handleShowDate}>
+      <div className={messageType === 'image' ? 'message image' : 'message'} onClick={handleShowDate}>
         {messageType === 'text' &&
           <p className='message__content'>
             {messageContent}
           </p>
         }
         {messageType === 'voice' &&
-          <audio src={media as string} controls></audio>
+          <audio src={media as string} className='message__audio' controls></audio>
+        }
+        {messageType === 'image' &&
+          <a href={media as string} target='_blank'>
+            <img src={media as string} alt='' className='message__image' />
+          </a>
         }
       </div>
     </div>
