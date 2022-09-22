@@ -1,6 +1,7 @@
-import { AttachmentIcon, MicIcon, SendMsgIcon, StopIcon } from '../Assets'
+import { AttachmentIcon, SendMsgIcon } from '../Assets'
 import useChatRoom from '../Hooks/useChatRoom'
 import Record from './Record'
+import Attachments from './Attachments'
 
 function ChatRoom() {
   const {
@@ -8,11 +9,15 @@ function ChatRoom() {
     message,
     sendBtn,
     setMessage,
+    order,
+    setOrder,
+    fileBtn,
+    sendFile,
     getMessages,
     sendMessage,
     handleKeyPress,
-    order,
-    setOrder
+    activeFileButton,
+    setSendFile
   } = useChatRoom()
 
   const chatMessages = getMessages()
@@ -24,7 +29,7 @@ function ChatRoom() {
         <div ref={messageRef}></div>
       </div>
       <div className='chat-room-footer'>
-        <Record setOrder={setOrder} message={message} sendBtn={sendBtn} order={order} />
+        <Record setOrder={setOrder} sendBtn={sendBtn} order={order} />
         {!order &&
           <>
             <label htmlFor='msg-field' className='chat-room-footer__send-msg-label'>
@@ -32,14 +37,16 @@ function ChatRoom() {
                 type='text'
                 className='chat-room-footer__send-msg'
                 id='msg-field' title='write message'
-                placeholder='write something...'
+                placeholder='Send message...'
                 name='message'
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
                 onKeyUp={(event) => handleKeyPress(event)}
               />
             </label>
-            <button className='chat-room-footer__attachment-icon-container' title='send attachment'>
+            <Attachments fileBtn={fileBtn} sendFile={sendFile} setSendFile={setSendFile} />
+            <button className='chat-room-footer__attachment-icon-container' title='send attachment'
+                    onClick={activeFileButton}>
               <AttachmentIcon className={'chat-room-footer__attachment-icon'} />
             </button>
             <button
