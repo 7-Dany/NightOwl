@@ -1499,6 +1499,42 @@
 .chat-room-footer__send-msg::placeholder {
   color: #79716B;
 }
+.chat-room-footer__image-preview {
+  position: absolute;
+  bottom: 6rem;
+  left: 37.8%;
+}
+.chat-room-footer__image-preview img {
+  width: 150px;
+  height: auto;
+  border-radius: 12px;
+}
+.chat-room-footer__image-preview__button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 25px;
+  height: 25px;
+  padding: 0.16rem;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+  display: flex;
+  background-color: #0B0B0D;
+  border: none;
+}
+.chat-room-footer__image-preview__icon {
+  fill: #57534E;
+  width: 100%;
+  height: 100%;
+  transition: 300ms all ease-in-out;
+  border: 1px solid #57534E;
+  border-radius: 50%;
+  padding: 0.1rem;
+}
+.chat-room-footer__image-preview__icon:hover {
+  fill: #E7E5E4;
+  border-color: #F5F5F4;
+}
 
 .team-channel {
   display: flex;
@@ -1625,6 +1661,18 @@
 }
 .user-msg .message:hover {
   background-color: #44403C;
+}
+.user-msg .message img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+.user-msg .image {
+  width: 50%;
+  background: transparent;
+}
+.user-msg .image:hover {
+  background: transparent;
 }
 
 .private-channel {
