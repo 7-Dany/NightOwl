@@ -6,6 +6,10 @@ import { MessagesModel, IMessage, IUserMessage } from './models'
 import fs from 'fs'
 import { v4 as uuid4 } from 'uuid'
 
+type MessageFile = {
+  file: File
+  fileType: string
+}
 const messagesModel = new MessagesModel()
 
 export class SocketServer {
@@ -101,7 +105,7 @@ export class SocketServer {
 
     /** Setting up save message event */
     socket.on('save_message', async (
-      newMessage: { data: string | File, type: string },
+      newMessage: { data: MessageFile | string | File, type: string },
       conversation: string,
       callback: (message: IUserMessage) => void) => {
 
@@ -127,6 +131,21 @@ export class SocketServer {
           text: null,
           media_url: `http://localhost:4000/${pathName}`,
           message_type: 'voice',
+          conversation_id: conversation,
+          user_id: userId,
+          created_at: new Date().toISOString()
+        }
+      } else if (newMessage.type === 'file') {
+        /** Uploading image to upload and save its path
+         * TODO: Add way to save multiple images at time and save files like pdf */
+        const { file, fileType } = newMessage.data as MessageFile
+        const type = fileType.split('/')
+        let pathName = `images/${conversation}-${uuid4()}.${type[1]}`
+        fs.createWriteStream(`${__dirname}/../uploads/${pathName}`).write(file)
+        message = {
+          text: null,
+          media_url: `http://localhost:4000/${pathName}`,
+          message_type: 'image',
           conversation_id: conversation,
           user_id: userId,
           created_at: new Date().toISOString()
