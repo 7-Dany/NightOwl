@@ -99,5 +99,20 @@
     &:hover {
       background-color: $Gray-700;
     }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+    }
+  }
+
+  .image {
+    width: 50%;
+    background: transparent;
+
+    &:hover {
+      background: transparent;
+    }
   }
 }
