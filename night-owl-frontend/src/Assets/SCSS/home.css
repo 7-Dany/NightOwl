@@ -1164,7 +1164,7 @@
 .workspace-id {
   position: absolute;
   top: 2rem;
-  right: 1rem;
+  right: 2rem;
   border: 1px solid #292524;
   border-radius: 12px;
   padding: 2rem;
@@ -1620,6 +1620,19 @@
 .others-msg .message:hover {
   background-color: #44403C;
 }
+.others-msg .message img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+.others-msg .image {
+  width: 50%;
+  background: transparent;
+  padding: 0;
+}
+.others-msg .image:hover {
+  background: transparent;
+}
 
 .user-msg {
   display: flex;
@@ -1670,6 +1683,7 @@
 .user-msg .image {
   width: 50%;
   background: transparent;
+  padding: 0;
 }
 .user-msg .image:hover {
   background: transparent;
