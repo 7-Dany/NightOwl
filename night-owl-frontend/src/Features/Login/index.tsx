@@ -8,7 +8,7 @@ function LoginMain() {
    */
   const [login, setLogin] = useState(true)
   return (
-    <div>
+    <div className='login-main'>
       {login ? <SignIn setLogin={setLogin} /> : <SignUp setLogin={setLogin} />}
     </div>
   )

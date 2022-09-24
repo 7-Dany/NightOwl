@@ -57,7 +57,8 @@ export class ConversationMembersModel {
                                      on m.conversation_id = cm.conversation_id
                    WHERE cm.conversation_id IN
                          (SELECT conversation_id FROM conversation_members WHERE user_id = $1)
-                     AND cm.user_id != $1`
+                     AND cm.user_id != $1
+                   ORDER BY created_at DESC`
       const results = await connect.query(sql, [userId])
       connect.release()
       return results.rows

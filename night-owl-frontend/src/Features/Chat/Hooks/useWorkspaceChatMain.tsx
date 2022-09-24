@@ -5,7 +5,7 @@ import { IPrivateConversation } from '../../../Types'
 import { getAllUserConversation } from '../Api/conversation_members.api'
 
 function useWorkspaceChatMain() {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext).AuthState
   const { SocketState, SocketDispatch } = useContext(SocketContext)
   const { activeConversation } = SocketState
   const [userConversations, setUserConversations] = useState<IPrivateConversation[]>([])

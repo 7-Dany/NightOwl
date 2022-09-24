@@ -20,8 +20,8 @@ type UseJoinWorkspaceReturn = {
 
 function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceReturn {
   const navigate = useNavigate()
-  const { user } = useContext(AuthContext)
-  const { setWorkspaceRequest, workspaceRequest } = useContext(AuthContext)
+  const { AuthState, AuthDispatch } = useContext(AuthContext)
+  const { workspaceRequest, user } = AuthState
   const [errorMsg, setErrorMsg] = useState('')
   const formik = useFormik({
     initialValues: { workspaceId: '' },
@@ -36,7 +36,7 @@ function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceRe
         values: { workspace_id: values.workspaceId, user_id: user.id, token: user.token }
       })
         .then(data => {
-          setWorkspaceRequest(data as IWorkspaceRequest)
+          AuthDispatch({ type: 'update_workspace_request', payload: data })
           navigate('/workspace/request')
         })
         .catch(error => {

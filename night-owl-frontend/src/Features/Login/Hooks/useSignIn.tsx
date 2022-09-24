@@ -4,7 +4,6 @@ import React, { useContext, useState } from 'react'
 import { authUser } from '../Api/users.api'
 import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../../../Types'
 
 type UseSignInReturn = {
   formik: FormikProps<{ email: string, password: string }>
@@ -17,7 +16,7 @@ type UseSignInArgs = {
 }
 
 function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
-  const { setUser, setWorkspace, setWorkspaceRequest } = useContext(AuthContext)
+  const { AuthDispatch } = useContext(AuthContext)
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const formik = useFormik({
@@ -36,24 +35,19 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
          */
         .then(data => {
           if (data.user.token) {
-            setUser(data.user)
+            AuthDispatch({ type: 'update_user', payload: data.user })
             if (data.workspace) {
-              setWorkspace(data.workspace)
-              setWorkspaceRequest({} as IWorkspaceRequest)
+              AuthDispatch({ type: 'update_workspace', payload: data.workspace })
               navigate('/home')
             } else if (data.workspaceRequest) {
-              setWorkspaceRequest(data.workspaceRequest)
-              setWorkspace({} as IWorkspace)
+              AuthDispatch({ type: 'update_workspace_request', payload: data.workspaceRequest })
               navigate('/workspace/request')
             } else {
-              setWorkspace({} as IWorkspace)
-              setWorkspaceRequest({} as IWorkspaceRequest)
+              AuthDispatch({ type: 'reset_workspace_and_request' })
               navigate('/workspace')
             }
           } else {
-            setUser({} as IAuthUser)
-            setWorkspace({} as IWorkspace)
-            setWorkspaceRequest({} as IWorkspaceRequest)
+            AuthDispatch({ type: 'reset_all' })
             navigate('/login')
           }
         })

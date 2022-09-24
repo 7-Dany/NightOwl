@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { deleteWorkspaceRequest } from '../Api/workspace_requests.api'
-import { IAuthUser, IWorkspaceRequest } from '../../../Types'
 
 function useWorkspaceRequest() {
-  const { workspaceRequest, setWorkspaceRequest, user, setUser } = useContext(AuthContext)
+  const { AuthState, AuthDispatch } = useContext(AuthContext)
+  const { user, workspaceRequest } = AuthState
   const [deleteRequest, setDeleteRequest] = useState<boolean | null>(null)
   const navigate = useNavigate()
   const [errorMsg, setErrorMsg] = useState('')
@@ -20,13 +20,13 @@ function useWorkspaceRequest() {
       })
         .then(data => {
           setErrorMsg('Your request got deleted')
-          setWorkspaceRequest({} as IWorkspaceRequest)
+          AuthDispatch({ type: 'reset_workspace_and_request' })
           setDeleteRequest(null)
           navigate('/workspace')
         })
         .catch(error => {
           setErrorMsg(error.response.data.message)
-          setWorkspaceRequest({} as IWorkspaceRequest)
+          AuthDispatch({ type: 'reset_workspace_and_request' })
           setDeleteRequest(null)
         })
     }
@@ -46,8 +46,7 @@ function useWorkspaceRequest() {
 
   function closeWorkspaceRequest() {
     /** Close workspace request model and redirect to login page */
-    setWorkspaceRequest({} as IWorkspaceRequest)
-    setUser({} as IAuthUser)
+    AuthDispatch({ type: 'reset_all' })
     navigate('/login')
   }
 

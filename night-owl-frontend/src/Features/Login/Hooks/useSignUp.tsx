@@ -3,7 +3,6 @@ import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
 import { createUser } from '../Api/users.api'
 import { AuthContext } from '../../../Context/AuthContext'
-import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../../../Types'
 import { useNavigate } from 'react-router-dom'
 
 type UseSignUpReturn = {
@@ -17,7 +16,7 @@ type UseSignUpArgs = {
 }
 
 function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
-  const { setUser, setWorkspaceRequest, setWorkspace } = useContext(AuthContext)
+  const { AuthDispatch } = useContext(AuthContext)
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const formik = useFormik({
@@ -38,22 +37,16 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
         /** After new user get created he will be redirected to create or join workspace */
         .then(data => {
           if (data.token) {
-            setUser(data)
-            setWorkspaceRequest({} as IWorkspaceRequest)
-            setWorkspace({} as IWorkspace)
+            AuthDispatch({ type: 'update_user', payload: data })
             navigate('/workspace')
           } else {
-            setUser({} as IAuthUser)
-            setWorkspaceRequest({} as IWorkspaceRequest)
-            setWorkspace({} as IWorkspace)
+            AuthDispatch({ type: 'reset_all' })
             navigate('/login')
           }
         })
         .catch(error => {
           setError(error.response.data.message)
-          setUser({} as IAuthUser)
-          setWorkspace({} as IWorkspace)
-          setWorkspaceRequest({} as IWorkspaceRequest)
+          AuthDispatch({ type: 'reset_all' })
         })
     }
   })

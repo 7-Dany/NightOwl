@@ -1,4 +1,4 @@
-import { IRequest } from '../../../Types'
+import { IRequest, IWorkspaceRequest } from '../../../Types'
 import axios from 'axios'
 import config from '../../../Config'
 
@@ -25,7 +25,7 @@ export async function createWorkspaceRequest(
   {
     controller,
     values
-  }: CreateWorkspaceRequestArgs): Promise<IRequest> {
+  }: CreateWorkspaceRequestArgs): Promise<IWorkspaceRequest> {
   const config = {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${values.token}` },
     withCredentials: true,

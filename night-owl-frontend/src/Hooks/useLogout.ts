@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { deleteUserSession } from '../Api/users.api'
-import { IAuthUser, IWorkspace } from '../Types'
 import { SocketContext } from '../Context/SocketContext'
 
 type UseLogoutReturn = {
@@ -11,7 +10,7 @@ type UseLogoutReturn = {
 
 function useLogout(): UseLogoutReturn {
   const [logout, setLogout] = useState(false)
-  const { user, setUser, setWorkspace } = useContext(AuthContext)
+  const { AuthState, AuthDispatch } = useContext(AuthContext)
   const { SocketState } = useContext(SocketContext)
   const navigate = useNavigate()
 
@@ -22,17 +21,15 @@ function useLogout(): UseLogoutReturn {
   useEffect(() => {
     const controller = new AbortController()
     if (logout) {
-      deleteUserSession({ controller, token: user.token })
+      deleteUserSession({ controller, token: AuthState.user.token })
         .then(data => {
-          setUser({} as IAuthUser)
-          setWorkspace({} as IWorkspace)
+          AuthDispatch({ type: 'reset_all' })
           setLogout(false)
           navigate('/')
           SocketState.socket?.disconnect()
         })
         .catch(error => {
-          setUser({} as IAuthUser)
-          setWorkspace({} as IWorkspace)
+          AuthDispatch({ type: 'reset_all' })
           setLogout(false)
           navigate('/')
           SocketState.socket?.disconnect()

@@ -3,17 +3,17 @@ import { useContext } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 
 function useAuth() {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext).AuthState
   return user.token
 }
 
 function useWorkspace() {
-  const { workspace } = useContext(AuthContext)
+  const { workspace } = useContext(AuthContext).AuthState
   return workspace.name
 }
 
 function useWorkspaceRequest() {
-  const { workspaceRequest } = useContext(AuthContext)
+  const { workspaceRequest } = useContext(AuthContext).AuthState
   return workspaceRequest.name
 }
 

@@ -29,7 +29,7 @@ function usePrivateChannel(
     type
   }: UsePrivateChannelArgs): UsePrivateChannelReturn {
   const { SocketDispatch, SocketState } = useContext(SocketContext)
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext).AuthState
   const [active, setActive] = useState('private-channel__not-active')
 
   function getTime(created_at: string) {

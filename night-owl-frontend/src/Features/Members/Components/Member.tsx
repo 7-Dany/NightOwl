@@ -14,7 +14,7 @@ type MemberProps = {
 }
 
 function Member({ memberId, image, name, projects, timezone, email, role }: MemberProps) {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext).AuthState
   const { openChat } = useMember({ userId: user.id, memberId, token: user.token })
   return (
     <div className='member'>

@@ -1,19 +1,15 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import { getUser } from '../Api/users.api'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../Types'
+import { AuthReducer, defaultAuthContextState, TAuthContextActions, TAuthContextState } from './AuthContextReducers'
 
 type AuthContextProviderProps = {
   children: React.ReactNode
 }
 
 type AuthContextType = {
-  user: IAuthUser
-  setUser: React.Dispatch<React.SetStateAction<IAuthUser>>
-  workspace: IWorkspace
-  setWorkspace: React.Dispatch<React.SetStateAction<IWorkspace>>
-  workspaceRequest: IWorkspaceRequest
-  setWorkspaceRequest: React.Dispatch<React.SetStateAction<IWorkspaceRequest>>
+  AuthState: TAuthContextState
+  AuthDispatch: React.Dispatch<TAuthContextActions>
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -22,37 +18,29 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 function AuthContextProvider({ children }: AuthContextProviderProps) {
   const location = useLocation()
   const navigate = useNavigate()
-  const [user, setUser] = useState<IAuthUser>({} as IAuthUser)
-  const [workspace, setWorkspace] = useState<IWorkspace>({} as IWorkspace)
-  const [workspaceRequest, setWorkspaceRequest] = useState<IWorkspaceRequest>({} as IWorkspaceRequest)
+  const [AuthState, AuthDispatch] = useReducer(AuthReducer, defaultAuthContextState)
 
   useEffect(() => {
     const controller = new AbortController()
     getUser({ controller })
       .then(data => {
         if (data) {
-          setUser(data.user)
+          AuthDispatch({ type: 'update_user', payload: data.user })
           if (data.workspace?.name) {
-            setWorkspace(data.workspace)
-            setWorkspaceRequest({} as IWorkspaceRequest)
+            AuthDispatch({ type: 'update_workspace', payload: data.workspace })
             navigate(location.pathname)
           } else if (data.workspaceRequest?.id) {
-            setWorkspaceRequest(data.workspaceRequest)
-            setWorkspace({} as IWorkspace)
+            AuthDispatch({ type: 'update_workspace_request', payload: data.workspaceRequest })
             navigate(location.pathname)
           } else {
             navigate(location.pathname)
           }
         } else {
-          setUser({} as IAuthUser)
-          setWorkspace({} as IWorkspace)
-          setWorkspaceRequest({} as IWorkspaceRequest)
+          AuthDispatch({ type: 'reset_all' })
         }
       })
       .catch(error => {
-        setUser({} as IAuthUser)
-        setWorkspace({} as IWorkspace)
-        setWorkspaceRequest({} as IWorkspaceRequest)
+        AuthDispatch({ type: 'reset_all' })
       })
     return () => {
       controller.abort()
@@ -60,7 +48,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, workspace, setWorkspace, workspaceRequest, setWorkspaceRequest }}>
+    <AuthContext.Provider value={{ AuthState, AuthDispatch }}>
       {children}
     </AuthContext.Provider>
   )

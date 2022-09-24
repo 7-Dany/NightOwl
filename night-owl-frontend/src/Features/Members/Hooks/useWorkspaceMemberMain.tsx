@@ -15,7 +15,7 @@ type UseWorkspaceMemberMainReturn = {
 }
 
 function useWorkspaceMemberMain(): UseWorkspaceMemberMainReturn {
-  const { workspace, user } = useContext(AuthContext)
+  const { workspace, user } = useContext(AuthContext).AuthState
   const [copiedMsg, setCopiedMsg] = useState('workspace-id__hidden-msg')
   const [members, setMembers] = useState<IWorkspaceMember[]>([])
   const [requests, setRequests] = useState<IWorkspaceUserRequest[]>([])

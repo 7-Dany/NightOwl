@@ -13,7 +13,7 @@ type UseRequestReturn = {
 }
 
 function useRequest({ userId }: UseRequestArgs): UseRequestReturn {
-  const { workspace, user } = useContext(AuthContext)
+  const { workspace, user } = useContext(AuthContext).AuthState
   const [order, setOrder] = useState('')
   const [msg, setMsg] = useState('')
 

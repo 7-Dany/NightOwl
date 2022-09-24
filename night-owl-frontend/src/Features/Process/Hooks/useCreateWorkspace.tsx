@@ -17,7 +17,7 @@ type UseCreateWorkspaceReturn = {
 
 function useCreateWorkspace({ setShow }: UseCreateWorkspaceArgs): UseCreateWorkspaceReturn {
   const navigate = useNavigate()
-  const { user, setWorkspace } = useContext(AuthContext)
+  const { AuthState, AuthDispatch } = useContext(AuthContext)
   const [errorMsg, setErrorMsg] = useState('')
   const formik = useFormik({
     initialValues: { name: '' },
@@ -28,10 +28,10 @@ function useCreateWorkspace({ setShow }: UseCreateWorkspaceArgs): UseCreateWorks
       const controller = new AbortController()
       createWorkspace({
         controller,
-        values: { user_id: user.id, name: values.name, token: user.token }
+        values: { user_id: AuthState.user.id, name: values.name, token: AuthState.user.token }
       })
         .then(data => {
-          setWorkspace(data)
+          AuthDispatch({ type: 'update_workspace', payload: data })
           setErrorMsg('')
           navigate('/home')
         })

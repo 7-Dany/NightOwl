@@ -20,7 +20,7 @@ type UseChatRoomReturn = {
 }
 
 function useChatRoom(): UseChatRoomReturn {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext).AuthState
   const { SocketState, SocketDispatch } = useContext(SocketContext)
   const [message, setMessage] = useState('')
   const [order, setOrder] = useState(false)

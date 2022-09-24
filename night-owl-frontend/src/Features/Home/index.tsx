@@ -1,5 +1,5 @@
-function Home() {
+function WorkspaceHomeMain() {
   return <div></div>
 }
 
-export default Home
+export default WorkspaceHomeMain
