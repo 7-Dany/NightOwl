@@ -2,16 +2,21 @@
 
 .workspace-container {
   position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-workspace {
-  width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 2rem;
+  border: 1px solid $Gray-800;
+  border-radius: 12px;
+  padding: 2rem;
 
   &__title {
     @include Headline-Small-Font($Gray-100);
@@ -40,10 +45,10 @@
 
 
 .workspace {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
 
   &__choice {
     width: 250px;
