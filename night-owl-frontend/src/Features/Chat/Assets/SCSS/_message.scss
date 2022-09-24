@@ -30,21 +30,20 @@
   }
 
   .message {
-    max-width: 70%;
     overflow-wrap: break-word;
     margin-left: 1.8rem;
     margin-block: 0.4rem;
     align-self: flex-start;
     justify-self: left;
+    max-width: 60%;
     background-color: $Gray-800;
     padding: 1rem;
-    border-radius: 2px 25px 25px;
-    line-height: 1.2;
+    border-radius: 5px 20px 20px 20px;
     cursor: pointer;
     transition: 300ms all ease-in-out;
 
     &__content {
-      color: $Base-White;
+      @include Body-Medium-Font($Gray-100);
     }
 
     &:hover {
@@ -108,7 +107,7 @@
     transition: 300ms all ease-in-out;
 
     &__content {
-      color: $Base-White;
+      @include Body-Medium-Font($Gray-100);
     }
 
     &:hover {
