@@ -27,6 +27,7 @@ export class SocketServer {
       pingInterval: 10000,
       pingTimeout: 5000,
       cookie: true,
+      maxHttpBufferSize: 1e8,
       cors: {
         origin: 'http://localhost:3000',
         credentials: true
