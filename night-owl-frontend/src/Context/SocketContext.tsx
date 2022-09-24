@@ -21,7 +21,7 @@ type SocketContextProviderProps = {
 export const SocketContext = createContext<SocketContextType>({} as SocketContextType)
 
 function SocketContextProvider({ children }: SocketContextProviderProps) {
-  const { workspace } = useContext(AuthContext)
+  const { workspace } = useContext(AuthContext).AuthState
   const [SocketState, SocketDispatch] = useReducer(SocketReducer, defaultSocketContextState)
   const socket = useSocket('http://localhost:4000', {
     reconnectionDelay: 5000,
