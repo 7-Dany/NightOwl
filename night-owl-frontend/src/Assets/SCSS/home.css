@@ -380,9 +380,16 @@
   transition: 300ms all ease-in-out;
 }
 
-.login-form-container {
+.login-main {
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -394,12 +401,15 @@
   line-height: 2rem;
   color: #FFFFFF;
   gap: 1.5rem;
+  border: 1px solid #292524;
+  border-radius: 12px;
+  padding: 2rem;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 .login-form fieldset {
   display: flex;
@@ -717,16 +727,21 @@
 
 .workspace-container {
   position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-workspace {
-  width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 2rem;
+  border: 1px solid #292524;
+  border-radius: 12px;
+  padding: 2rem;
 }
 .main-workspace__title {
   font-family: "Ubuntu", sans-serif;
@@ -767,10 +782,10 @@
 }
 
 .workspace {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 2rem;
 }
 .workspace__choice {
   width: 250px;
@@ -1501,8 +1516,8 @@
 }
 .chat-room-footer__image-preview {
   position: absolute;
-  bottom: 6rem;
-  left: 37.8%;
+  bottom: 5.5rem;
+  left: 36%;
 }
 .chat-room-footer__image-preview img {
   width: 150px;
@@ -1601,21 +1616,26 @@
   color: #FFFFFF;
 }
 .others-msg .message {
-  max-width: 70%;
   overflow-wrap: break-word;
   margin-left: 1.8rem;
   margin-block: 0.4rem;
   align-self: flex-start;
   justify-self: left;
+  max-width: 60%;
   background-color: #292524;
   padding: 1rem;
-  border-radius: 2px 25px 25px;
-  line-height: 1.2;
+  border-radius: 5px 20px 20px 20px;
   cursor: pointer;
   transition: 300ms all ease-in-out;
 }
 .others-msg .message__content {
-  color: #FFFFFF;
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #F5F5F4;
 }
 .others-msg .message:hover {
   background-color: #44403C;
@@ -1670,7 +1690,13 @@
   transition: 300ms all ease-in-out;
 }
 .user-msg .message__content {
-  color: #FFFFFF;
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+  color: #F5F5F4;
 }
 .user-msg .message:hover {
   background-color: #44403C;
