@@ -4,5 +4,6 @@ import LoginPage from './LoginPage'
 import MembersPage from './MembersPage'
 import WorkspacePage from './WorkspacePage'
 import WorkspaceRequestPage from './WorkspaceRequestPage'
+import ProjectsPage from './ProjectsPage'
 
-export { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage }
+export { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage, ProjectsPage }
