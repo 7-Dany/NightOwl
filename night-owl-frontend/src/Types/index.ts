@@ -84,3 +84,10 @@ export interface IPrivateConversation extends IMessage {
   image: string
   sender_id: string
 }
+
+export interface IProject {
+  id: string
+  title: string
+  summary: string
+  image: string
+}
