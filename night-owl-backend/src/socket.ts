@@ -1,15 +1,11 @@
 import { Server as HTTPServer } from 'http'
 import { Socket, Server } from 'socket.io'
 import { authorizeUser, sessionMiddleware, wrap } from './middlewares'
-import { SessionSocket } from './types'
+import { SessionSocket, MessageFile } from './types'
 import { MessagesModel, IMessage, IUserMessage } from './models'
 import fs from 'fs'
 import { v4 as uuid4 } from 'uuid'
 
-type MessageFile = {
-  file: File
-  fileType: string
-}
 const messagesModel = new MessagesModel()
 
 export class SocketServer {
@@ -27,7 +23,7 @@ export class SocketServer {
       pingInterval: 10000,
       pingTimeout: 5000,
       cookie: true,
-      maxHttpBufferSize: 1e8,
+      maxHttpBufferSize: 1e7,
       cors: {
         origin: 'http://localhost:3000',
         credentials: true
