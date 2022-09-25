@@ -16,3 +16,8 @@ export interface SessionSocket extends Socket {
   request: SessionIncomingMessage
   user?: any
 }
+
+export type MessageFile = {
+  file: File
+  fileType: string
+}
