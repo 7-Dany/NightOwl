@@ -1,7 +1,7 @@
 import React from 'react'
 import './Assets/SCSS/home.css'
 import { Routes, Route } from 'react-router-dom'
-import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage } from './Pages'
+import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage, ProjectsPage } from './Pages'
 import AuthContextProvider from './Context/AuthContext'
 import {
   PrivateAppRoutes,
@@ -28,6 +28,7 @@ function App() {
               <Route path='/chat' element={<ChatPage />} />
               <Route path='/home' element={<HomePage />} />
               <Route path='/members' element={<MembersPage />} />
+              <Route path='/projects' element={<ProjectsPage />} />
             </Route>
           </Route>
         </Routes>
