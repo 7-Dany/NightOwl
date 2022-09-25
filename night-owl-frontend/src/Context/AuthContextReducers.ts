@@ -1,9 +1,10 @@
-import { IAuthUser, IWorkspace, IWorkspaceRequest } from '../Types'
+import { IAuthUser, IProject, IWorkspace, IWorkspaceRequest } from '../Types'
 
 export type TAuthContextState = {
   user: IAuthUser
   workspace: IWorkspace
   workspaceRequest: IWorkspaceRequest
+  activeProject: IProject | null
 }
 
 export type TAuthContextTypes =
@@ -12,11 +13,14 @@ export type TAuthContextTypes =
   | 'update_workspace_request'
   | 'reset_workspace_and_request'
   | 'reset_all'
+  | 'update_active_project'
+  | 'reset_active_project'
 
 export type TAuthContextPayloads =
   IAuthUser
   | IWorkspace
   | IWorkspaceRequest
+  | IProject
 
 export type TAuthContextActions = {
   type: TAuthContextTypes
@@ -26,7 +30,8 @@ export type TAuthContextActions = {
 export const defaultAuthContextState: TAuthContextState = {
   user: {} as IAuthUser,
   workspace: {} as IWorkspace,
-  workspaceRequest: {} as IWorkspaceRequest
+  workspaceRequest: {} as IWorkspaceRequest,
+  activeProject: null
 }
 
 export function AuthReducer(state: TAuthContextState, actions: TAuthContextActions): TAuthContextState {
@@ -35,7 +40,8 @@ export function AuthReducer(state: TAuthContextState, actions: TAuthContextActio
       return {
         user: actions.payload as IAuthUser,
         workspace: {} as IWorkspace,
-        workspaceRequest: {} as IWorkspaceRequest
+        workspaceRequest: {} as IWorkspaceRequest,
+        activeProject: null
       }
     case 'update_workspace':
       return { ...state, workspace: actions.payload as IWorkspace, workspaceRequest: {} as IWorkspaceRequest }
@@ -45,6 +51,10 @@ export function AuthReducer(state: TAuthContextState, actions: TAuthContextActio
       return { ...state, workspace: {} as IWorkspace, workspaceRequest: {} as IWorkspaceRequest }
     case 'reset_all':
       return defaultAuthContextState
+    case 'update_active_project':
+      return { ...state, activeProject: actions.payload as IProject }
+    case 'reset_active_project':
+      return { ...state, activeProject: null }
     default:
       return state
   }
