@@ -14,6 +14,8 @@ import ChatIcon from './images/ChatIcon'
 import Logout from './images/Logout'
 import SearchIcon from './images/SearchIcon'
 import NotificationIcon from './images/NotificationIcon'
+import FilesIcon from './images/FilesIcon'
+import PlannerIcon from './images/PlannerIcon'
 import PersonImage from './images/person.svg'
 import logo from './images/Logo.jpg'
 import Xicon from './images/Xicon'
@@ -37,6 +39,8 @@ export {
   SearchIcon,
   NotificationIcon,
   Xicon,
+  FilesIcon,
+  PlannerIcon,
   PersonImage,
   logo
 }
