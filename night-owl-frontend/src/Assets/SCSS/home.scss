@@ -3,6 +3,7 @@
 @import "../../Features/Process/Assets/SCSS/workspace-process-main";
 @import "../../Features/Members/Assets/SCSS/workspace-members-main";
 @import "../../Features/Chat/Assets/SCSS/workspace-chat-main";
+@import "../../Features/Projects/Assets/SCSS/workspace-projects-main";
 
 * {
   margin: 0;
@@ -20,11 +21,5 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: 80px repeat(2, 4fr);
-  grid-template-rows: 80px 1fr;
-}
-
-.main-app-container {
-  grid-column: 2/-1;
-  width: 100%;
-  display: flex;
+  grid-template-rows: minmax(auto, 80px) 1fr;
 }

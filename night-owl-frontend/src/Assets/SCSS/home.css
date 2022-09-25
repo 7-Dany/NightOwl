@@ -1,12 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
-.header {
+.header-container {
   grid-column: 2/-1;
   grid-row: 1/2;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #292524;
+}
+.header-container.active {
+  height: 110px;
+}
+
+.header {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 2rem;
-  border-bottom: 1px solid #292524;
+  height: 80px;
+  padding: 1.5rem;
+}
+.header__project-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 1rem;
 }
 .header__title {
   font-family: "Ubuntu", sans-serif;
@@ -92,6 +111,40 @@
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  padding-left: 1.5rem;
+}
+.navbar__project-link {
+  font-family: "Ubuntu", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.15px;
+  color: #79716B;
+  text-decoration: none;
+  padding-bottom: 0.25rem;
+  transition: 300ms all ease-in-out;
+  border-bottom: 1px solid transparent;
+}
+.navbar__project-link.active {
+  border-bottom: 1px solid #06AED4;
+  color: #E7E5E4;
+}
+
+.main-app-container {
+  grid-column: 2/-1;
+  grid-row: 2/-1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -1813,6 +1866,81 @@
   border-right: 1px solid #292524;
 }
 
+.workplace-projects-main-container {
+  width: 100%;
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  gap: 1rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.workplace-projects-main-container::-webkit-scrollbar {
+  width: 8px;
+}
+.workplace-projects-main-container::-webkit-scrollbar-track {
+  border-radius: 24px;
+  background: #0B0B0D;
+}
+.workplace-projects-main-container::-webkit-scrollbar-thumb {
+  background-color: #57534E;
+  border-radius: 20px;
+  border: 1px solid #292524;
+}
+
+.workspace-project {
+  width: 50%;
+  border: 1px solid #44403C;
+  background-color: #292524;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: 300ms all ease-in-out;
+}
+.workspace-project:hover {
+  box-shadow: 0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+}
+.workspace-project__logo {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.workspace-project__title {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+}
+.workspace-project__summary {
+  grid-column: 2/-1;
+  grid-row: 2/3;
+}
+.workspace-project__icons-container {
+  grid-row: 3/4;
+  grid-column: 2/-1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.workspace-project__icon-btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.workspace-project__icon-btn:hover .workspace-project__icon {
+  fill: #06AED4;
+}
+.workspace-project__icon {
+  width: 30px;
+  fill: #57534E;
+  transition: 300ms all ease-in-out;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -1835,13 +1963,7 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: 80px repeat(2, 4fr);
-  grid-template-rows: 80px 1fr;
-}
-
-.main-app-container {
-  grid-column: 2/-1;
-  width: 100%;
-  display: flex;
+  grid-template-rows: minmax(auto, 80px) 1fr;
 }
 
 /*# sourceMappingURL=home.css.map */

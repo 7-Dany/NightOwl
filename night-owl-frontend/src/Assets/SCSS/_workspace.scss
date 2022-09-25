@@ -1,11 +1,32 @@
-.header {
+.header-container {
   grid-column: 2/-1;
   grid-row: 1/2;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $Gray-800;
+
+  &.active {
+    height: 110px;
+  }
+}
+
+.header {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 2rem;
-  border-bottom: 1px solid $Gray-800;
+  height: 80px;
+  padding: 1.5rem;
+
+  &__project-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
 
   &__title {
     @include Headline-Small-Font($Base-White);
@@ -99,6 +120,36 @@
     border-radius: 50%;
     cursor: pointer;
   }
+}
+
+.navbar {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  padding-left: 1.5rem;
+
+  &__project-link {
+    @include Body-Large-Font($Gray-500);
+    text-decoration: none;
+    padding-bottom: 0.25rem;
+    transition: 300ms all ease-in-out;
+    border-bottom: 1px solid transparent;
+
+    &.active {
+      border-bottom: 1px solid $Blue-500;
+      color: $Gray-200;
+    }
+  }
+}
+
+.main-app-container {
+  grid-column: 2/-1;
+  grid-row: 2/-1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
 }
 
 .sidebar {
