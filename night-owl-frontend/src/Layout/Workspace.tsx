@@ -7,11 +7,17 @@ import {
   FourCircles,
   ProjectsIcon,
   CalenderIcon,
-  DiscussionIcon, TodoIcon, ChatIcon, MembersIcon, SettingsIcon, Logout
+  DiscussionIcon,
+  TodoIcon,
+  ChatIcon,
+  MembersIcon,
+  SettingsIcon,
+  Logout
 } from '../Assets'
 import { NavLink } from 'react-router-dom'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import useLogout from '../Hooks/useLogout'
+import { AuthContext } from '../Context/AuthContext'
 
 type WorkspaceProps = {
   children: React.ReactNode
@@ -19,25 +25,59 @@ type WorkspaceProps = {
 }
 
 function Workspace({ children, title }: WorkspaceProps) {
+  const { activeProject } = useContext(AuthContext).AuthState
   const { logoutUser } = useLogout()
+  const [createProject, setCreateProject] = useState(false)
+  console.log(activeProject)
   return (
     <div className='App'>
-      <header className='header'>
-        <h2 className='header__title'>{title}</h2>
-        <div className='search-area'>
-          <label htmlFor='search' className='search-area__container'>
-            <SearchIcon className={'search-area__icon'} />
-            <input type='text' id='search' className='search-area__input' placeholder='Search...' title='Search' />
-          </label>
+      <header className={activeProject ? 'header-container active' : 'header-container'}>
+        <div className='header'>
+          {activeProject &&
+            <img src={activeProject?.image} alt='' className='header__project-logo' />
+          }
+          <h2 className='header__title'>{activeProject ? activeProject.title : title}</h2>
+          <div className='search-area'>
+            <label htmlFor='search' className='search-area__container'>
+              <SearchIcon className={'search-area__icon'} />
+              <input type='text' id='search' className='search-area__input' placeholder='Search...' title='Search' />
+            </label>
+          </div>
+          <div className='personal-info'>
+            <button className='personal-info__create-new'
+                    onClick={(event) => setCreateProject(prevState => !prevState)}>
+              <PlusIcon className={'personal-info__create-new__icon'} />
+              New Project
+            </button>
+            <NotificationIcon className={'personal-info__notification-icon'} />
+            <img src={PersonImage} alt='Person' className={'personal-info__person-img'} />
+          </div>
         </div>
-        <div className='personal-info'>
-          <button className='personal-info__create-new'>
-            <PlusIcon className={'personal-info__create-new__icon'} />
-            Create New
-          </button>
-          <NotificationIcon className={'personal-info__notification-icon'} />
-          <img src={PersonImage} alt='Person' className={'personal-info__person-img'} />
-        </div>
+        {activeProject &&
+          <nav className='navbar'>
+            <NavLink to='/project/overview' className='navbar__project-link'>
+              Overview
+            </NavLink>
+            <NavLink to='/project/pages' className='navbar__project-link'>
+              Pages
+            </NavLink>
+            <NavLink to='/project/discussions' className='navbar__project-link'>
+              Discussions
+            </NavLink>
+            <NavLink to='/project/tasks' className='navbar__project-link'>
+              Tasks
+            </NavLink>
+            <NavLink to='/project/planner' className='navbar__project-link'>
+              Planner
+            </NavLink>
+            <NavLink to='/project/files' className='navbar__project-link'>
+              Files
+            </NavLink>
+            <NavLink to='/project/members' className='navbar__project-link'>
+              Members
+            </NavLink>
+          </nav>
+        }
       </header>
       <main className='main-app-container'>
         {children}
