@@ -12,12 +12,13 @@ import {
   ChatIcon,
   MembersIcon,
   SettingsIcon,
-  Logout
+  Logout, Xicon
 } from '../Assets'
 import { NavLink } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
 import useLogout from '../Hooks/useLogout'
 import { AuthContext } from '../Context/AuthContext'
+import NewProject from './NewProject'
 
 type WorkspaceProps = {
   children: React.ReactNode
@@ -28,7 +29,6 @@ function Workspace({ children, title }: WorkspaceProps) {
   const { activeProject } = useContext(AuthContext).AuthState
   const { logoutUser } = useLogout()
   const [createProject, setCreateProject] = useState(false)
-  console.log(activeProject)
   return (
     <div className='App'>
       <header className={activeProject ? 'header-container active' : 'header-container'}>
@@ -80,6 +80,17 @@ function Workspace({ children, title }: WorkspaceProps) {
         }
       </header>
       <main className='main-app-container'>
+        {createProject &&
+          <div className='new-project-container'>
+            <div className='new-project'>
+              <div className='new-project__close' role='button'
+                   onClick={(event) => setCreateProject(false)}>
+                <Xicon className={'new-project__close-icon'} />
+              </div>
+              <NewProject />
+            </div>
+          </div>
+        }
         {children}
       </main>
       <div className='sidebar'>
