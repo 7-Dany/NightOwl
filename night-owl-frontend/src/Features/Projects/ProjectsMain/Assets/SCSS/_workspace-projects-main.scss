@@ -31,22 +31,30 @@
   background-color: $Gray-800;
   border-radius: 20px;
   padding: 1.5rem;
-  display: grid;
-  grid-template-columns: 30px 1fr;
-  gap: 1.5rem;
   cursor: pointer;
   transition: 300ms all ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
   &:hover {
     @include Box-Shadow-md;
   }
 
+  &__info {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 1rem;
+  }
+
   &__logo {
     grid-column: 1/2;
     grid-row: 1/2;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    object-fit: contain;
   }
 
   &__title {
@@ -60,8 +68,7 @@
   }
 
   &__icons-container {
-    grid-row: 3/4;
-    grid-column: 2/-1;
+    margin-left: 44px;
     display: flex;
     align-items: center;
     gap: 1.5rem;
