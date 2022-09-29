@@ -26,6 +26,7 @@
     height: 32px;
     border-radius: 50%;
     margin-right: 1rem;
+    object-fit: contain;
   }
 
   &__title {
@@ -135,9 +136,14 @@
     transition: 300ms all ease-in-out;
     border-bottom: 1px solid transparent;
 
-    &.active {
+    &:hover {
       border-bottom: 1px solid $Blue-500;
-      color: $Gray-200;
+      color: $Blue-500;
+    }
+
+    &.active {
+      border-bottom: 1px solid $Blue-300;
+      color: $Blue-300;
     }
   }
 }
@@ -196,18 +202,18 @@
     position: relative;
 
     &.active {
-      border-left: 3px solid $Blue-400;
+      border-left: 3px solid $Blue-300;
 
       .main-icons__icon {
-        fill: $Blue-400;
+        fill: $Blue-300;
       }
     }
 
     &:hover {
-      border-left: 3px solid $Blue-400;
+      border-left: 3px solid $Blue-500;
 
       .main-icons__icon {
-        fill: $Blue-400;
+        fill: $Blue-500;
       }
 
       &:nth-child(1)::after {
@@ -282,10 +288,10 @@
     }
 
     &:hover {
-      border-left: 3px solid $Blue-300;
+      border-left: 3px solid $Blue-500;
 
       .footer-icons__icon {
-        fill: $Blue-300;
+        fill: $Blue-500;
       }
 
       &:nth-child(1)::after {
