@@ -43,48 +43,26 @@ export class ProjectsModel {
     }
   }
 
-  async updateName(id: string, name: string): Promise<IProject> {
+  async update(project: IProject): Promise<IProject> {
     try {
       const connect = await database.connect()
+      const oldProject = await connect.query('SELECT * FROM projects WHERE id=$1', [project.id])
+      const newProject = {
+        name: project.name ? project.name : oldProject.rows[0].name,
+        summary: project.summary ? project.summary : oldProject.rows[0].summary,
+        logo: project.logo ? project.logo : oldProject.rows[0].logo
+      }
       const sql = `UPDATE projects
-                   SET name=$1
-                   WHERE id = $2
+                   SET name=$1,
+                       summary=$2,
+                       logo=$3
+                   WHERE id = $4
                    RETURNING *`
-      const results = await connect.query(sql, [name, id])
+      const results = await connect.query(sql, [newProject.name, newProject.summary, newProject.logo, project.id])
       connect.release()
       return results.rows[0]
     } catch (error) {
-      throw new Error(`Unable to update project name, ${(error as Error).message}`)
-    }
-  }
-
-  async updateSummary(id: string, summary: string): Promise<IProject> {
-    try {
-      const connect = await database.connect()
-      const sql = `UPDATE projects
-                   SET summary=$1
-                   WHERE id = $2
-                   RETURNING *`
-      const results = await connect.query(sql, [summary, id])
-      connect.release()
-      return results.rows[0]
-    } catch (error) {
-      throw new Error(`Unable to update project summary, ${(error as Error).message}`)
-    }
-  }
-
-  async updateLogo(id: string, logo: string): Promise<IProject> {
-    try {
-      const connect = await database.connect()
-      const sql = `UPDATE projects
-                   SET logo=$1
-                   WHERE id = $2
-                   RETURNING *`
-      const results = await connect.query(sql, [logo, id])
-      connect.release()
-      return results.rows[0]
-    } catch (error) {
-      throw new Error(`Unable to update project logo, ${(error as Error).message}`)
+      throw new Error(`Unable to updated project, ${(error as Error).message}`)
     }
   }
 
