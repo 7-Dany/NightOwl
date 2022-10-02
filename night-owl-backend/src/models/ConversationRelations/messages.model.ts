@@ -55,10 +55,10 @@ export class MessagesModel {
   async create(message: IMessage): Promise<IUserMessage> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO messages (text, media_url, message_type, created_at, user_id, conversation_id)
+      const createSql = `INSERT INTO messages (text, media_url, message_type, created_at, user_id, conversation_id)
                    VALUES ($1, $2, $3, $4, $5, $6)
                    RETURNING id`
-      const newMessage = await connect.query(sql, [
+      const newMessage = await connect.query(createSql, [
         message.text,
         message.media_url,
         message.message_type,
