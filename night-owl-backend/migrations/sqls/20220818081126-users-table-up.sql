@@ -6,5 +6,6 @@ CREATE TABLE users
     email       VARCHAR      NOT NULL UNIQUE,
     image       VARCHAR      NOT NULL,
     is_verified BOOLEAN      NOT NULL,
+    timezone    VARCHAR(50)  NOT NULL,
     password    VARCHAR      NOT NULL
 );
