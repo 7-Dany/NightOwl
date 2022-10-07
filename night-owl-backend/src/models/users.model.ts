@@ -8,6 +8,7 @@ export type User = {
   email: string
   image: string
   is_verified?: boolean
+  timezone: string
   password: string
 }
 
@@ -15,7 +16,7 @@ export class UsersModel {
   async index(): Promise<User[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT id, username, email, image
+      const sql = `SELECT id, username, email, image, timezone
                    FROM users`
       const result = await connect.query(sql)
       connect.release()
@@ -28,7 +29,7 @@ export class UsersModel {
   async show(id: string): Promise<User> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT id, username, email, image
+      const sql = `SELECT id, username, email, image, timezone
                    FROM users
                    WHERE id = $1`
       const result = await database.query(sql, [id])
@@ -70,8 +71,8 @@ export class UsersModel {
   async create(user: User): Promise<User> {
     try {
       const connect = await database.connect()
-      const sql = `INSERT INTO users (username, email, image, is_verified, password)
-                   VALUES ($1, $2, $3, $4, $5)
+      const sql = `INSERT INTO users (username, email, image, is_verified, timezone, password)
+                   VALUES ($1, $2, $3, $4, $5, $6)
                    RETURNING id, username, email, image, is_verified`
       const password = hashSync(user.password + config.pepper, config.salt)
       const result = await connect.query(sql, [
@@ -79,6 +80,7 @@ export class UsersModel {
         user.email,
         user.image,
         user.is_verified,
+        user.timezone,
         password
       ])
       connect.release()
@@ -108,7 +110,7 @@ export class UsersModel {
                        email=$2,
                        image=$3
                    WHERE id = $4
-                   RETURNING id, username, email, image`
+                   RETURNING id, username, email, image, timezone`
       const result = await connect.query(sql, [
         updatedUser.username,
         updatedUser.email,
@@ -128,7 +130,7 @@ export class UsersModel {
       const sql = `UPDATE users
                    SET password=$1
                    WHERE email = $2
-                   RETURNING id, username, email, image, is_verified`
+                   RETURNING id, username, email, image, is_verified, timezone`
       const password = hashSync(newPassword + config.pepper, config.salt)
       const result = await connect.query(sql, [password, email])
       connect.release()
@@ -153,13 +155,13 @@ export class UsersModel {
     }
   }
 
-  async delete(email: string): Promise<User> {
+  async deleteByEmail(email: string): Promise<User> {
     try {
       const connect = await database.connect()
       const sql = `DELETE
                    FROM users
                    WHERE email = $1
-                   RETURNING id, username, email, image, is_verified`
+                   RETURNING id, username, email, image, is_verified, timezone`
       const result = await connect.query(sql, [email])
       connect.release()
       return result.rows[0]
@@ -168,20 +170,19 @@ export class UsersModel {
     }
   }
 
-
-  async authenticate(user: User): Promise<User | null> {
+  async authenticate(email: string, userPassword: string): Promise<User | null> {
     try {
       const connect = await database.connect()
       const sql = `SELECT *
                    FROM users
                    WHERE email = $1`
-      const result = await connect.query(sql, [user.email])
+      const result = await connect.query(sql, [email])
       connect.release()
       const { password } = result.rows[0]
-      const isPasswordValid = compareSync(user.password + config.pepper, password)
+      const isPasswordValid = compareSync(userPassword + config.pepper, password)
       if (isPasswordValid) {
-        const { id, username, email, image, is_verified } = result.rows[0]
-        return { id, username, email, image, is_verified } as User
+        const { id, username, email, image, is_verified, timezone } = result.rows[0]
+        return { id, username, email, image, is_verified, timezone } as User
       } else {
         return null
       }
