@@ -15,11 +15,15 @@ export const getAllUsers = async (
 ): Promise<void> => {
   try {
     const users = await usersModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...users],
-      message: 'Users got retrieved successfully'
-    })
+    if (users) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...users],
+        message: 'Users got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -31,13 +35,17 @@ export const getUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id: string = request.params.id
+    const id: string = request.params.user_id
     const user = await usersModel.show(id)
-    response.status(200).json({
-      status: 'Success',
-      data: { ...user },
-      message: 'User got retrieved successfully'
-    })
+    if (user) {
+      response.status(200).json({
+        status: 'Success',
+        data: { ...user },
+        message: 'User got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -49,8 +57,8 @@ export const createUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { username, email, image, password } = request.body
-    const newUser = { username, email, image, is_verified: false, password } as User
+    const { username, email, image, timezone, password } = request.body
+    const newUser = { username, email, image, is_verified: false, timezone, password } as User
     const checkEmail = await usersModel.showByEmail(newUser.email)
     if (checkEmail) {
       response.status(409).json({
@@ -80,25 +88,29 @@ export const updateUser = async (
   try {
     const { username, email, image } = request.body
     const user = { username, email, image } as User
-    const id = request.params.id
-    if (user.email) {
-      const getUser = await usersModel.show(id)
-      const checkEmail = await usersModel.showByEmail(user.email)
-      if (checkEmail && getUser.email !== user.email) {
-        response.status(409).json({
-          status: 'Failed',
-          message: 'This email is already used please use another email'
-        })
-        return
+    const id = request.params.user_id
+    const getUser = await usersModel.show(id)
+    if (getUser) {
+      if (user.email) {
+        const checkEmail = await usersModel.showByEmail(user.email)
+        if (checkEmail && getUser.email !== user.email) {
+          response.status(409).json({
+            status: 'Failed',
+            message: 'This email is already used please use another email'
+          })
+          return
+        }
       }
+      const updatedUser = await usersModel.update(id, user)
+      const token = jwt.sign({ user: updatedUser }, config.token as unknown as string)
+      response.status(200).json({
+        status: 'Success',
+        data: { ...updatedUser, token },
+        message: 'User got updated successfully'
+      })
+    } else {
+      response.status(204)
     }
-    const updatedUser = await usersModel.update(id, user)
-    const token = jwt.sign({ user: updatedUser }, config.token as unknown as string)
-    response.status(200).json({
-      status: 'Success',
-      data: { ...updatedUser, token },
-      message: 'User got updated successfully'
-    })
   } catch (error) {
     next(error)
   }
@@ -110,28 +122,22 @@ export const updatePassword = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const authorizationHeader = request.headers.authorization as string
-    const oldToken = authorizationHeader?.split(' ')[1]
-    const decode = jwt.decode(oldToken)
+    const email = request.body.email
     const password = request.body.password
-    if (decode) {
-      // @ts-ignore
-      const email = decode['user'].email
-      const getUserPassword = await usersModel.showPasswordByEmail(email)
-      const checkPassword = compareSync(password + config.pepper, getUserPassword.password)
-      if (checkPassword) {
-        response.status(409).json({
-          status: 'Failed',
-          message: 'new password cant be the same as old password'
-        })
-        return
-      }
-      await usersModel.updatePassword(email, password)
-      response.status(200).json({
-        status: 'Success',
-        message: 'Password got changed successfully'
+    const getUserPassword = await usersModel.showPasswordByEmail(email)
+    const checkPassword = compareSync(password + config.pepper, getUserPassword.password)
+    if (checkPassword) {
+      response.status(409).json({
+        status: 'Failed',
+        message: 'new password cant be the same as old password'
       })
+      return
     }
+    await usersModel.updatePassword(email, password)
+    response.status(200).json({
+      status: 'Success',
+      message: 'Password got changed successfully'
+    })
   } catch (error) {
     next(error)
   }
@@ -153,10 +159,7 @@ export const checkEmailExistence = async (
         message: 'User got retrieved successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Email is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -194,19 +197,17 @@ export const deleteUser = async (
 ): Promise<void> => {
   try {
     const email = request.body.email
-    const checkEmail = await usersModel.showByEmail(email)
-    if (checkEmail) {
-      const deleteUser = await usersModel.delete(email)
+    const password = request.body.password
+    const authenticateUser = await usersModel.authenticate(email, password)
+    if (authenticateUser) {
+      const deleteUser = await usersModel.deleteByEmail(email)
       response.status(202).json({
         status: 'Success',
         data: { ...deleteUser },
         message: 'User got deleted successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'User is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -247,6 +248,7 @@ export const userSession = async (
         }
       }
     } else {
+      response.status(204)
       return
     }
   } catch (error) {
@@ -276,10 +278,9 @@ export const authenticateUser = async (
 ): Promise<void> => {
   try {
     const { email, password } = request.body
-    const userToAuthenticate = { email, password } as User
-    const checkEmail = await usersModel.showByEmail(userToAuthenticate.email)
+    const checkEmail = await usersModel.showByEmail(email)
     if (checkEmail) {
-      const authenticatedUser = await usersModel.authenticate(userToAuthenticate)
+      const authenticatedUser = await usersModel.authenticate(email, password)
       const token = jwt.sign({ user: authenticatedUser }, config.token as unknown as string)
       if (!authenticatedUser) {
         response.status(401).json({
@@ -314,10 +315,7 @@ export const authenticateUser = async (
         })
       }
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'User is not exist'
-      })
+      response.status(204)
     }
   } catch
     (error) {
