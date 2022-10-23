@@ -6,7 +6,11 @@ import {
   TProjectContextState
 } from './ProjectContextReducers'
 import { AuthContext } from './AuthContext'
-import { getWorkspaceProjects } from '../Api/workspace_projects.api'
+import { WorkspacesEndpoints } from '../Api/workspaces.api'
+import { ProjectsEndpoints } from '../Api/projects.api'
+
+const projectsEndpoints = new ProjectsEndpoints()
+const workspacesEndpoints = new WorkspacesEndpoints()
 
 type ProjectContextProviderProps = {
   children: React.ReactNode
@@ -26,7 +30,11 @@ function ProjectContextProvider({ children }: ProjectContextProviderProps) {
   useEffect(() => {
     const controller = new AbortController()
     if (workspace.workspace_id) {
-      getWorkspaceProjects({ controller, values: { workspace_id: workspace.workspace_id, token: user.token } })
+      workspacesEndpoints.getWorkspaceProjects(
+        controller,
+        workspace.workspace_id,
+        user.token
+      )
         .then(data => {
           ProjectDispatch({ type: 'update_projects', payload: data })
         })
@@ -40,8 +48,20 @@ function ProjectContextProvider({ children }: ProjectContextProviderProps) {
   }, [workspace.workspace_id])
 
   useEffect(() => {
+    const controller = new AbortController()
     if (ProjectState.activeProject?.id) {
-
+      projectsEndpoints.getProjectDate(
+        controller,
+        ProjectState.activeProject.id,
+        user.token
+      ).then(data => {
+        ProjectDispatch({ type: 'update_current_project_data', payload: data })
+      }).catch(error => {
+        ProjectDispatch({ type: 'reset_current_project_data' })
+      })
+    }
+    return () => {
+      controller.abort()
     }
   }, [ProjectState.activeProject?.id])
 
