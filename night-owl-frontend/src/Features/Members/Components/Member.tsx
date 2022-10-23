@@ -2,6 +2,7 @@ import { ChatIcon, DotsIcons } from '../../../Assets'
 import React, { useContext } from 'react'
 import { AuthContext } from '../../../Context/AuthContext'
 import useMember from '../Hooks/useMember'
+import { convertRegionToUTC } from '../../../Utils'
 
 type MemberProps = {
   memberId: string
@@ -21,9 +22,9 @@ function Member({ memberId, image, name, projects, timezone, email, role }: Memb
       <img src={image} alt='person' className='member__image' />
       <h3 className='member__name'>{name}</h3>
       <p className='member__email'>{email}</p>
-      <p className='member__projects'>{projects}</p>
+      <p className='member__projects'>{projects ? projects : 0}</p>
       <p className='member__role'>{role}</p>
-      <p className='member__timezone'>{timezone}</p>
+      <p className='member__timezone'>{convertRegionToUTC(timezone)}</p>
       {user.email !== email ?
         <div className='member__option-container' onClick={openChat}>
           <ChatIcon className={'member__chat'} />
