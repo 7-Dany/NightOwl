@@ -1,0 +1,158 @@
+.project-members-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 1rem 0;
+
+  &__add-member {
+    align-self: flex-end;
+    margin: 1rem 1.5rem 0;
+    background-color: $Gray-600;
+    padding: 0.6rem 1rem;
+    color: $Gray-200;
+    border-radius: 25px;
+    transition: 300ms all ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      color: $Gray-600;
+      background-color: $Gray-200;
+    }
+  }
+}
+
+.project-members-header {
+  width: 80%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid $Gray-800;
+  padding-right: 1.4rem;
+
+  &__image {
+    flex: 1 1 10%;
+  }
+
+  &__name {
+    flex: 1 1 10%;
+  }
+
+  &__title {
+    flex: 1 1 10%;
+  }
+
+  &__role {
+    flex: 1 1 10%;
+  }
+
+  &__timezone {
+    flex: 1 1 10%;
+  }
+
+  &__options {
+    flex: 1 1 10%;
+  }
+}
+
+.project-members {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 75vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.project-member {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  border: 1px solid $Gray-800;
+  border-radius: 12px;
+  position: relative;
+
+  &__image {
+    flex-grow: 1;
+    flex-basis: 10%;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__name {
+    flex: 1 1 10%;
+  }
+
+  &__title {
+    flex: 1 1 10%;
+  }
+
+  &__role {
+    flex: 1 1 10%;
+  }
+
+  &__timezone {
+    flex: 1 1 10%;
+  }
+
+  &__options-container {
+    flex: 1 1 10%;
+    cursor: pointer;
+
+    &:hover {
+      .project-member__options-icon {
+        fill: $Blue-500;
+      }
+    }
+  }
+
+  &__options-icon {
+    fill: $Gray-600;
+    transition: 300ms all ease-in-out;
+  }
+
+  &__active {
+    flex: 1 1 10%;
+    color: $Gray-200;
+  }
+
+  &__member-options {
+    background-color: $Gray-800;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    right: 0;
+    top: 3.6rem;
+    border-radius: 8px;
+    padding: 0.8rem;
+    z-index: 3;
+
+    button {
+      cursor: pointer;
+      @include Body-Medium-Font($Gray-100);
+      padding: 0.4rem 0.5rem;
+      border: 1px solid $Gray-600;
+      border-radius: 8px;
+      background: transparent;
+      transition: 300ms all ease-in-out;
+
+      &:hover {
+        border-color: $Blue-500;
+        color: $Blue-500;
+      }
+
+      &:nth-child(4):hover {
+        border-color: $Red-500;
+        color: $Red-500;
+      }
+    }
+  }
+}
