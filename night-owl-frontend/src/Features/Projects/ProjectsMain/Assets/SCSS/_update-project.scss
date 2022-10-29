@@ -1,0 +1,140 @@
+.update-project-container {
+  width: 100%;
+  height: 100%;
+  background: $Gray-900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+}
+
+.update-project {
+  width: 50%;
+  position: relative;
+  background: $Gray-800;
+  border: 1px solid $Gray-800;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  max-height: 90%;
+
+  &__title {
+    text-align: center;
+    border-bottom: 1px solid $Gray-700;
+    padding-bottom: 2rem;
+  }
+
+  &__close {
+    position: absolute;
+    right: 1rem;
+    top: 1.8rem;
+    cursor: pointer;
+  }
+
+  &__close-icon {
+    width: 25px;
+    height: 25px;
+    border: 1px solid $Gray-600;
+    padding: 0.2rem;
+    border-radius: 50%;
+    fill: $Gray-600;
+    transition: 300ms all ease-in-out;
+
+    &:hover {
+      fill: $Gray-200;
+      border-color: $Gray-200;
+    }
+  }
+
+  &__logo-fieldset {
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: contain;
+    background-color: $Gray-500;
+  }
+
+  &__choose-logo {
+    display: grid;
+    place-items: center;
+    height: 40px;
+    @include Body-Medium-Font($Gray-100);
+    background-color: $Gray-600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 300ms all ease-in-out;
+    padding: 0 1rem;
+
+    &:hover {
+      background-color: $Gray-100;
+      color: $Gray-500;
+    }
+  }
+
+  &__fieldset {
+    width: 100%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    width: 100%;
+    margin-left: 0.5rem;
+  }
+
+  &__input {
+    border-radius: 20px;
+    height: 40px;
+    border: none;
+    text-indent: 1rem;
+    outline: none;
+    background-color: $Gray-600;
+    @include Body-Medium-Font($Gray-100);
+
+    &::placeholder {
+      color: $Gray-400;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+    background-color: $Gray-600;
+    @include Body-Medium-Font($Gray-100);
+    outline: none;
+    border-radius: 20px;
+    padding: 1rem;
+
+    &::placeholder {
+      color: $Gray-400;
+    }
+  }
+
+  &__submit {
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    @include Body-Medium-Font($Gray-100);
+    background-color: $Gray-500;
+    transition: 300ms all ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $Gray-100;
+      color: $Gray-500;
+    }
+  }
+}
