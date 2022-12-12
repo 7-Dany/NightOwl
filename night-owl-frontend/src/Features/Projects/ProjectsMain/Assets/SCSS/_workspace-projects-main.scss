@@ -1,11 +1,11 @@
+@import "project", "update-project";
+
 .workplace-projects-main-container {
   width: 100%;
   min-height: 88vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 0;
-  gap: 1rem;
   overflow-y: scroll;
   overflow-x: hidden;
 
@@ -22,73 +22,5 @@
     background-color: $Gray-600;
     border-radius: 20px;
     border: 1px solid $Gray-800;
-  }
-}
-
-.workspace-project {
-  width: 50%;
-  border: 1px solid $Gray-700;
-  background-color: $Gray-800;
-  border-radius: 20px;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: 300ms all ease-in-out;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-
-  &:hover {
-    @include Box-Shadow-md;
-  }
-
-  &__info {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    gap: 1rem;
-  }
-
-  &__logo {
-    grid-column: 1/2;
-    grid-row: 1/2;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: contain;
-  }
-
-  &__title {
-    grid-column: 2/-1;
-    grid-row: 1/2;
-  }
-
-  &__summary {
-    grid-column: 2/-1;
-    grid-row: 2/3;
-  }
-
-  &__icons-container {
-    margin-left: 44px;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  &__icon-btn {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-
-    &:hover {
-      .workspace-project__icon {
-        fill: $Blue-500;
-      }
-    }
-  }
-
-  &__icon {
-    width: 30px;
-    fill: $Gray-600;
-    transition: 300ms all ease-in-out;
   }
 }

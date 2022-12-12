@@ -235,9 +235,9 @@
       }
 
       &:nth-child(4)::after {
-        content: 'Discussions';
+        content: 'My Discussions';
         @include Sidebar-Title;
-        right: -5.9rem;
+        right: -7.34rem;
       }
 
       &:nth-child(5)::after {

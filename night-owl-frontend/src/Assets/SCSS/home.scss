@@ -1,14 +1,30 @@
-@import "config", "workspace";
+@import "config", "workspace", "new-project";
 @import "../../Features/Login/Assets/SCSS/login-main";
 @import "../../Features/Process/Assets/SCSS/workspace-process-main";
 @import "../../Features/Members/Assets/SCSS/workspace-members-main";
 @import "../../Features/Chat/Assets/SCSS/workspace-chat-main";
-@import "../../Features/Projects/Assets/SCSS/workspace-projects-main";
+@import "../../Features/Projects/ProjectsMain/Assets/SCSS/workspace-projects-main";
+@import "../../Features/Projects/ProjectMembers/Assets/SCSS/project-members";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 24px;
+    background: $Gray-800;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $Gray-600;
+    border-radius: 20px;
+    border: 1px solid $Gray-800;
+  }
 }
 
 body {
