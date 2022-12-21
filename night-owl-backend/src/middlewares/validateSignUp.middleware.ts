@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { Request, Response, NextFunction } from 'express'
 
 const signUpSchema = Yup.object({
-  username: Yup.string().required('Username Required').min(5),
+  username: Yup.string().required('Username Required').min(4),
   email: Yup.string().required('Email Required').email(),
   password: Yup.string().required('Password Required').min(8, 'Password is too short')
 })

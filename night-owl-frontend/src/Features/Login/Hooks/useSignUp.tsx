@@ -1,9 +1,11 @@
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
-import { createUser } from '../Api/users.api'
+import { UsersEndpoints } from '../../../Api/users.api'
 import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+
+const usersEndpoints = new UsersEndpoints()
 
 type UseSignUpReturn = {
   formik: FormikProps<{ username: string, email: string, password: string, confirmPassword: string }>
@@ -22,7 +24,7 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
   const formik = useFormik({
     initialValues: { username: '', email: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
-      username: Yup.string().required('Username Required').min(5),
+      username: Yup.string().required('Username Required').min(4),
       email: Yup.string().required('Email Required').email(),
       password: Yup.string().required('Password Required').min(8, 'Password is too short'),
       confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -30,10 +32,16 @@ function useSignUp({ setLogin }: UseSignUpArgs): UseSignUpReturn {
     onSubmit: (values, actions) => {
       const controller = new AbortController()
       const { username, email, password } = values
-      const user = { username, email, image: './images/person.svg', password }
+      const user = {
+        username,
+        email,
+        image: './images/person.svg',
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        password
+      }
       actions.resetForm()
       setError('')
-      createUser({ controller, user })
+      usersEndpoints.createUser(controller, user)
         /** After new user get created he will be redirected to create or join workspace */
         .then(data => {
           if (data.token) {

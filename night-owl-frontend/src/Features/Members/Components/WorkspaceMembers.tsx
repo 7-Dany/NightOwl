@@ -1,10 +1,10 @@
 import Member from './Member'
-import { IWorkspaceMember } from '../../../Types'
+import { IWorkspaceUserMember } from '../../../Types'
 import { LeftArrowIcon } from '../Assets'
 import React from 'react'
 
 type WorkspaceMembersProps = {
-  members: IWorkspaceMember[]
+  members: IWorkspaceUserMember[]
   showRequestsOrMembers: (event: React.MouseEvent<HTMLDivElement>, show: string) => void
 }
 
@@ -18,9 +18,9 @@ function WorkspaceMembers({ members, showRequestsOrMembers }: WorkspaceMembersPr
         image={member.image}
         name={member.username}
         email={member.email}
-        projects={2}
+        projects={member.project_counts}
         role={member.role}
-        timezone={'GMT+3'}
+        timezone={member.timezone}
       />
     )
   })
@@ -42,7 +42,7 @@ function WorkspaceMembers({ members, showRequestsOrMembers }: WorkspaceMembersPr
         <span className='members-header__projects'>Projects</span>
         <span className='members-header__role'>Role</span>
         <span className='members-header__timezone'>Timezone</span>
-        <span className='members-header__chat'>Chat</span>
+        <span className='members-header__chat'>Options</span>
       </div>
       <div className='members'>
         {workspaceMembers}

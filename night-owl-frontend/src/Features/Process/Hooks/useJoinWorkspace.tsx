@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react'
 import { IWorkspaceRequest } from '../../../Types'
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { createWorkspaceRequest } from '../Api/workspace_requests.api'
+import { WorkspacesEndpoints } from '../../../Api/workspaces.api'
 import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
+const workspaceEndpoints = new WorkspacesEndpoints()
 
 type UseJoinWorkspaceArgs = {
   setShow: React.Dispatch<React.SetStateAction<string>>
@@ -31,10 +32,12 @@ function useJoinWorkspace({ setShow }: UseJoinWorkspaceArgs): UseJoinWorkspaceRe
     onSubmit: (values, actions) => {
       setErrorMsg('')
       const controller = new AbortController()
-      createWorkspaceRequest({
+      workspaceEndpoints.createWorkspaceRequest(
         controller,
-        values: { workspace_id: values.workspaceId, user_id: user.id, token: user.token }
-      })
+        values.workspaceId,
+        user.id,
+        user.token
+      )
         .then(data => {
           AuthDispatch({ type: 'update_workspace_request', payload: data })
           navigate('/workspace/request')

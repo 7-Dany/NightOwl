@@ -1,6 +1,15 @@
 import { Formik, Form, Field } from 'formik'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Select, { ActionMeta } from 'react-select'
+import { AuthContext } from '../Context/AuthContext'
+import { WorkspacesEndpoints } from '../Api/workspaces.api'
+import { useNavigate } from 'react-router-dom'
+import { ProjectContext } from '../Context/ProjectContext'
+import { ProjectsEndpoints } from '../Api/projects.api'
+import newProject from './NewProject'
+
+const projectsEndpoints = new ProjectsEndpoints()
+const workspacesEndpoints = new WorkspacesEndpoints()
 
 type Option = {
   value: string
@@ -9,29 +18,54 @@ type Option = {
 }
 
 interface FormValues {
-  file: File | null
+  logo: File | null
   name: string
   summary: string
   admin: string
   adminTitle: string
 }
 
-function NewProject() {
+type NewProjectProps = {
+  setCreateProject: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function NewProject({ setCreateProject }: NewProjectProps) {
+  const navigate = useNavigate()
+  const { user, workspace } = useContext(AuthContext).AuthState
+  const { ProjectDispatch } = useContext(ProjectContext)
   const fileInput = useRef<HTMLInputElement>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>()
-  const [options, setOptions] = useState<Option[]>([
-    { value: '2', label: 'A1', image: './image/person.svg' },
-    { value: '3', label: 'B1', image: './image/person.svg' },
-    { value: '4', label: 'C1', image: './image/person.svg' },
-  ])
-  const [previewImage, setPreviewImage] = useState('./image/person.svg')
+  const [options, setOptions] = useState<Option[]>([])
+  const [previewImage, setPreviewImage] = useState('./images/person.svg')
   const initialValues: FormValues = {
-    file: null,
+    logo: null,
     name: '',
     summary: '',
     admin: '',
-    adminTitle: '',
+    adminTitle: ''
   }
+
+  useEffect(() => {
+    const controller = new AbortController()
+    workspacesEndpoints.getWorkspaceMembers(
+      controller,
+      workspace.workspace_id,
+      user.token
+    )
+      .then(data => {
+        setOptions(prevState => {
+          return data.map(member => {
+            return { value: member.user_id, label: member.username, image: member.image }
+          })
+        })
+      })
+      .catch(error => {
+        setOptions([])
+      })
+    return () => {
+      controller.abort()
+    }
+  }, [])
 
   useEffect(() => {
     let url = './image/person.svg'
@@ -46,22 +80,36 @@ function NewProject() {
 
   return (
     <Formik initialValues={initialValues} onSubmit={(values: FormValues, actions) => {
-      console.log(values)
+      const controller = new AbortController()
+      projectsEndpoints.createProject(
+        controller,
+        { ...values, workspace_id: workspace.workspace_id },
+        user.token
+      )
+        .then(data => {
+          ProjectDispatch({ type: 'update_active_project', payload: data })
+          ProjectDispatch({ type: 'add_project', payload: data })
+          navigate('/projects')
+          setCreateProject(false)
+        })
       actions.resetForm()
-      setPreviewImage('./image/person.svg')
+      setPreviewImage('./images/person.svg')
     }}>{(props) => {
       return (
-        <Form className='new-project__form'>
+        <Form className='new-project__form' encType='multipart/form-data'>
           <fieldset className='new-project__logo-fieldset'>
             <label htmlFor='file'>
               <img src={previewImage} alt='' className='new-project__logo' />
             </label>
             <input type='file'
                    hidden={true}
+                   accept='image/*'
                    ref={fileInput}
+                   id='file'
                    onChange={event => {
-                     props.setFieldValue('file', event.target.files ? event.target.files[0] : null)
+                     props.setFieldValue('logo', event.target.files ? event.target.files[0] : null)
                      setSelectedFile(event.target.files ? event.target.files[0] : null)
+                     event.target.value = ''
                    }}
             />
             <div role='button'

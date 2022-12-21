@@ -32,7 +32,14 @@ export class ProjectMembersModel {
   async showByProjectId(projectId: string): Promise<IProjectMember[]> {
     try {
       const connect = await database.connect()
-      const sql = `SELECT pm.id, project_id, user_id, username, image, role, title
+      const sql = `SELECT pm.id,
+                          project_id,
+                          user_id,
+                          username,
+                          image,
+                          role,
+                          timezone,
+                          title
                    FROM project_members pm
                             INNER JOIN users u on u.id = pm.user_id
                    WHERE project_id = $1`

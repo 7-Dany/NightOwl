@@ -36,13 +36,17 @@ export const getProject = async (
     const id = request.params.id
     const project = await projectsModel.show(id)
     if (project) {
+      const members = await projectMembersModel.showByProjectId(id)
       response.status(200).json({
         status: 'Success',
-        data: { ...project },
+        data: { ...project, members },
         message: 'Project got retrieved successfully'
       })
     } else {
-      response.status(204)
+      response.status(404).json({
+        status: 'Failed',
+        message: 'Project is not exist'
+      })
     }
   } catch (error) {
     next(error)

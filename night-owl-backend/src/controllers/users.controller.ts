@@ -284,8 +284,8 @@ export const authenticateUser = async (
       const token = jwt.sign({ user: authenticatedUser }, config.token as unknown as string)
       if (!authenticatedUser) {
         response.status(401).json({
-          status: 'Unauthorized user',
-          message: 'wrong email or password'
+          status: 'Failed',
+          message: 'Wrong email or password'
         })
         return
       } else {
@@ -315,7 +315,10 @@ export const authenticateUser = async (
         })
       }
     } else {
-      response.status(204)
+      response.status(404).json({
+        status: 'Failed',
+        message: 'User is not exist'
+      })
     }
   } catch
     (error) {

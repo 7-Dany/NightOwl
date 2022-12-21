@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/AuthContext'
+import { WorkspacesEndpoints } from '../../../Api/workspaces.api'
 import { useNavigate } from 'react-router-dom'
-import { deleteWorkspaceRequest } from '../Api/workspace_requests.api'
+
+const workspaceEndpoints = new WorkspacesEndpoints()
 
 function useWorkspaceRequest() {
   const { AuthState, AuthDispatch } = useContext(AuthContext)
@@ -14,10 +16,11 @@ function useWorkspaceRequest() {
     const controller = new AbortController()
     if (deleteRequest) {
       /** It will delete the request after the user confirm it */
-      deleteWorkspaceRequest({
+      workspaceEndpoints.deleteWorkspaceRequest(
         controller,
-        values: { userId: user.id, token: user.token }
-      })
+        user.id,
+        user.token
+      )
         .then(data => {
           setErrorMsg('Your request got deleted')
           AuthDispatch({ type: 'reset_workspace_and_request' })

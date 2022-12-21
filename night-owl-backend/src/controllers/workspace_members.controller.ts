@@ -11,11 +11,15 @@ export const getAllWorkspaceMembers = async (
 ): Promise<void> => {
   try {
     const workspaceMembers = await workspaceMembersModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...workspaceMembers],
-      message: 'All workspace members got retrieved successfully'
-    })
+    if (workspaceMembers) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...workspaceMembers],
+        message: 'All workspace members got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -27,13 +31,17 @@ export const getWorkspaceMembers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const id = request.params.id
+    const id = request.params.workspace_id
     const workspaceMembers = await workspaceMembersModel.showByWorkspaceId(id)
-    response.status(200).json({
-      status: 'Success',
-      data: { ...workspaceMembers },
-      message: 'All workspace members got retrieved successfully'
-    })
+    if (workspaceMembers) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...workspaceMembers],
+        message: 'All workspace members got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -58,7 +66,7 @@ export const createWorkspaceMember = async (
       } else {
         response.status(409).json({
           status: 'Failed',
-          message: 'Request is not exist'
+          message: 'Request got deleted'
         })
         return
       }
@@ -90,10 +98,7 @@ export const deleteWorkspaceMember = async (
         message: 'Workspace got deleted successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Workspace member is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -107,12 +112,17 @@ export const deleteWorkspaceMemberByUserId = async (
 ): Promise<void> => {
   try {
     const userId = request.params.user_id
-    const deletedWorkspaceMember = await workspaceMembersModel.deleteByUserId(userId)
-    response.status(202).json({
-      status: 'Success',
-      data: { ...deletedWorkspaceMember },
-      message: 'Member got deleted successfully from workspace'
-    })
+    const checkWorkspaceMember = await workspaceMembersModel.showByUserId(userId)
+    if (checkWorkspaceMember) {
+      const deletedWorkspaceMember = await workspaceMembersModel.deleteByUserId(userId)
+      response.status(202).json({
+        status: 'Success',
+        data: { ...deletedWorkspaceMember },
+        message: 'Member got deleted successfully from workspace'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }

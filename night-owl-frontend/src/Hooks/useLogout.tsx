@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { deleteUserSession } from '../Api/users.api'
+import { UsersEndpoints } from '../Api/users.api'
 import { SocketContext } from '../Context/SocketContext'
+
+const usersEndpoints = new UsersEndpoints()
 
 type UseLogoutReturn = {
   logoutUser: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -21,7 +23,7 @@ function useLogout(): UseLogoutReturn {
   useEffect(() => {
     const controller = new AbortController()
     if (logout) {
-      deleteUserSession({ controller, token: AuthState.user.token })
+      usersEndpoints.deleteUserSession(controller, AuthState.user.token)
         .then(data => {
           AuthDispatch({ type: 'reset_all' })
           setLogout(false)

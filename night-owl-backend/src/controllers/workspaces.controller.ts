@@ -12,11 +12,15 @@ export const getAllWorkspaces = async (
 ): Promise<void> => {
   try {
     const workspaces = await workspacesModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...workspaces],
-      message: 'All workspaces got retrieved successfully'
-    })
+    if (workspaces) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...workspaces],
+        message: 'All workspaces got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -28,13 +32,17 @@ export const getWorkspace = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const workspaceId = request.params.id
+    const workspaceId = request.params.workspace_id
     const workspace = await workspacesModel.show(workspaceId)
-    response.status(200).json({
-      status: 'Success',
-      data: { ...workspace },
-      message: 'Workspace got retrieved successfully'
-    })
+    if (workspace) {
+      response.status(200).json({
+        status: 'Success',
+        data: { ...workspace },
+        message: 'Workspace got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -46,7 +54,7 @@ export const getWorkspaceMembersAndRequests = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const workspaceId = request.params.id
+    const workspaceId = request.params.workspace_id
     const checkWorkspace = await workspacesModel.show(workspaceId)
     if (checkWorkspace) {
       const workspaceMembers = await workspaceMembersModel.showByWorkspaceId(workspaceId)
@@ -57,10 +65,7 @@ export const getWorkspaceMembersAndRequests = async (
         message: 'Workspace members and requests got retrieved successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Workspace is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -97,7 +102,7 @@ export const updateWorkspaceName = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const workspaceId = request.params.id
+    const workspaceId = request.params.workspace_id
     const workspaceName = request.body.name
     const workspace = await workspacesModel.show(workspaceId)
     if (workspace) {
@@ -108,10 +113,7 @@ export const updateWorkspaceName = async (
         message: 'Workspace name got updated successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Workspace is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -124,15 +126,20 @@ export const deleteWorkspace = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const workspaceId = request.params.id
-    const deletedWorkspaceMembers = await workspaceMembersModel.deleteByWorkspaceId(workspaceId)
-    const deletedWorkspaceRequests = await workspaceRequestsModel.deleteByWorkspaceId(workspaceId)
-    const deletedWorkspace = await workspacesModel.delete(workspaceId)
-    response.status(202).json({
-      status: 'Success',
-      data: { ...deletedWorkspace, members: [...deletedWorkspaceMembers], requests: [...deletedWorkspaceRequests] },
-      message: 'Workspace got deleted successfully'
-    })
+    const workspaceId = request.params.workspace_id
+    const checkWorkspace = await workspacesModel.show(workspaceId)
+    if (checkWorkspace) {
+      const deletedWorkspaceMembers = await workspaceMembersModel.deleteByWorkspaceId(workspaceId)
+      const deletedWorkspaceRequests = await workspaceRequestsModel.deleteByWorkspaceId(workspaceId)
+      const deletedWorkspace = await workspacesModel.delete(workspaceId)
+      response.status(202).json({
+        status: 'Success',
+        data: { ...deletedWorkspace, members: [...deletedWorkspaceMembers], requests: [...deletedWorkspaceRequests] },
+        message: 'Workspace got deleted successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }

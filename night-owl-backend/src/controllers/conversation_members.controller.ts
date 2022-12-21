@@ -10,11 +10,15 @@ export const getAllConversationMembers = async (
 ): Promise<void> => {
   try {
     const conversationMembers = await conversationMembersModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...conversationMembers],
-      message: 'All conversation members got retrieved successfully'
-    })
+    if (conversationMembers) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...conversationMembers],
+        message: 'All conversation members got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -35,10 +39,7 @@ export const getConversationMember = async (
         message: 'Conversation member got retrieved successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Conversation member is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -53,11 +54,15 @@ export const getAllConversationsForUser = async (
   try {
     const userId = request.params.user_id
     const conversations = await conversationMembersModel.showByUserId(userId)
-    response.status(200).json({
-      status: 'Success',
-      data: [...conversations],
-      message: 'All conversations got retrieved successfully'
-    })
+    if (conversations) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...conversations],
+        message: 'All conversations got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -98,10 +103,7 @@ export const deleteConversationMember = async (
         message: 'conversation member got deleted successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Conversation member is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)

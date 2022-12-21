@@ -12,13 +12,14 @@ import {
   ChatIcon,
   MembersIcon,
   SettingsIcon,
-  Logout, Xicon
+  Logout,
+  Xicon
 } from '../Assets'
-import { NavLink } from 'react-router-dom'
-import React, { useContext, useState } from 'react'
+import { NavLink, useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
 import useLogout from '../Hooks/useLogout'
-import { AuthContext } from '../Context/AuthContext'
 import NewProject from './NewProject'
+import { ProjectContext } from '../Context/ProjectContext'
 
 type WorkspaceProps = {
   children: React.ReactNode
@@ -26,17 +27,30 @@ type WorkspaceProps = {
 }
 
 function Workspace({ children, title }: WorkspaceProps) {
-  const { activeProject } = useContext(AuthContext).AuthState
+  const { ProjectState, ProjectDispatch } = useContext(ProjectContext)
+  const { activeProject, projects } = ProjectState
   const { logoutUser } = useLogout()
   const [createProject, setCreateProject] = useState(false)
+  const params = useParams()
+
+  useEffect(() => {
+    if (projects.length && params.id) {
+      ProjectDispatch({ type: 'reload_active_project', payload: params.id })
+    }
+  }, [params.id, projects.length])
+
+  function resetActiveProject() {
+    ProjectDispatch({ type: 'reset_active_project' })
+  }
+
   return (
     <div className='App'>
       <header className={activeProject ? 'header-container active' : 'header-container'}>
         <div className='header'>
           {activeProject &&
-            <img src={activeProject?.image} alt='' className='header__project-logo' />
+            <img src={activeProject?.logo} alt='' className='header__project-logo' />
           }
-          <h2 className='header__title'>{activeProject ? activeProject.title : title}</h2>
+          <h2 className='header__title'>{activeProject ? activeProject.name : title}</h2>
           <div className='search-area'>
             <label htmlFor='search' className='search-area__container'>
               <SearchIcon className={'search-area__icon'} />
@@ -55,25 +69,25 @@ function Workspace({ children, title }: WorkspaceProps) {
         </div>
         {activeProject &&
           <nav className='navbar'>
-            <NavLink to='/project/overview' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/overview`} className='navbar__project-link'>
               Overview
             </NavLink>
-            <NavLink to='/project/pages' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/pages`} className='navbar__project-link'>
               Pages
             </NavLink>
-            <NavLink to='/project/discussions' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/discussions`} className='navbar__project-link'>
               Discussions
             </NavLink>
-            <NavLink to='/project/tasks' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/tasks`} className='navbar__project-link'>
               Tasks
             </NavLink>
-            <NavLink to='/project/planner' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/planner`} className='navbar__project-link'>
               Planner
             </NavLink>
-            <NavLink to='/project/files' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/files`} className='navbar__project-link'>
               Files
             </NavLink>
-            <NavLink to='/project/members' className='navbar__project-link'>
+            <NavLink to={`/projects/${activeProject.id}/members`} className='navbar__project-link'>
               Members
             </NavLink>
           </nav>
@@ -87,7 +101,7 @@ function Workspace({ children, title }: WorkspaceProps) {
                    onClick={(event) => setCreateProject(false)}>
                 <Xicon className={'new-project__close-icon'} />
               </div>
-              <NewProject />
+              <NewProject setCreateProject={setCreateProject} />
             </div>
           </div>
         }
@@ -97,27 +111,27 @@ function Workspace({ children, title }: WorkspaceProps) {
         <div className='four-circles'>
           <FourCircles />
         </div>
-        <div className='main-icons'>
+        <div className='main-icons' onClick={resetActiveProject}>
           <NavLink to='/home' className='main-icons__icon-container'>
             <HomeIcon className={'main-icons__icon'} />
           </NavLink>
           <NavLink to='/projects' className='main-icons__icon-container'>
             <ProjectsIcon className={'main-icons__icon'} />
           </NavLink>
-          <NavLink to='/events' className='main-icons__icon-container'>
+          <NavLink to='/calender' className='main-icons__icon-container'>
             <CalenderIcon className={'main-icons__icon'} />
           </NavLink>
-          <NavLink to='/discussion' className='main-icons__icon-container'>
+          <NavLink to='/discussions' className='main-icons__icon-container'>
             <DiscussionIcon className={'main-icons__icon'} />
           </NavLink>
-          <NavLink to='/todo' className='main-icons__icon-container'>
+          <NavLink to='/tasks' className='main-icons__icon-container'>
             <TodoIcon className={'main-icons__icon'} />
           </NavLink>
-          <NavLink to='/chat' className='main-icons__icon-container'>
+          <NavLink to='/chats' className='main-icons__icon-container'>
             <ChatIcon className={'main-icons__icon'} />
           </NavLink>
         </div>
-        <div className='footer-icons'>
+        <div className='footer-icons' onClick={resetActiveProject}>
           <NavLink to='/members' className='footer-icons__icon-container'>
             <MembersIcon className={'footer-icons__icon'} />
           </NavLink>

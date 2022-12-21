@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FormikProps, useFormik } from 'formik'
-import * as Yup from 'yup'
-import { createWorkspace } from '../Api/workspaces.api'
 import { AuthContext } from '../../../Context/AuthContext'
+import { WorkspacesEndpoints } from '../../../Api/workspaces.api'
+import * as Yup from 'yup'
+
+const workspacesEndpoints = new WorkspacesEndpoints()
 
 type UseCreateWorkspaceArgs = {
   setShow: React.Dispatch<React.SetStateAction<string>>
@@ -26,10 +28,12 @@ function useCreateWorkspace({ setShow }: UseCreateWorkspaceArgs): UseCreateWorks
     }),
     onSubmit: (values, actions) => {
       const controller = new AbortController()
-      createWorkspace({
+      workspacesEndpoints.createWorkspace(
         controller,
-        values: { user_id: AuthState.user.id, name: values.name, token: AuthState.user.token }
-      })
+        values.name,
+        AuthState.user.id,
+        AuthState.user.token
+      )
         .then(data => {
           AuthDispatch({ type: 'update_workspace', payload: data })
           setErrorMsg('')

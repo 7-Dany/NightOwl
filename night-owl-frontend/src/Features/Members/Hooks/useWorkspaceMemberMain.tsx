@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/AuthContext'
-import { IWorkspaceMember, IWorkspaceUserRequest } from '../../../Types'
-import { getMembersAndRequests } from '../Api/workspace.api'
-import { IWorkspace } from '../../../Types'
+import { IWorkspaceMember, IWorkspaceUserMember, IWorkspaceUserRequest } from '../../../Types'
+import { WorkspacesEndpoints } from '../../../Api/workspaces.api'
+
+const workspacesEndpoints = new WorkspacesEndpoints()
 
 type UseWorkspaceMemberMainReturn = {
   show: string
   copiedMsg: string
-  members: IWorkspaceMember[]
+  members: IWorkspaceUserMember[]
   requests: IWorkspaceUserRequest[]
-  workspace: IWorkspace
+  workspace: IWorkspaceMember
   showRequestsOrMembers: (event: React.MouseEvent<HTMLDivElement>, show: string) => void
   copyText: (event: React.MouseEvent<HTMLDivElement>) => void
 }
@@ -17,7 +18,7 @@ type UseWorkspaceMemberMainReturn = {
 function useWorkspaceMemberMain(): UseWorkspaceMemberMainReturn {
   const { workspace, user } = useContext(AuthContext).AuthState
   const [copiedMsg, setCopiedMsg] = useState('workspace-id__hidden-msg')
-  const [members, setMembers] = useState<IWorkspaceMember[]>([])
+  const [members, setMembers] = useState<IWorkspaceUserMember[]>([])
   const [requests, setRequests] = useState<IWorkspaceUserRequest[]>([])
   const [show, setShow] = useState('main')
 
@@ -39,10 +40,11 @@ function useWorkspaceMemberMain(): UseWorkspaceMemberMainReturn {
 
   useEffect(() => {
     const controller = new AbortController()
-    getMembersAndRequests({
+    workspacesEndpoints.getMembersAndRequests(
       controller,
-      values: { workspace_id: workspace.workspace_id, token: user.token }
-    })
+      workspace.workspace_id,
+      user.token
+    )
       .then(data => {
         if (data) {
           setRequests(data.requests)

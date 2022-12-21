@@ -1,5 +1,5 @@
 import Workspace from '../Layout/Workspace'
-import Projects from '../Features/Projects'
+import Projects from '../Features/Projects/ProjectsMain'
 
 function ProjectsPage() {
   return (

@@ -11,11 +11,15 @@ export const getAllConversations = async (
 ): Promise<void> => {
   try {
     const conversations = await conversationsModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...conversations],
-      message: 'All conversations got retrieved successfully'
-    })
+    if (conversations) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...conversations],
+        message: 'All conversations got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -36,10 +40,7 @@ export const getConversation = async (
         message: 'Conversation got retrieved successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Conversation is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)
@@ -118,10 +119,7 @@ export const deleteConversation = async (
         message: 'Conversation got deleted successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Conversation is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
     next(error)

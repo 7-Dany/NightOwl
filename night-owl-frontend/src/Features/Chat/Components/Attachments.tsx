@@ -64,7 +64,7 @@ function Attachments({ fileBtn, sendFile, setSendFile }: AttachmentsProps) {
   return (
     <>
       <label htmlFor='file'>
-        <input type='file' id='file' hidden ref={fileBtn} onChange={handleFileChanges} />
+        <input type='file' id='file' accept={'image/*'} hidden ref={fileBtn} onChange={handleFileChanges} />
       </label>
       {preview &&
         <div className='chat-room-footer__image-preview'>

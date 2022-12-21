@@ -1,9 +1,11 @@
 import { FormikProps, useFormik } from 'formik'
 import * as Yup from 'yup'
 import React, { useContext, useState } from 'react'
-import { authUser } from '../Api/users.api'
+import { UsersEndpoints } from '../../../Api/users.api'
 import { AuthContext } from '../../../Context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+
+const usersEndpoints = new UsersEndpoints()
 
 type UseSignInReturn = {
   formik: FormikProps<{ email: string, password: string }>
@@ -28,7 +30,7 @@ function useSignIn({ setLogin }: UseSignInArgs): UseSignInReturn {
     onSubmit: (values, actions) => {
       setError('')
       const controller = new AbortController()
-      authUser({ controller, user: values })
+      usersEndpoints.authUser(controller, values)
         /** After the user get authenticated if he has in workspace he will get redirected to it,
          *  Or if he has workspace request is going he will go to,
          *  otherwise he will be redirected to create workspace or join workspace

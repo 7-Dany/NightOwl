@@ -16,9 +16,10 @@ import SearchIcon from './images/SearchIcon'
 import NotificationIcon from './images/NotificationIcon'
 import FilesIcon from './images/FilesIcon'
 import PlannerIcon from './images/PlannerIcon'
+import Xicon from './images/Xicon'
+import PagesIcon from './images/PagesIcon'
 import PersonImage from './images/person.svg'
 import logo from './images/Logo.jpg'
-import Xicon from './images/Xicon'
 
 
 export {
@@ -41,6 +42,7 @@ export {
   Xicon,
   FilesIcon,
   PlannerIcon,
+  PagesIcon,
   PersonImage,
   logo
 }

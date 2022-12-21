@@ -91,7 +91,10 @@ export class SocketServer {
     })
 
     /** Setting up join conversation event */
-    socket.on('join_conversation', async ({ conversation_id }, callback: (messages: IUserMessage[]) => void) => {
+    socket.on('join_conversation', async (
+      { conversation_id },
+      callback: (messages: IUserMessage[]) => void
+    ): Promise<void> => {
       console.log(`User:${userId} has joined conversation: ${conversation_id}`)
 
       /** Join conversation and send all messages for that conversation */
@@ -104,7 +107,8 @@ export class SocketServer {
     socket.on('save_message', async (
       newMessage: { data: MessageFile | string | File, type: string },
       conversation: string,
-      callback: (message: IUserMessage) => void) => {
+      callback: (message: IUserMessage) => void
+    ): Promise<void> => {
 
       /** Create new message and send it to both users the sender and receiver */
       let message: IMessage = {} as IMessage
@@ -134,7 +138,8 @@ export class SocketServer {
         }
       } else if (newMessage.type === 'file') {
         /** Uploading image to upload and save its path
-         * TODO: Add way to save multiple images at time and save files like pdf */
+         * TODO: Add way to save multiple images at time and save files like pdf
+         */
         const { file, fileType } = newMessage.data as MessageFile
         const type = fileType.split('/')
         let pathName = `images/${conversation}-${uuid4()}.${type[1]}`
@@ -165,9 +170,9 @@ export class SocketServer {
 
   /**
    * Send a message through a socket
-   * @Param name The name of the event ex handshake.
-   * @Param users List of socket id's.
-   * @Param payload any information needed by the user.
+   * @param name The name of the event ex handshake.
+   * @param users List of user socket id's.
+   * @param payload any information needed by the user.
    */
   SendMessage = (name: string, users: string[], payload?: any) => {
     console.log(`Emitting event ${name}, to`, users)

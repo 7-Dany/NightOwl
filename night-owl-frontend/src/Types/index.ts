@@ -4,18 +4,20 @@ export interface IAuthUser {
   email: string
   image: string
   is_verified: boolean
+  timezone: string
   token: string
 }
 
-export interface IWorkspace {
+export interface IWorkspaceMember {
   id: string
   workspace_id: string
+  user_id: string
   name: string
   role: string
 }
 
-export interface IWorkspaceMember extends IWorkspace {
-  user_id: string
+export interface IWorkspaceUserMember extends IWorkspaceMember {
+  project_counts: number
   username: string
   email: string
   image: string
@@ -40,7 +42,7 @@ export interface IWorkspaceUserRequest extends IRequest {
 
 export interface IWorkspaceUser {
   user: IAuthUser
-  workspace?: IWorkspace
+  workspace?: IWorkspaceMember
   workspaceRequest?: IWorkspaceRequest
 }
 
@@ -87,7 +89,27 @@ export interface IPrivateConversation extends IMessage {
 
 export interface IProject {
   id: string
-  title: string
+  name: string
   summary: string
+  logo: string
+}
+
+export interface IWorkspaceProject extends IProject {
+  workspace_id: string
+  project_id: string
+}
+
+export interface IProjectMember {
+  id: number
+  user_id: string
+  username: string
   image: string
+  timezone: string
+  project_id: string
+  title: string
+  role: string
+}
+
+export interface IProjectData extends IProject {
+  members: IProjectMember[]
 }

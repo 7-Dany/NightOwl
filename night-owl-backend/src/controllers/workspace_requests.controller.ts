@@ -12,11 +12,15 @@ export const getAllWorkspaceRequests = async (
 ): Promise<void> => {
   try {
     const workspaceRequests = await workspaceRequestsModel.index()
-    response.status(200).json({
-      status: 'Success',
-      data: [...workspaceRequests],
-      message: 'All workspace requests got retrieved successfully'
-    })
+    if (workspaceRequests) {
+      response.status(200).json({
+        status: 'Success',
+        data: [...workspaceRequests],
+        message: 'All workspace requests got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -30,11 +34,15 @@ export const getWorkspaceRequest = async (
   try {
     const id = request.params.id
     const workspaceRequest = await workspaceRequestsModel.show(id)
-    response.status(200).json({
-      status: 'Success',
-      data: { ...workspaceRequest },
-      message: 'workspace request got retrieved successfully'
-    })
+    if (workspaceRequest) {
+      response.status(200).json({
+        status: 'Success',
+        data: { ...workspaceRequest },
+        message: 'workspace request got retrieved successfully'
+      })
+    } else {
+      response.status(204)
+    }
   } catch (error) {
     next(error)
   }
@@ -57,10 +65,7 @@ export const createWorkspaceRequest = async (
         message: 'New workspace request got created successfully'
       })
     } else {
-      response.status(422).json({
-        status: 'Failed',
-        message: 'Workspace is not exist make sure to write a correct id'
-      })
+      response.status(204)
     }
   } catch (error) {
     const newError: StatusError = new Error('Workspace is not exist make sure to write a correct id')
@@ -84,10 +89,7 @@ export const deleteWorkspaceRequest = async (
         message: 'Workspace Request got deleted successfully'
       })
     } else {
-      response.status(409).json({
-        status: 'Failed',
-        message: 'Workspace request is not exist'
-      })
+      response.status(204)
     }
   } catch (error) {
 
@@ -111,7 +113,7 @@ export const deleteWorkspaceRequestByUser = async (
     } else {
       response.status(409).json({
         status: 'Failed',
-        message: 'Workspace request is not exist'
+        message: 'Request got deleted'
       })
     }
   } catch (error) {

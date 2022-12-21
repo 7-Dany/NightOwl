@@ -1,37 +1,60 @@
 import React from 'react'
 import './Assets/SCSS/home.css'
 import { Routes, Route } from 'react-router-dom'
-import { ChatPage, HomePage, LoginPage, MembersPage, WorkspacePage, WorkspaceRequestPage, ProjectsPage } from './Pages'
 import AuthContextProvider from './Context/AuthContext'
+import SocketContextProvider from './Context/SocketContext'
+import {
+  LoginPage,
+  WorkspaceCreationPage,
+  WorkspaceRequestPage,
+  HomePage,
+  ProjectsPage,
+  CalenderPage,
+  MyDiscussionsPage,
+  MyTasksPage,
+  ChatPage,
+  MembersPage,
+  SettingsPage,
+  ProjectOverviewPage,
+  ProjectMembersPage
+} from './Pages'
 import {
   PrivateAppRoutes,
   PrivateAuthRoutes,
   PrivateWorkspaceRequestRoute,
   PrivateWorkspaceRoute
 } from './Hooks/PrivateRouters'
-import SocketContextProvider from './Context/SocketContext'
+import ProjectContextProvider from './Context/ProjectContext'
 
 function App() {
   return (
     <AuthContextProvider>
       <SocketContextProvider>
-        <Routes>
-          <Route path='/login' element={<LoginPage />} />
-          <Route element={<PrivateAuthRoutes />}>
-            <Route element={<PrivateWorkspaceRoute />}>
-              <Route path='/workspace' element={<WorkspacePage />} />
+        <ProjectContextProvider>
+          <Routes>
+            <Route path='/login' element={<LoginPage />} />
+            <Route element={<PrivateAuthRoutes />}>
+              <Route element={<PrivateWorkspaceRoute />}>
+                <Route path='/workspace' element={<WorkspaceCreationPage />} />
+              </Route>
+              <Route element={<PrivateWorkspaceRequestRoute />}>
+                <Route path='/workspace/request' element={<WorkspaceRequestPage />} />
+              </Route>
+              <Route element={<PrivateAppRoutes />}>
+                <Route path='/home' element={<HomePage />} />
+                <Route path='/projects' element={<ProjectsPage />} />
+                <Route path='/projects/:id/members' element={<ProjectMembersPage />} />
+                <Route path='/projects/:id/overview' element={<ProjectOverviewPage />} />
+                <Route path='/calender' element={<CalenderPage />} />
+                <Route path='/discussions' element={<MyDiscussionsPage />} />
+                <Route path='/tasks' element={<MyTasksPage />} />
+                <Route path='/chats' element={<ChatPage />} />
+                <Route path='/members' element={<MembersPage />} />
+                <Route path='/settings' element={<SettingsPage />} />
+              </Route>
             </Route>
-            <Route element={<PrivateWorkspaceRequestRoute />}>
-              <Route path='/workspace/request' element={<WorkspaceRequestPage />} />
-            </Route>
-            <Route element={<PrivateAppRoutes />}>
-              <Route path='/chat' element={<ChatPage />} />
-              <Route path='/home' element={<HomePage />} />
-              <Route path='/members' element={<MembersPage />} />
-              <Route path='/projects' element={<ProjectsPage />} />
-            </Route>
-          </Route>
-        </Routes>
+          </Routes>
+        </ProjectContextProvider>
       </SocketContextProvider>
     </AuthContextProvider>
   )

@@ -29,7 +29,7 @@ usersRoutes.route('/users')
   .patch(authTokenMiddleware, updatePassword)
   .delete(authTokenMiddleware, deleteUser)
 
-usersRoutes.route('/users/:id')
+usersRoutes.route('/users/:user_id')
   .get(authTokenMiddleware, getUser)
   .put(authTokenMiddleware, updateUser)
 

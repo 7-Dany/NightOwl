@@ -16,7 +16,14 @@ export interface IRequest {
   user_id: string
 }
 
+export interface IProject {
+  id: string
+  workspace_id: string
+  project_id: string
+}
+
 export interface IWorkspaceMember extends IMember {
+  project_counts: number
   username: string
   email: string
   image: string
@@ -30,4 +37,10 @@ export interface IWorkspaceUserRequest extends IRequest {
   username: string
   email: string
   image: string
+}
+
+export interface IWorkspaceProject extends IProject {
+  name: string
+  summary: string
+  logo: string
 }

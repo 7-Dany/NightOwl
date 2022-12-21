@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createPrivateChat } from '../Api/conversations.api'
 import { SocketContext } from '../../../Context/SocketContext'
+import { ConversationsEndpoints } from '../../../Api/conversations.api'
+
+const conversationsEndpoints = new ConversationsEndpoints()
 
 type UseMemberArgs = {
   userId: string
@@ -26,14 +28,16 @@ function useMember({ userId, memberId, token }: UseMemberArgs): UseMemberReturn 
   useEffect(() => {
     const controller = new AbortController()
     if (newChat) {
-      createPrivateChat({
+      conversationsEndpoints.createPrivateConversation(
         controller,
-        values: { user_id: userId, member_id: memberId, token }
-      })
+        userId,
+        memberId,
+        token
+      )
         .then(data => {
           setNewChat(false)
           SocketDispatch({ type: 'update_active_conversation', payload: data })
-          navigate('/chat')
+          navigate('/chats')
         })
         .catch(error => {
           setNewChat(false)

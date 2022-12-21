@@ -17,7 +17,7 @@ export const sessionMiddleware = session({
   store: new RedisStore({ client: redisClient }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7,
-    secure: config.env === 'production ' ? true : 'auto',
+    secure: config.env === 'production' ? true : 'auto',
     httpOnly: true,
     sameSite: config.env === 'production' ? 'none' : 'lax'
   }

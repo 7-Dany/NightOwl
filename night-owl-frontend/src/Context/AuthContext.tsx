@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useReducer } from 'react'
-import { getUser } from '../Api/users.api'
+import { UsersEndpoints } from '../Api/users.api'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AuthReducer, defaultAuthContextState, TAuthContextActions, TAuthContextState } from './AuthContextReducers'
+
+const usersEndpoints = new UsersEndpoints()
 
 type AuthContextProviderProps = {
   children: React.ReactNode
@@ -22,7 +24,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   useEffect(() => {
     const controller = new AbortController()
-    getUser({ controller })
+    usersEndpoints.getUser(controller)
       .then(data => {
         if (data) {
           AuthDispatch({ type: 'update_user', payload: data.user })

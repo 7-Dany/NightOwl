@@ -6,16 +6,22 @@ import { IMessage, IUserMessage } from './ConversationRelations/types'
 import { WorkspacesModel } from './WorkspaceRelations/workspaces.model'
 import { WorkspaceMembersModel } from './WorkspaceRelations/workspace_members.model'
 import { WorkspaceRequestsModel } from './WorkspaceRelations/workspace_requests.model'
+import { WorkspaceProjectsModel } from './WorkspaceRelations/workspace_projects.model'
+import { ProjectsModel } from './ProjectRelations/projects.model'
+import { ProjectMembersModel } from './ProjectRelations/project_members.model'
 
 export {
+  UsersModel,
+  User,
   ConversationsModel,
   ConversationMembersModel,
-  WorkspaceMembersModel,
-  WorkspacesModel,
-  UsersModel,
   MessagesModel,
-  WorkspaceRequestsModel,
-  User,
   IMessage,
-  IUserMessage
+  IUserMessage,
+  WorkspacesModel,
+  WorkspaceMembersModel,
+  WorkspaceRequestsModel,
+  WorkspaceProjectsModel,
+  ProjectsModel,
+  ProjectMembersModel
 }

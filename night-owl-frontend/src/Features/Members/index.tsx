@@ -8,7 +8,6 @@ function WorkspaceMembersMain() {
    *  TODO: Adding invite button to be able to invite users
    *  TODO: Adding way to check user role if he is not admin it shouldn't get or show workspace requests
    *  TODO: Adding way to change members roles
-   *  TODO: Adding way to get the user timezone and save it to database
    *  TODO: Adding buttons to kick the user from workspace
    */
   const {

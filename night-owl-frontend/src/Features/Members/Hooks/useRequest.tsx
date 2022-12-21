@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../Context/AuthContext'
-import { createWorkspaceMember } from '../Api/workspace_members.api'
-import { deleteWorkspaceRequest } from '../Api/workspace_requests.api'
+import { WorkspacesEndpoints } from '../../../Api/workspaces.api'
+
+const workspacesEndpoints = new WorkspacesEndpoints()
 
 type UseRequestArgs = {
   userId: string
@@ -25,10 +26,13 @@ function useRequest({ userId }: UseRequestArgs): UseRequestReturn {
        *  after the user refresh the page he will get redirected to his workspace,
        *  if the request got deleted by the sender it will show to the admin when he accepts or delete it.
        */
-      createWorkspaceMember({
+      workspacesEndpoints.createWorkspaceMember(
         controller,
-        values: { userId: userId, token: user.token, workspaceId: workspace.workspace_id, role: 'Member' }
-      })
+        workspace.workspace_id,
+        'Member',
+        userId,
+        user.token
+      )
         .then(data => {
           if (data) {
             setMsg('Request got Accepted')
@@ -40,10 +44,11 @@ function useRequest({ userId }: UseRequestArgs): UseRequestReturn {
           }
         })
     } else if (order === 'Delete') {
-      deleteWorkspaceRequest({
+      workspacesEndpoints.deleteWorkspaceRequest(
         controller,
-        values: { userId: userId, token: user.token }
-      })
+        userId,
+        user.token
+      )
         .then(data => {
           if (data) {
             setMsg('Request got Deleted')
